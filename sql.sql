@@ -142,6 +142,13 @@ CREATE TABLE CATEGORIES (
         ON DELETE SET NULL
 );
 
+INSERT INTO CATEGORIES (CATEGORY_NAME, DESCRIPTION, IS_ACTIVE)
+VALUES
+    ('Men', 'Eyewear designed for men', TRUE),
+    ('Women', 'Eyewear designed for women', TRUE),
+    ('Unisex', 'Eyewear designed for everyone', TRUE),
+    ('Accessory', 'Eyewear accessories and care products', TRUE);
+
 
 CREATE TABLE PRODUCT_CATEGORIES (
     PRODUCT_ID BIGINT NOT NULL,

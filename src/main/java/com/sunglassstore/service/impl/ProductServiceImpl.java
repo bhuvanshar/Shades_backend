@@ -25,6 +25,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private static final Set<String> STOREFRONT_CATEGORIES = Set.of("Men", "Women", "Unisex", "Accessory");
+
     private final ProductRepository productRepository;
     private final ProductVariantRepository variantRepository;
     private final ProductImageRepository imageRepository;
@@ -77,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
             for (Long catId : request.getCategoryIds()) {
                 Category category = categoryRepository.findById(catId)
                         .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + catId));
+                validateStorefrontCategory(category);
                 categories.add(category);
             }
             product.setCategories(categories);
@@ -129,6 +132,7 @@ public class ProductServiceImpl implements ProductService {
             for (Long catId : request.getCategoryIds()) {
                 Category category = categoryRepository.findById(catId)
                         .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + catId));
+                validateStorefrontCategory(category);
                 categories.add(category);
             }
             product.setCategories(categories);
@@ -165,6 +169,12 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return ProductResponse.fromEntity(productRepository.save(product));
+    }
+
+    private void validateStorefrontCategory(Category category) {
+        if (!Boolean.TRUE.equals(category.getIsActive()) || !STOREFRONT_CATEGORIES.contains(category.getCategoryName())) {
+            throw new BadRequestException("Category must be Men, Women, Unisex, or Accessory");
+        }
     }
 
     @Override

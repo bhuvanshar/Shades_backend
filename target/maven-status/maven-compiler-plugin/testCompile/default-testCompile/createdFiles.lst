@@ -1,3 +1,4 @@
+com\sunglassstore\config\StorefrontCategoryBootstrapTest.class
 com\sunglassstore\SunglassStoreApplicationTests.class
 com\sunglassstore\service\RefundServiceImplTest$Fixture.class
 com\sunglassstore\service\CouponServiceImplTest.class

@@ -28,6 +28,8 @@ public class CreateProductRequest {
 
     private Long taxRateId;
 
+    @NotNull(message = "Product category is required")
+    @Size(min = 1, max = 1, message = "Select exactly one product category")
     private List<Long> categoryIds;
 
     /** Key-value pairs for product-level attributes like frame_material, uv_protection etc. */

@@ -22,6 +22,7 @@ com\sunglassstore\dto\response\ReviewableVariantResponse.class
 com\sunglassstore\dto\response\AdminOrderResponse$ShippingAddress.class
 com\sunglassstore\dto\response\AdminCustomerResponse$AddressInfo.class
 com\sunglassstore\service\impl\OrderServiceImpl$1.class
+com\sunglassstore\config\StorefrontCategoryBootstrap.class
 com\sunglassstore\service\impl\ReturnServiceImpl$1.class
 com\sunglassstore\dto\response\AdminOrderResponse$Customer.class
 com\sunglassstore\dto\response\RefundResponse.class
