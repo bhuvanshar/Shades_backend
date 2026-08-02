@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import com.sunglassstore.dto.response.ReviewableVariantResponse;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -43,10 +45,15 @@ public class ReviewController {
     }
 
     @GetMapping("/products/{productId}/mine")
-    public ResponseEntity<ReviewResponse> getMyProductReview(@AuthenticationPrincipal SecurityUser principal,
-                                                              @PathVariable Long productId) {
-        ReviewResponse review = reviewService.getMyProductReview(principal.getUserId(), productId);
-        return review == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(review);
+    public ResponseEntity<List<ReviewResponse>> getMyProductReview(@AuthenticationPrincipal SecurityUser principal,
+                                                            @PathVariable Long productId) {
+        return ResponseEntity.ok(reviewService.getMyProductReviews(principal.getUserId(), productId));
+    }
+
+    @GetMapping("/products/{productId}/reviewable-variants")
+    public ResponseEntity<List<ReviewableVariantResponse>> getReviewableVariants(
+            @AuthenticationPrincipal SecurityUser principal, @PathVariable Long productId) {
+        return ResponseEntity.ok(reviewService.getReviewableVariants(principal.getUserId(), productId));
     }
 
     @DeleteMapping("/{reviewId}")

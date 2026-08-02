@@ -1,8 +1,8 @@
 package com.sunglassstore.service;
 
 import com.sunglassstore.dto.request.CreateRefundRequest;
-import com.sunglassstore.entity.Refund;
+import com.sunglassstore.dto.response.RefundResponse;
 
 public interface RefundService {
-    Refund processRefund(Long paymentId, CreateRefundRequest request);
+    RefundResponse processRefund(Long paymentId, CreateRefundRequest request);
 }

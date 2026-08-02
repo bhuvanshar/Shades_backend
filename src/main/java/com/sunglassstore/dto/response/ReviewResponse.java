@@ -8,6 +8,10 @@ import java.time.LocalDateTime;
 public record ReviewResponse(
         Long reviewId,
         Long productId,
+        Long orderItemId,
+        Long variantId,
+        String variantName,
+        String variantSku,
         Long userId,
         String customerName,
         Integer rating,
@@ -17,7 +21,11 @@ public record ReviewResponse(
         LocalDateTime updatedAt
 ) {
     public static ReviewResponse fromEntity(Review review) {
+        var orderItem = review.getOrderItem();
+        var variant = orderItem == null ? null : orderItem.getVariant();
         return new ReviewResponse(review.getReviewId(), review.getProduct().getProductId(),
+                orderItem == null ? null : orderItem.getOrderItemId(), variant == null ? null : variant.getVariantId(),
+                variant == null ? null : variant.getVariantName(), variant == null ? null : variant.getSku(),
                 review.getUser().getUserId(), review.getUser().getName(), review.getRating(),
                 review.getReviewText(), review.getReviewStatus(), review.getCreatedAt(), review.getUpdatedAt());
     }

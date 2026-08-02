@@ -14,12 +14,18 @@ import com.sunglassstore.repository.OrderItemRepository;
 import com.sunglassstore.repository.ProductRepository;
 import com.sunglassstore.repository.ReviewRepository;
 import com.sunglassstore.repository.UserRepository;
+import com.sunglassstore.repository.ReturnItemRepository;
+import com.sunglassstore.repository.RefundRepository;
 import com.sunglassstore.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import com.sunglassstore.dto.response.ReviewableVariantResponse;
+import com.sunglassstore.entity.OrderItem;
+import com.sunglassstore.entity.enums.OrderStatus;
 
 @Service
 @RequiredArgsConstructor
@@ -29,19 +35,22 @@ public class ReviewServiceImpl implements ReviewService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final OrderItemRepository orderItemRepository;
+    private final ReturnItemRepository returnItemRepository;
+    private final RefundRepository refundRepository;
 
     @Override
     @Transactional
     public ReviewResponse createReview(Long userId, CreateReviewRequest request) {
-        // Verify user has purchased the product (delivered order)
-        boolean hasPurchased = orderItemRepository.hasUserPurchasedProduct(userId, request.getProductId());
-        if (!hasPurchased) {
-            throw new BadRequestException("You can only review products you have purchased and received");
+        OrderItem orderItem = orderItemRepository.findById(request.getOrderItemId())
+                .orElseThrow(() -> new ResourceNotFoundException("Purchased variant not found"));
+        if (!orderItem.getOrder().getUser().getUserId().equals(userId)
+                || orderItem.getOrder().getOrderStatus() != OrderStatus.DELIVERED
+                || !orderItem.getVariant().getProduct().getProductId().equals(request.getProductId())
+                || !isReviewable(orderItem)) {
+            throw new BadRequestException("You can only review a delivered variant you purchased");
         }
-
-        // Check if user already reviewed this product
-        if (reviewRepository.existsByUserUserIdAndProductProductId(userId, request.getProductId())) {
-            throw new ConflictException("You have already reviewed this product");
+        if (reviewRepository.existsByUserUserIdAndOrderItemOrderItemId(userId, request.getOrderItemId())) {
+            throw new ConflictException("You have already reviewed this purchased variant");
         }
 
         User user = userRepository.findById(userId)
@@ -52,6 +61,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = new Review();
         review.setUser(user);
         review.setProduct(product);
+        review.setOrderItem(orderItem);
         review.setRating(request.getRating());
         review.setReviewText(cleanReviewText(request.getReviewText()));
         review.setReviewStatus(ReviewStatus.APPROVED);
@@ -89,9 +99,18 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
-    public ReviewResponse getMyProductReview(Long userId, Long productId) {
-        return reviewRepository.findByUserUserIdAndProductProductId(userId, productId)
-                .map(ReviewResponse::fromEntity).orElse(null);
+    public List<ReviewResponse> getMyProductReviews(Long userId, Long productId) {
+        return reviewRepository.findByUserUserIdAndProductProductIdOrderByCreatedAtDesc(userId, productId)
+                .stream().map(ReviewResponse::fromEntity).toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReviewableVariantResponse> getReviewableVariants(Long userId, Long productId) {
+        return orderItemRepository.findDeliveredByUserAndProduct(userId, productId).stream()
+                .filter(this::isReviewable)
+                .filter(item -> !reviewRepository.existsByUserUserIdAndOrderItemOrderItemId(userId, item.getOrderItemId()))
+                .map(ReviewableVariantResponse::fromEntity).toList();
     }
 
     @Override
@@ -105,5 +124,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     private String cleanReviewText(String text) {
         return text == null || text.isBlank() ? null : text.trim();
+    }
+
+    private boolean isReviewable(OrderItem item) {
+        int returnedQuantity = returnItemRepository.sumReturnedQuantityByOrderItemId(item.getOrderItemId());
+        boolean fullyReturned = returnedQuantity >= item.getQuantity();
+        boolean orderRefunded = refundRepository.hasActiveStandaloneRefundForOrder(item.getOrder().getOrderId());
+        return !fullyReturned && !orderRefunded;
     }
 }

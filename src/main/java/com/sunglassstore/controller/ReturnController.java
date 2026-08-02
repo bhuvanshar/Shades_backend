@@ -2,7 +2,7 @@ package com.sunglassstore.controller;
 
 import com.sunglassstore.dto.request.CreateReturnRequest;
 import com.sunglassstore.dto.request.UpdateReturnStatusRequest;
-import com.sunglassstore.entity.ReturnRequest;
+import com.sunglassstore.dto.response.ReturnResponse;
 import com.sunglassstore.entity.enums.ReturnStatus;
 import com.sunglassstore.security.SecurityUser;
 import com.sunglassstore.service.ReturnService;
@@ -24,35 +24,47 @@ public class ReturnController {
     private final ReturnService returnService;
 
     @PostMapping
-    public ResponseEntity<ReturnRequest> createReturn(@AuthenticationPrincipal SecurityUser principal,
+    public ResponseEntity<ReturnResponse> createReturn(@AuthenticationPrincipal SecurityUser principal,
                                                        @Valid @RequestBody CreateReturnRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(returnService.createReturn(principal.getUserId(), request));
     }
 
     @GetMapping
-    public ResponseEntity<Page<ReturnRequest>> getMyReturns(@AuthenticationPrincipal SecurityUser principal,
+    public ResponseEntity<Page<ReturnResponse>> getMyReturns(@AuthenticationPrincipal SecurityUser principal,
                                                              Pageable pageable) {
         return ResponseEntity.ok(returnService.getUserReturns(principal.getUserId(), pageable));
     }
 
     @GetMapping("/{returnId}")
-    public ResponseEntity<ReturnRequest> getReturn(@AuthenticationPrincipal SecurityUser principal,
+    public ResponseEntity<ReturnResponse> getReturn(@AuthenticationPrincipal SecurityUser principal,
                                                     @PathVariable Long returnId) {
         return ResponseEntity.ok(returnService.getReturnById(principal.getUserId(), returnId));
     }
 
     @GetMapping("/admin/all")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPPORT')")
-    public ResponseEntity<Page<ReturnRequest>> getAllReturns(Pageable pageable) {
+    public ResponseEntity<Page<ReturnResponse>> getAllReturns(Pageable pageable) {
         return ResponseEntity.ok(returnService.getAllReturns(pageable));
     }
 
     @PatchMapping("/admin/{returnId}/status")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPPORT')")
-    public ResponseEntity<ReturnRequest> updateReturnStatus(@PathVariable Long returnId,
+    public ResponseEntity<ReturnResponse> updateReturnStatus(@PathVariable Long returnId,
                                                              @Valid @RequestBody UpdateReturnStatusRequest request) {
+        final ReturnStatus status;
+        try {
+            status = ReturnStatus.valueOf(request.getStatus().trim().toUpperCase());
+        } catch (IllegalArgumentException exception) {
+            throw new com.sunglassstore.exception.BadRequestException("Invalid return status: " + request.getStatus());
+        }
         return ResponseEntity.ok(returnService.updateReturnStatus(
-                returnId, ReturnStatus.valueOf(request.getStatus())));
+                returnId, status, request.getAdminComments(), request.getItemConditions()));
+    }
+
+    @PatchMapping("/{returnId}/cancel")
+    public ResponseEntity<ReturnResponse> cancelReturn(@AuthenticationPrincipal SecurityUser principal,
+                                                        @PathVariable Long returnId) {
+        return ResponseEntity.ok(returnService.cancelReturn(principal.getUserId(), returnId));
     }
 }

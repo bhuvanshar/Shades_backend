@@ -1,7 +1,7 @@
 package com.sunglassstore.controller;
 
 import com.sunglassstore.dto.request.CreateRefundRequest;
-import com.sunglassstore.entity.Refund;
+import com.sunglassstore.dto.response.RefundResponse;
 import com.sunglassstore.service.RefundService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class RefundController {
 
     @PostMapping("/payments/{paymentId}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPPORT')")
-    public ResponseEntity<Refund> processRefund(@PathVariable Long paymentId,
+    public ResponseEntity<RefundResponse> processRefund(@PathVariable Long paymentId,
                                                  @Valid @RequestBody CreateRefundRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(refundService.processRefund(paymentId, request));

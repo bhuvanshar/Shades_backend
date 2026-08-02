@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.sunglassstore.SunglassStoreApplicationTests" time="13.636" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.sunglassstore.SunglassStoreApplicationTests" time="10.497" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IN"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-21\bin"/>
-    <property name="sun.java.command" value="C:\Users\iambh\AppData\Local\Temp\surefire8943851051482244057\surefirebooter-20260802173348701_3.jar C:\Users\iambh\AppData\Local\Temp\surefire8943851051482244057 2026-08-02T17-33-48_546-jvmRun1 surefire-20260802173348701_1tmp surefire_0-20260802173348701_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\iambh\AppData\Local\Temp\surefire17496785696694968017\surefirebooter-20260803003024260_3.jar C:\Users\iambh\AppData\Local\Temp\surefire17496785696694968017 2026-08-03T00-30-24_137-jvmRun1 surefire-20260803003024260_1tmp surefire_0-20260803003024260_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\target\test-classes;C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\target\classes;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter-web\3.3.5\spring-boot-starter-web-3.3.5.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter\3.3.5\spring-boot-starter-3.3.5.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot\3.3.5\spring-boot-3.3.5.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.3.5\spring-boot-autoconfigure-3.3.5.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter-logging\3.3.5\spring-boot-starter-logging-3.3.5.jar;C:\Users\iambh\.m2\repository\ch\qos\logback\logback-classic\1.5.11\logback-classic-1.5.11.jar;C:\Users\iambh\.m2\repository\ch\qos\logback\logback-core\1.5.11\logback-core-1.5.11.jar;C:\Users\iambh\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.23.1\log4j-to-slf4j-2.23.1.jar;C:\Users\iambh\.m2\repository\org\apache\logging\log4j\log4j-api\2.23.1\log4j-api-2.23.1.jar;C:\Users\iambh\.m2\repository\org\slf4j\jul-to-slf4j\2.0.16\jul-to-slf4j-2.0.16.jar;C:\Users\iambh\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\iambh\.m2\repository\org\yaml\snakeyaml\2.2\snakeyaml-2.2.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter-json\3.3.5\spring-boot-starter-json-3.3.5.jar;C:\Users\iambh\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.17.2\jackson-datatype-jdk8-2.17.2.jar;C:\Users\iambh\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.17.2\jackson-datatype-jsr310-2.17.2.jar;C:\Users\iambh\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.17.2\jackson-module-parameter-names-2.17.2.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\3.3.5\spring-boot-starter-tomcat-3.3.5.jar;C:\Users\iambh\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.31\tomcat-embed-core-10.1.31.jar;C:\Users\iambh\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.31\tomcat-embed-websocket-10.1.31.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-web\6.1.14\spring-web-6.1.14.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-beans\6.1.14\spring-beans-6.1.14.jar;C:\Users\iambh\.m2\repository\io\micrometer\micrometer-observation\1.13.6\micrometer-observation-1.13.6.jar;C:\Users\iambh\.m2\repository\io\micrometer\micrometer-commons\1.13.6\micrometer-commons-1.13.6.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-webmvc\6.1.14\spring-webmvc-6.1.14.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-context\6.1.14\spring-context-6.1.14.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-expression\6.1.14\spring-expression-6.1.14.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter-data-jpa\3.3.5\spring-boot-starter-data-jpa-3.3.5.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter-aop\3.3.5\spring-boot-starter-aop-3.3.5.jar;C:\Users\iambh\.m2\repository\org\aspectj\aspectjweaver\1.9.22.1\aspectjweaver-1.9.22.1.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter-jdbc\3.3.5\spring-boot-starter-jdbc-3.3.5.jar;C:\Users\iambh\.m2\repository\com\zaxxer\HikariCP\5.1.0\HikariCP-5.1.0.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-jdbc\6.1.14\spring-jdbc-6.1.14.jar;C:\Users\iambh\.m2\repository\org\hibernate\orm\hibernate-core\6.5.3.Final\hibernate-core-6.5.3.Final.jar;C:\Users\iambh\.m2\repository\jakarta\persistence\jakarta.persistence-api\3.1.0\jakarta.persistence-api-3.1.0.jar;C:\Users\iambh\.m2\repository\jakarta\transaction\jakarta.transaction-api\2.0.1\jakarta.transaction-api-2.0.1.jar;C:\Users\iambh\.m2\repository\org\jboss\logging\jboss-logging\3.5.3.Final\jboss-logging-3.5.3.Final.jar;C:\Users\iambh\.m2\repository\org\hibernate\common\hibernate-commons-annotations\6.0.6.Final\hibernate-commons-annotations-6.0.6.Final.jar;C:\Users\iambh\.m2\repository\io\smallrye\jandex\3.1.2\jandex-3.1.2.jar;C:\Users\iambh\.m2\repository\com\fasterxml\classmate\1.7.0\classmate-1.7.0.jar;C:\Users\iambh\.m2\repository\net\bytebuddy\byte-buddy\1.14.19\byte-buddy-1.14.19.jar;C:\Users\iambh\.m2\repository\org\glassfish\jaxb\jaxb-runtime\4.0.5\jaxb-runtime-4.0.5.jar;C:\Users\iambh\.m2\repository\org\glassfish\jaxb\jaxb-core\4.0.5\jaxb-core-4.0.5.jar;C:\Users\iambh\.m2\repository\org\eclipse\angus\angus-activation\2.0.2\angus-activation-2.0.2.jar;C:\Users\iambh\.m2\repository\org\glassfish\jaxb\txw2\4.0.5\txw2-4.0.5.jar;C:\Users\iambh\.m2\repository\com\sun\istack\istack-commons-runtime\4.1.2\istack-commons-runtime-4.1.2.jar;C:\Users\iambh\.m2\repository\jakarta\inject\jakarta.inject-api\2.0.1\jakarta.inject-api-2.0.1.jar;C:\Users\iambh\.m2\repository\org\antlr\antlr4-runtime\4.13.0\antlr4-runtime-4.13.0.jar;C:\Users\iambh\.m2\repository\org\springframework\data\spring-data-jpa\3.3.5\spring-data-jpa-3.3.5.jar;C:\Users\iambh\.m2\repository\org\springframework\data\spring-data-commons\3.3.5\spring-data-commons-3.3.5.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-orm\6.1.14\spring-orm-6.1.14.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-tx\6.1.14\spring-tx-6.1.14.jar;C:\Users\iambh\.m2\repository\org\slf4j\slf4j-api\2.0.16\slf4j-api-2.0.16.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-aspects\6.1.14\spring-aspects-6.1.14.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter-security\3.3.5\spring-boot-starter-security-3.3.5.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-aop\6.1.14\spring-aop-6.1.14.jar;C:\Users\iambh\.m2\repository\org\springframework\security\spring-security-config\6.3.4\spring-security-config-6.3.4.jar;C:\Users\iambh\.m2\repository\org\springframework\security\spring-security-web\6.3.4\spring-security-web-6.3.4.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter-validation\3.3.5\spring-boot-starter-validation-3.3.5.jar;C:\Users\iambh\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.31\tomcat-embed-el-10.1.31.jar;C:\Users\iambh\.m2\repository\org\hibernate\validator\hibernate-validator\8.0.1.Final\hibernate-validator-8.0.1.Final.jar;C:\Users\iambh\.m2\repository\jakarta\validation\jakarta.validation-api\3.0.2\jakarta.validation-api-3.0.2.jar;C:\Users\iambh\.m2\repository\com\google\api-client\google-api-client\2.8.1\google-api-client-2.8.1.jar;C:\Users\iambh\.m2\repository\commons-codec\commons-codec\1.16.1\commons-codec-1.16.1.jar;C:\Users\iambh\.m2\repository\com\google\oauth-client\google-oauth-client\1.36.0\google-oauth-client-1.36.0.jar;C:\Users\iambh\.m2\repository\com\google\auth\google-auth-library-credentials\1.30.0\google-auth-library-credentials-1.30.0.jar;C:\Users\iambh\.m2\repository\com\google\auth\google-auth-library-oauth2-http\1.30.0\google-auth-library-oauth2-http-1.30.0.jar;C:\Users\iambh\.m2\repository\com\google\auto\value\auto-value-annotations\1.11.0\auto-value-annotations-1.11.0.jar;C:\Users\iambh\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\iambh\.m2\repository\com\google\errorprone\error_prone_annotations\2.35.1\error_prone_annotations-2.35.1.jar;C:\Users\iambh\.m2\repository\com\google\http-client\google-http-client-gson\2.0.0\google-http-client-gson-2.0.0.jar;C:\Users\iambh\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\iambh\.m2\repository\com\google\guava\guava\33.1.0-jre\guava-33.1.0-jre.jar;C:\Users\iambh\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\iambh\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\iambh\.m2\repository\org\checkerframework\checker-qual\3.42.0\checker-qual-3.42.0.jar;C:\Users\iambh\.m2\repository\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar;C:\Users\iambh\.m2\repository\com\google\http-client\google-http-client-apache-v2\2.0.0\google-http-client-apache-v2-2.0.0.jar;C:\Users\iambh\.m2\repository\org\apache\httpcomponents\httpcore\4.4.16\httpcore-4.4.16.jar;C:\Users\iambh\.m2\repository\org\apache\httpcomponents\httpclient\4.5.14\httpclient-4.5.14.jar;C:\Users\iambh\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar;C:\Users\iambh\.m2\repository\com\google\http-client\google-http-client\2.0.0\google-http-client-2.0.0.jar;C:\Users\iambh\.m2\repository\io\grpc\grpc-context\1.70.0\grpc-context-1.70.0.jar;C:\Users\iambh\.m2\repository\io\grpc\grpc-api\1.70.0\grpc-api-1.70.0.jar;C:\Users\iambh\.m2\repository\io\opencensus\opencensus-api\0.31.1\opencensus-api-0.31.1.jar;C:\Users\iambh\.m2\repository\io\opencensus\opencensus-contrib-http-util\0.31.1\opencensus-contrib-http-util-0.31.1.jar;C:\Users\iambh\.m2\repository\com\mysql\mysql-connector-j\8.3.0\mysql-connector-j-8.3.0.jar;C:\Users\iambh\.m2\repository\io\jsonwebtoken\jjwt-api\0.12.6\jjwt-api-0.12.6.jar;C:\Users\iambh\.m2\repository\io\jsonwebtoken\jjwt-impl\0.12.6\jjwt-impl-0.12.6.jar;C:\Users\iambh\.m2\repository\io\jsonwebtoken\jjwt-jackson\0.12.6\jjwt-jackson-0.12.6.jar;C:\Users\iambh\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.17.2\jackson-databind-2.17.2.jar;C:\Users\iambh\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.17.2\jackson-annotations-2.17.2.jar;C:\Users\iambh\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.17.2\jackson-core-2.17.2.jar;C:\Users\iambh\.m2\repository\org\projectlombok\lombok\1.18.34\lombok-1.18.34.jar;C:\Users\iambh\.m2\repository\org\springdoc\springdoc-openapi-starter-webmvc-ui\2.6.0\springdoc-openapi-starter-webmvc-ui-2.6.0.jar;C:\Users\iambh\.m2\repository\org\springdoc\springdoc-openapi-starter-webmvc-api\2.6.0\springdoc-openapi-starter-webmvc-api-2.6.0.jar;C:\Users\iambh\.m2\repository\org\springdoc\springdoc-openapi-starter-common\2.6.0\springdoc-openapi-starter-common-2.6.0.jar;C:\Users\iambh\.m2\repository\io\swagger\core\v3\swagger-core-jakarta\2.2.22\swagger-core-jakarta-2.2.22.jar;C:\Users\iambh\.m2\repository\org\apache\commons\commons-lang3\3.14.0\commons-lang3-3.14.0.jar;C:\Users\iambh\.m2\repository\io\swagger\core\v3\swagger-annotations-jakarta\2.2.22\swagger-annotations-jakarta-2.2.22.jar;C:\Users\iambh\.m2\repository\io\swagger\core\v3\swagger-models-jakarta\2.2.22\swagger-models-jakarta-2.2.22.jar;C:\Users\iambh\.m2\repository\com\fasterxml\jackson\dataformat\jackson-dataformat-yaml\2.17.2\jackson-dataformat-yaml-2.17.2.jar;C:\Users\iambh\.m2\repository\org\webjars\swagger-ui\5.17.14\swagger-ui-5.17.14.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-starter-test\3.3.5\spring-boot-starter-test-3.3.5.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-test\3.3.5\spring-boot-test-3.3.5.jar;C:\Users\iambh\.m2\repository\org\springframework\boot\spring-boot-test-autoconfigure\3.3.5\spring-boot-test-autoconfigure-3.3.5.jar;C:\Users\iambh\.m2\repository\com\jayway\jsonpath\json-path\2.9.0\json-path-2.9.0.jar;C:\Users\iambh\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.2\jakarta.xml.bind-api-4.0.2.jar;C:\Users\iambh\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.3\jakarta.activation-api-2.1.3.jar;C:\Users\iambh\.m2\repository\net\minidev\json-smart\2.5.1\json-smart-2.5.1.jar;C:\Users\iambh\.m2\repository\net\minidev\accessors-smart\2.5.1\accessors-smart-2.5.1.jar;C:\Users\iambh\.m2\repository\org\ow2\asm\asm\9.6\asm-9.6.jar;C:\Users\iambh\.m2\repository\org\assertj\assertj-core\3.25.3\assertj-core-3.25.3.jar;C:\Users\iambh\.m2\repository\org\awaitility\awaitility\4.2.2\awaitility-4.2.2.jar;C:\Users\iambh\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\iambh\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.5\junit-jupiter-5.10.5.jar;C:\Users\iambh\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.5\junit-jupiter-api-5.10.5.jar;C:\Users\iambh\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\iambh\.m2\repository\org\junit\platform\junit-platform-commons\1.10.5\junit-platform-commons-1.10.5.jar;C:\Users\iambh\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\iambh\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.5\junit-jupiter-params-5.10.5.jar;C:\Users\iambh\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.5\junit-jupiter-engine-5.10.5.jar;C:\Users\iambh\.m2\repository\org\junit\platform\junit-platform-engine\1.10.5\junit-platform-engine-1.10.5.jar;C:\Users\iambh\.m2\repository\org\mockito\mockito-core\5.11.0\mockito-core-5.11.0.jar;C:\Users\iambh\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.19\byte-buddy-agent-1.14.19.jar;C:\Users\iambh\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\iambh\.m2\repository\org\mockito\mockito-junit-jupiter\5.11.0\mockito-junit-jupiter-5.11.0.jar;C:\Users\iambh\.m2\repository\org\skyscreamer\jsonassert\1.5.3\jsonassert-1.5.3.jar;C:\Users\iambh\.m2\repository\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-core\6.1.14\spring-core-6.1.14.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-jcl\6.1.14\spring-jcl-6.1.14.jar;C:\Users\iambh\.m2\repository\org\springframework\spring-test\6.1.14\spring-test-6.1.14.jar;C:\Users\iambh\.m2\repository\org\xmlunit\xmlunit-core\2.9.1\xmlunit-core-2.9.1.jar;C:\Users\iambh\.m2\repository\org\springframework\security\spring-security-test\6.3.4\spring-security-test-6.3.4.jar;C:\Users\iambh\.m2\repository\org\springframework\security\spring-security-core\6.3.4\spring-security-core-6.3.4.jar;C:\Users\iambh\.m2\repository\org\springframework\security\spring-security-crypto\6.3.4\spring-security-crypto-6.3.4.jar;C:\Users\iambh\.m2\repository\com\h2database\h2\2.2.224\h2-2.2.224.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -33,7 +33,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="FILE_LOG_CHARSET" value="UTF-8"/>
     <property name="java.awt.headless" value="true"/>
-    <property name="surefire.real.class.path" value="C:\Users\iambh\AppData\Local\Temp\surefire8943851051482244057\surefirebooter-20260802173348701_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\iambh\AppData\Local\Temp\surefire17496785696694968017\surefirebooter-20260803003024260_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.1+12-LTS-29"/>
@@ -52,7 +52,7 @@
     <property name="user.dir" value="C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="PID" value="33948"/>
+    <property name="PID" value="13480"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
     <property name="native.encoding" value="Cp1252"/>
@@ -64,10 +64,10 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="contextLoads" classname="com.sunglassstore.SunglassStoreApplicationTests" time="0.503">
+  <testcase name="contextLoads" classname="com.sunglassstore.SunglassStoreApplicationTests" time="0.02">
     <system-out><![CDATA[Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
-17:33:50.006 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.sunglassstore.SunglassStoreApplicationTests]: SunglassStoreApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-17:33:50.152 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.sunglassstore.SunglassStoreApplication for test class com.sunglassstore.SunglassStoreApplicationTests
+00:30:28.031 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.sunglassstore.SunglassStoreApplicationTests]: SunglassStoreApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+00:30:28.213 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.sunglassstore.SunglassStoreApplication for test class com.sunglassstore.SunglassStoreApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -78,21 +78,21 @@
 
  :: Spring Boot ::                (v3.3.5)
 
-2026-08-02T17:33:50.620+05:30  INFO 33948 --- [           main] c.s.SunglassStoreApplicationTests        : Starting SunglassStoreApplicationTests using Java 21.0.1 with PID 33948 (started by iambh in C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend)
-2026-08-02T17:33:50.621+05:30  INFO 33948 --- [           main] c.s.SunglassStoreApplicationTests        : The following 1 profile is active: "test"
-2026-08-02T17:33:51.899+05:30  INFO 33948 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-08-02T17:33:52.208+05:30  INFO 33948 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 299 ms. Found 32 JPA repository interfaces.
-2026-08-02T17:33:53.518+05:30  INFO 33948 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-08-02T17:33:53.795+05:30  INFO 33948 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
-2026-08-02T17:33:53.882+05:30  INFO 33948 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-08-02T17:33:54.455+05:30  INFO 33948 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-08-02T17:33:54.495+05:30  INFO 33948 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-08-02T17:33:54.719+05:30  INFO 33948 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
-2026-08-02T17:33:54.721+05:30  INFO 33948 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-08-02T17:33:54.755+05:30  WARN 33948 --- [           main] org.hibernate.dialect.Dialect            : HHH000511: The 2.2.224 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
-2026-08-02T17:33:54.760+05:30  WARN 33948 --- [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-08-02T17:33:56.256+05:30  INFO 33948 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-08-02T17:33:56.283+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:28.749+05:30  INFO 13480 --- [           main] c.s.SunglassStoreApplicationTests        : Starting SunglassStoreApplicationTests using Java 21.0.1 with PID 13480 (started by iambh in C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend)
+2026-08-03T00:30:28.751+05:30  INFO 13480 --- [           main] c.s.SunglassStoreApplicationTests        : The following 1 profile is active: "test"
+2026-08-03T00:30:30.189+05:30  INFO 13480 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-03T00:30:30.391+05:30  INFO 13480 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 186 ms. Found 32 JPA repository interfaces.
+2026-08-03T00:30:31.498+05:30  INFO 13480 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-03T00:30:31.696+05:30  INFO 13480 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-08-03T00:30:31.730+05:30  INFO 13480 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-03T00:30:31.879+05:30  INFO 13480 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-03T00:30:31.911+05:30  INFO 13480 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-03T00:30:32.093+05:30  INFO 13480 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-08-03T00:30:32.095+05:30  INFO 13480 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-03T00:30:32.133+05:30  WARN 13480 --- [           main] org.hibernate.dialect.Dialect            : HHH000511: The 2.2.224 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-08-03T00:30:32.138+05:30  WARN 13480 --- [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-03T00:30:33.502+05:30  INFO 13480 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-03T00:30:33.517+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table addresses 
        drop 
        foreign key FK1fa36y2oqhao3wgg2rw1pi459" via JDBC [Table "ADDRESSES" not found (this database is empty);]
@@ -248,7 +248,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ADDRESSES" not found 
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.293+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.524+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table audit_logs 
        drop 
        foreign key FKjs4iimve3y0xssbtve5ysyef0" via JDBC [Table "AUDIT_LOGS" not found (this database is empty);]
@@ -404,7 +404,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "AUDIT_LOGS" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.297+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.526+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table cart_items 
        drop 
        foreign key FKpcttvuq4mxppo8sxggjtn5i2c" via JDBC [Table "CART_ITEMS" not found (this database is empty);]
@@ -560,7 +560,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CART_ITEMS" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.300+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.528+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table cart_items 
        drop 
        foreign key FK5yyw1o0dor9gmxfra1dqvn4qa" via JDBC [Table "CART_ITEMS" not found (this database is empty);]
@@ -716,7 +716,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CART_ITEMS" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.303+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.531+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table carts 
        drop 
        foreign key FKb5o626f86h46m4s7ms6ginnop" via JDBC [Table "CARTS" not found (this database is empty);]
@@ -872,7 +872,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CARTS" not found (thi
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.307+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.532+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table categories 
        drop 
        foreign key FK9il7y6fehxwunjeepq0n7g5rd" via JDBC [Table "CATEGORIES" not found (this database is empty);]
@@ -1028,7 +1028,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CATEGORIES" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.309+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.534+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table coupon_usage 
        drop 
        foreign key FKof9h3rw1vu403j5dbehr45ts2" via JDBC [Table "COUPON_USAGE" not found (this database is empty);]
@@ -1184,7 +1184,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COUPON_USAGE" not fou
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.311+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.535+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table coupon_usage 
        drop 
        foreign key FKejqwoh58dj8l7apjqo75crp88" via JDBC [Table "COUPON_USAGE" not found (this database is empty);]
@@ -1340,7 +1340,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COUPON_USAGE" not fou
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.314+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.537+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table coupon_usage 
        drop 
        foreign key FKcsx5pbxjnp6jvuveb3lxyklhe" via JDBC [Table "COUPON_USAGE" not found (this database is empty);]
@@ -1496,7 +1496,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COUPON_USAGE" not fou
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.315+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.538+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table email_verification_tokens 
        drop 
        foreign key FKi1c4mmamlb8keqt74k4lrtwhc" via JDBC [Table "EMAIL_VERIFICATION_TOKENS" not found (this database is empty);]
@@ -1652,7 +1652,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "EMAIL_VERIFICATION_TO
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.316+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.539+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table inventory_movements 
        drop 
        foreign key FK52v4o49rlyvhrcxntwrf7k79t" via JDBC [Table "INVENTORY_MOVEMENTS" not found (this database is empty);]
@@ -1808,7 +1808,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "INVENTORY_MOVEMENTS" 
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.319+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.543+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table notifications 
        drop 
        foreign key FK9y21adhxn0ayjhfocscqox7bh" via JDBC [Table "NOTIFICATIONS" not found (this database is empty);]
@@ -1964,7 +1964,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "NOTIFICATIONS" not fo
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.321+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.545+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table order_items 
        drop 
        foreign key FKbioxgbv59vetrxe0ejfubep1w" via JDBC [Table "ORDER_ITEMS" not found (this database is empty);]
@@ -2120,7 +2120,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDER_ITEMS" not foun
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.323+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.547+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table order_items 
        drop 
        foreign key FKemq71edpbn9wsxnxncfn1algp" via JDBC [Table "ORDER_ITEMS" not found (this database is empty);]
@@ -2276,7 +2276,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDER_ITEMS" not foun
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.325+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.549+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table order_status_history 
        drop 
        foreign key FKj7bba43h8j0n4evd2wvudvpjc" via JDBC [Table "ORDER_STATUS_HISTORY" not found (this database is empty);]
@@ -2432,7 +2432,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDER_STATUS_HISTORY"
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.327+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.551+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table order_status_history 
        drop 
        foreign key FKnmcbg3mmbt8wfva97ra40nmp3" via JDBC [Table "ORDER_STATUS_HISTORY" not found (this database is empty);]
@@ -2588,7 +2588,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDER_STATUS_HISTORY"
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.330+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.552+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table orders 
        drop 
        foreign key FK66jolu65brloux12yi37qy3ky" via JDBC [Table "ORDERS" not found (this database is empty);]
@@ -2744,7 +2744,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDERS" not found (th
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.331+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.556+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table orders 
        drop 
        foreign key FKn1d1gkxckw648m2n2d5gx0yx5" via JDBC [Table "ORDERS" not found (this database is empty);]
@@ -2900,7 +2900,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDERS" not found (th
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.346+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.557+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table orders 
        drop 
        foreign key FKmk6q95x8ffidq82wlqjaq7sqc" via JDBC [Table "ORDERS" not found (this database is empty);]
@@ -3056,7 +3056,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDERS" not found (th
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.348+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.559+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table orders 
        drop 
        foreign key FK32ql8ubntj5uh44ph9659tiih" via JDBC [Table "ORDERS" not found (this database is empty);]
@@ -3212,7 +3212,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDERS" not found (th
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.350+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.560+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table password_reset_tokens 
        drop 
        foreign key FKk3ndxg5xp6v7wd4gjyusp15gq" via JDBC [Table "PASSWORD_RESET_TOKENS" not found (this database is empty);]
@@ -3368,7 +3368,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PASSWORD_RESET_TOKENS
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.351+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.562+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table payments 
        drop 
        foreign key FK81gagumt0r8y3rmudcgpbk42l" via JDBC [Table "PAYMENTS" not found (this database is empty);]
@@ -3524,7 +3524,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAYMENTS" not found (
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.352+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.563+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_attributes 
        drop 
        foreign key FKcex46yvx4g18b2pn09p79h1mc" via JDBC [Table "PRODUCT_ATTRIBUTES" not found (this database is empty);]
@@ -3680,7 +3680,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_ATTRIBUTES" n
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.354+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.565+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_attributes 
        drop 
        foreign key FKp974gfv4nn66wqy1u6u807tv1" via JDBC [Table "PRODUCT_ATTRIBUTES" not found (this database is empty);]
@@ -3836,7 +3836,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_ATTRIBUTES" n
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.356+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.566+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_categories 
        drop 
        foreign key FKd112rx0alycddsms029iifrih" via JDBC [Table "PRODUCT_CATEGORIES" not found (this database is empty);]
@@ -3992,7 +3992,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_CATEGORIES" n
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.359+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.566+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_categories 
        drop 
        foreign key FKlda9rad6s180ha3dl1ncsp8n7" via JDBC [Table "PRODUCT_CATEGORIES" not found (this database is empty);]
@@ -4148,7 +4148,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_CATEGORIES" n
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.362+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.577+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_images 
        drop 
        foreign key FKqnq71xsohugpqwf3c9gxmsuy" via JDBC [Table "PRODUCT_IMAGES" not found (this database is empty);]
@@ -4304,7 +4304,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_IMAGES" not f
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.363+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.580+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_variants 
        drop 
        foreign key FKosqitn4s405cynmhb87lkvuau" via JDBC [Table "PRODUCT_VARIANTS" not found (this database is empty);]
@@ -4460,7 +4460,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_VARIANTS" not
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.366+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.582+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table products 
        drop 
        foreign key FK4b4af0ov0jw6r9xtq3tabt5a" via JDBC [Table "PRODUCTS" not found (this database is empty);]
@@ -4616,7 +4616,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCTS" not found (
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.367+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.584+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table refresh_tokens 
        drop 
        foreign key FK1lih5y2npsf8u5o3vhdb9y0os" via JDBC [Table "REFRESH_TOKENS" not found (this database is empty);]
@@ -4772,7 +4772,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REFRESH_TOKENS" not f
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.369+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.585+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table refunds 
        drop 
        foreign key FKpt9ic0j1y6xwlej99wnynvnpy" via JDBC [Table "REFUNDS" not found (this database is empty);]
@@ -4928,7 +4928,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REFUNDS" not found (t
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.370+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.586+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table refunds 
        drop 
        foreign key FKf12n4r91nubimwy79bv45q063" via JDBC [Table "REFUNDS" not found (this database is empty);]
@@ -5084,7 +5084,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REFUNDS" not found (t
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.372+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.587+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table return_items 
        drop 
        foreign key FK2nfjf1atvp0qkpjvd517m6cq7" via JDBC [Table "RETURN_ITEMS" not found (this database is empty);]
@@ -5240,7 +5240,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RETURN_ITEMS" not fou
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.375+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.589+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table return_items 
        drop 
        foreign key FK5a4moov85fw9ixxf9l0mki44o" via JDBC [Table "RETURN_ITEMS" not found (this database is empty);]
@@ -5396,7 +5396,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RETURN_ITEMS" not fou
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.379+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.590+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table returns 
        drop 
        foreign key FKtge2tys80xohjn8v3wtiy21yi" via JDBC [Table "RETURNS" not found (this database is empty);]
@@ -5552,7 +5552,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RETURNS" not found (t
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.381+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.591+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table returns 
        drop 
        foreign key FKof2cd2g96d3xgt0lnqbrydgvx" via JDBC [Table "RETURNS" not found (this database is empty);]
@@ -5708,7 +5708,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RETURNS" not found (t
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.384+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.592+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table reviews 
        drop 
        foreign key FK2x2x74lnliqmt91bc1w95ll8n" via JDBC [Table "REVIEWS" not found (this database is empty);]
@@ -5864,7 +5864,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REVIEWS" not found (t
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.387+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.594+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table reviews 
        drop 
        foreign key FKpl51cejpw4gy5swfar8br9ngi" via JDBC [Table "REVIEWS" not found (this database is empty);]
@@ -6020,7 +6020,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REVIEWS" not found (t
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.389+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.595+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table reviews 
        drop 
        foreign key FKcgy7qjc1r99dp117y9en6lxye" via JDBC [Table "REVIEWS" not found (this database is empty);]
@@ -6176,7 +6176,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REVIEWS" not found (t
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.391+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.597+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table role_permissions 
        drop 
        foreign key FKegdk29eiy7mdtefy5c7eirr6e" via JDBC [Table "ROLE_PERMISSIONS" not found (this database is empty);]
@@ -6332,7 +6332,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROLE_PERMISSIONS" not
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.394+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.599+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table role_permissions 
        drop 
        foreign key FKn5fotdgk8d1xvo8nav9uv3muc" via JDBC [Table "ROLE_PERMISSIONS" not found (this database is empty);]
@@ -6488,7 +6488,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROLE_PERMISSIONS" not
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.397+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.601+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table shipments 
        drop 
        foreign key FKrnt4wht95lxxplspltrg9681s" via JDBC [Table "SHIPMENTS" not found (this database is empty);]
@@ -6644,7 +6644,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "SHIPMENTS" not found 
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.398+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.604+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table user_roles 
        drop 
        foreign key FKh8ciramu9cc9q3qcqiv4ue8a6" via JDBC [Table "USER_ROLES" not found (this database is empty);]
@@ -6800,7 +6800,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER_ROLES" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.399+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.605+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table user_roles 
        drop 
        foreign key FKhfh9dx7w3ubf1co1vdev94g3f" via JDBC [Table "USER_ROLES" not found (this database is empty);]
@@ -6956,7 +6956,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER_ROLES" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.401+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.607+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table wishlist_items 
        drop 
        foreign key FKqxj7lncd242b59fb78rqegyxj" via JDBC [Table "WISHLIST_ITEMS" not found (this database is empty);]
@@ -7112,7 +7112,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WISHLIST_ITEMS" not f
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.402+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.607+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table wishlist_items 
        drop 
        foreign key FKkem9l8vd14pk3cc4elnpl0n00" via JDBC [Table "WISHLIST_ITEMS" not found (this database is empty);]
@@ -7268,7 +7268,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WISHLIST_ITEMS" not f
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.405+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.607+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table wishlists 
        drop 
        foreign key FK330pyw2el06fn5g28ypyljt16" via JDBC [Table "WISHLISTS" not found (this database is empty);]
@@ -7424,7 +7424,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WISHLISTS" not found 
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.445+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.629+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table addresses (
         is_default bit not null,
         address_id bigint not null auto_increment,
@@ -7618,7 +7618,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.448+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.631+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table audit_logs (
         audit_log_id bigint not null auto_increment,
         created_at datetime(6) not null,
@@ -7797,7 +7797,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.451+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.633+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table cart_items (
         quantity integer not null,
         added_at datetime(6) not null,
@@ -7964,7 +7964,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.454+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.636+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table carts (
         cart_id bigint not null auto_increment,
         created_at datetime(6) not null,
@@ -8131,7 +8131,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.457+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.640+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table categories (
         is_active bit not null,
         category_id bigint not null auto_increment,
@@ -8301,7 +8301,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.459+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.642+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table config (
         config_id bigint not null auto_increment,
         updated_at datetime(6) not null,
@@ -8468,7 +8468,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.461+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.646+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table coupon_usage (
         discount_amount decimal(12,2) not null,
         coupon_id bigint not null,
@@ -8638,7 +8638,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.464+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.649+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table coupons (
         discount_value decimal(12,2) not null,
         is_active bit not null,
@@ -8651,9 +8651,9 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
         valid_to datetime(6) not null,
         coupon_code varchar(50) not null,
         description varchar(255),
-        discount_type enum ('FIXED','PERCENTAGE') not null,
+        discount_type enum ('FIXED','PAIR_FIXED','PERCENTAGE') not null,
         primary key (coupon_id)
-    ) engine=InnoDB" via JDBC [Syntax error in SQL statement "\000d\000a    create table coupons (\000d\000a        discount_value decimal(12,2) not null,\000d\000a        is_active bit not null,\000d\000a        maximum_discount_amount decimal(12,2),\000d\000a        minimum_order_amount decimal(12,2) not null,\000d\000a        usage_limit integer,\000d\000a        usage_limit_per_user integer,\000d\000a        coupon_id bigint not null auto_increment,\000d\000a        valid_from datetime(6) not null,\000d\000a        valid_to datetime(6) not null,\000d\000a        coupon_code varchar(50) not null,\000d\000a        description varchar(255),\000d\000a        discount_type enum ('FIXED','PERCENTAGE') not null,\000d\000a        primary key (coupon_id)\000d\000a    ) engine[*]=InnoDB"; expected "identifier";]
+    ) engine=InnoDB" via JDBC [Syntax error in SQL statement "\000d\000a    create table coupons (\000d\000a        discount_value decimal(12,2) not null,\000d\000a        is_active bit not null,\000d\000a        maximum_discount_amount decimal(12,2),\000d\000a        minimum_order_amount decimal(12,2) not null,\000d\000a        usage_limit integer,\000d\000a        usage_limit_per_user integer,\000d\000a        coupon_id bigint not null auto_increment,\000d\000a        valid_from datetime(6) not null,\000d\000a        valid_to datetime(6) not null,\000d\000a        coupon_code varchar(50) not null,\000d\000a        description varchar(255),\000d\000a        discount_type enum ('FIXED','PAIR_FIXED','PERCENTAGE') not null,\000d\000a        primary key (coupon_id)\000d\000a    ) engine[*]=InnoDB"; expected "identifier";]
 
 org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
     create table coupons (
@@ -8668,9 +8668,9 @@ org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
         valid_to datetime(6) not null,
         coupon_code varchar(50) not null,
         description varchar(255),
-        discount_type enum ('FIXED','PERCENTAGE') not null,
+        discount_type enum ('FIXED','PAIR_FIXED','PERCENTAGE') not null,
         primary key (coupon_id)
-    ) engine=InnoDB" via JDBC [Syntax error in SQL statement "\000d\000a    create table coupons (\000d\000a        discount_value decimal(12,2) not null,\000d\000a        is_active bit not null,\000d\000a        maximum_discount_amount decimal(12,2),\000d\000a        minimum_order_amount decimal(12,2) not null,\000d\000a        usage_limit integer,\000d\000a        usage_limit_per_user integer,\000d\000a        coupon_id bigint not null auto_increment,\000d\000a        valid_from datetime(6) not null,\000d\000a        valid_to datetime(6) not null,\000d\000a        coupon_code varchar(50) not null,\000d\000a        description varchar(255),\000d\000a        discount_type enum ('FIXED','PERCENTAGE') not null,\000d\000a        primary key (coupon_id)\000d\000a    ) engine[*]=InnoDB"; expected "identifier";]
+    ) engine=InnoDB" via JDBC [Syntax error in SQL statement "\000d\000a    create table coupons (\000d\000a        discount_value decimal(12,2) not null,\000d\000a        is_active bit not null,\000d\000a        maximum_discount_amount decimal(12,2),\000d\000a        minimum_order_amount decimal(12,2) not null,\000d\000a        usage_limit integer,\000d\000a        usage_limit_per_user integer,\000d\000a        coupon_id bigint not null auto_increment,\000d\000a        valid_from datetime(6) not null,\000d\000a        valid_to datetime(6) not null,\000d\000a        coupon_code varchar(50) not null,\000d\000a        description varchar(255),\000d\000a        discount_type enum ('FIXED','PAIR_FIXED','PERCENTAGE') not null,\000d\000a        primary key (coupon_id)\000d\000a    ) engine[*]=InnoDB"; expected "identifier";]
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	at org.hibernate.tool.schema.internal.Helper.applySqlStrings(Helper.java:217) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
@@ -8789,7 +8789,7 @@ org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
 	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162) ~[surefire-booter-3.2.5.jar:3.2.5]
 	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507) ~[surefire-booter-3.2.5.jar:3.2.5]
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495) ~[surefire-booter-3.2.5.jar:3.2.5]
-Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000d\000a    create table coupons (\000d\000a        discount_value decimal(12,2) not null,\000d\000a        is_active bit not null,\000d\000a        maximum_discount_amount decimal(12,2),\000d\000a        minimum_order_amount decimal(12,2) not null,\000d\000a        usage_limit integer,\000d\000a        usage_limit_per_user integer,\000d\000a        coupon_id bigint not null auto_increment,\000d\000a        valid_from datetime(6) not null,\000d\000a        valid_to datetime(6) not null,\000d\000a        coupon_code varchar(50) not null,\000d\000a        description varchar(255),\000d\000a        discount_type enum ('FIXED','PERCENTAGE') not null,\000d\000a        primary key (coupon_id)\000d\000a    ) engine[*]=InnoDB"; expected "identifier"; SQL statement:
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000d\000a    create table coupons (\000d\000a        discount_value decimal(12,2) not null,\000d\000a        is_active bit not null,\000d\000a        maximum_discount_amount decimal(12,2),\000d\000a        minimum_order_amount decimal(12,2) not null,\000d\000a        usage_limit integer,\000d\000a        usage_limit_per_user integer,\000d\000a        coupon_id bigint not null auto_increment,\000d\000a        valid_from datetime(6) not null,\000d\000a        valid_to datetime(6) not null,\000d\000a        coupon_code varchar(50) not null,\000d\000a        description varchar(255),\000d\000a        discount_type enum ('FIXED','PAIR_FIXED','PERCENTAGE') not null,\000d\000a        primary key (coupon_id)\000d\000a    ) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 
     create table coupons (
         discount_value decimal(12,2) not null,
@@ -8803,7 +8803,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
         valid_to datetime(6) not null,
         coupon_code varchar(50) not null,
         description varchar(255),
-        discount_type enum ('FIXED','PERCENTAGE') not null,
+        discount_type enum ('FIXED','PAIR_FIXED','PERCENTAGE') not null,
         primary key (coupon_id)
     ) engine=InnoDB [42001-224]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514) ~[h2-2.2.224.jar:2.2.224]
@@ -8826,7 +8826,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.464+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.650+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table email_verification_tokens (
         created_at datetime(6) not null,
         email_verification_token_id bigint not null auto_increment,
@@ -8996,7 +8996,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.464+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.652+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table inventory_movements (
         quantity_change integer not null,
         created_at datetime(6) not null,
@@ -9172,7 +9172,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.468+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.655+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table login_attempts (
         is_successful bit not null,
         attempted_at datetime(6) not null,
@@ -9342,7 +9342,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.471+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.657+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table notifications (
         created_at datetime(6) not null,
         notification_id bigint not null auto_increment,
@@ -9521,7 +9521,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.473+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.659+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table order_items (
         discount_amount decimal(12,2) not null,
         line_total decimal(12,2) not null,
@@ -9703,7 +9703,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.477+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.663+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table order_status_history (
         changed_at datetime(6) not null,
         changed_by bigint,
@@ -9876,7 +9876,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.480+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.666+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table orders (
         discount_amount decimal(12,2) not null,
         shipping_amount decimal(12,2) not null,
@@ -10094,7 +10094,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.483+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.669+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table password_reset_tokens (
         created_at datetime(6) not null,
         expires_at datetime(6) not null,
@@ -10264,7 +10264,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.487+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.672+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table payments (
         amount decimal(12,2) not null,
         created_at datetime(6) not null,
@@ -10443,7 +10443,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.489+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.674+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table permissions (
         permission_id bigint not null auto_increment,
         permission_name varchar(100) not null,
@@ -10604,7 +10604,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.491+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.675+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table product_attributes (
         attribute_id bigint not null auto_increment,
         product_id bigint not null,
@@ -10771,7 +10771,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.492+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.676+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table product_categories (
         category_id bigint not null,
         product_id bigint not null,
@@ -10929,7 +10929,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.493+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.679+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table product_images (
         display_order integer not null,
         is_primary bit not null,
@@ -11099,7 +11099,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.494+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.680+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table product_variants (
         is_active bit not null,
         low_stock_threshold integer not null,
@@ -11281,7 +11281,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.496+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.683+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table products (
         base_price decimal(12,2) not null,
         is_active bit not null,
@@ -11460,7 +11460,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.499+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.685+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table refresh_tokens (
         created_at datetime(6) not null,
         expires_at datetime(6) not null,
@@ -11636,7 +11636,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.501+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.686+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table refunds (
         refund_amount decimal(12,2) not null,
         created_at datetime(6) not null,
@@ -11815,7 +11815,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.502+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.688+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table return_items (
         quantity integer not null,
         order_item_id bigint not null,
@@ -11985,7 +11985,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.504+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.691+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table returns (
         approved_at datetime(6),
         completed_at datetime(6),
@@ -12170,7 +12170,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.506+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.694+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table reviews (
         rating integer not null,
         created_at datetime(6) not null,
@@ -12349,7 +12349,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.506+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.696+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table role_permissions (
         permission_id bigint not null,
         role_id bigint not null,
@@ -12507,7 +12507,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.509+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.699+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table roles (
         role_id bigint not null auto_increment,
         role_name varchar(50) not null,
@@ -12668,7 +12668,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.511+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.702+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table shipments (
         created_at datetime(6) not null,
         delivered_at datetime(6),
@@ -12847,7 +12847,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.513+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.704+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table tax_rates (
         is_active bit not null,
         rate_percent decimal(7,4) not null,
@@ -13023,7 +13023,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.515+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.705+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table user_roles (
         role_id bigint not null,
         user_id bigint not null,
@@ -13181,7 +13181,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.517+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.708+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table users (
         account_locked bit not null,
         email_verified bit not null,
@@ -13375,7 +13375,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.519+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.710+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table wishlist_items (
         added_at datetime(6) not null,
         product_id bigint not null,
@@ -13539,7 +13539,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.521+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.712+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     create table wishlists (
         created_at datetime(6) not null,
         user_id bigint not null,
@@ -13703,7 +13703,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statemen
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.522+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.714+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table categories 
        add constraint UK41g4n0emuvcm3qyf1f6cn43c0 unique (category_name)" via JDBC [Table "CATEGORIES" not found;]
 
@@ -13846,7 +13846,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CATEGORIES" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.524+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.717+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table config 
        add constraint UK4sjjb19w4dkdektw7eap5o7tb unique (config_short_code)" via JDBC [Table "CONFIG" not found;]
 
@@ -13989,7 +13989,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CONFIG" not found; SQ
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.525+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.719+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table coupons 
        add constraint UKf1u99ssbdsqass9ntq968codg unique (coupon_code)" via JDBC [Table "COUPONS" not found;]
 
@@ -14132,7 +14132,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COUPONS" not found; S
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.526+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.721+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table email_verification_tokens 
        add constraint UKah12jdrm74nfnmu11x9xxlbex unique (token_hash)" via JDBC [Table "EMAIL_VERIFICATION_TOKENS" not found;]
 
@@ -14275,7 +14275,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "EMAIL_VERIFICATION_TO
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.528+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.722+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table password_reset_tokens 
        add constraint UKajre85ybxavf1tt4omkrs5p6g unique (token_hash)" via JDBC [Table "PASSWORD_RESET_TOKENS" not found;]
 
@@ -14418,7 +14418,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PASSWORD_RESET_TOKENS
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.530+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.723+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table permissions 
        add constraint UKnry1f3jmc4abb5yvkftlvn6vg unique (permission_name)" via JDBC [Table "PERMISSIONS" not found;]
 
@@ -14561,7 +14561,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERMISSIONS" not foun
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.533+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.724+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_variants 
        add constraint UKq935p2d1pbjm39n0063ghnfgn unique (sku)" via JDBC [Table "PRODUCT_VARIANTS" not found;]
 
@@ -14704,7 +14704,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_VARIANTS" not
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.535+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.725+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table refresh_tokens 
        add constraint UKo2mlirhldriil2y7krapq4frt unique (token_hash)" via JDBC [Table "REFRESH_TOKENS" not found;]
 
@@ -14847,7 +14847,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REFRESH_TOKENS" not f
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.536+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.726+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table roles 
        add constraint UK716hgxp60ym1lifrdgp67xt5k unique (role_name)" via JDBC [Table "ROLES" not found;]
 
@@ -14990,7 +14990,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROLES" not found; SQL
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.537+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.727+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table users 
        add constraint UK6dotkott2kjsp8vw4d0m25fb7 unique (email)" via JDBC [Table "USERS" not found;]
 
@@ -15133,7 +15133,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" not found; SQL
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 117 common frames omitted
 
-2026-08-02T17:33:56.540+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.729+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table addresses 
        add constraint FK1fa36y2oqhao3wgg2rw1pi459 
        foreign key (user_id) 
@@ -15281,7 +15281,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ADDRESSES" not found;
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.542+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.731+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table audit_logs 
        add constraint FKjs4iimve3y0xssbtve5ysyef0 
        foreign key (user_id) 
@@ -15429,7 +15429,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "AUDIT_LOGS" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.544+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.732+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table cart_items 
        add constraint FKpcttvuq4mxppo8sxggjtn5i2c 
        foreign key (cart_id) 
@@ -15577,7 +15577,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CART_ITEMS" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.546+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.732+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table cart_items 
        add constraint FK5yyw1o0dor9gmxfra1dqvn4qa 
        foreign key (variant_id) 
@@ -15725,7 +15725,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CART_ITEMS" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.547+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.732+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table carts 
        add constraint FKb5o626f86h46m4s7ms6ginnop 
        foreign key (user_id) 
@@ -15873,7 +15873,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CARTS" not found; SQL
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.549+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.732+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table categories 
        add constraint FK9il7y6fehxwunjeepq0n7g5rd 
        foreign key (parent_category_id) 
@@ -16021,7 +16021,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CATEGORIES" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.551+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.732+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table coupon_usage 
        add constraint FKof9h3rw1vu403j5dbehr45ts2 
        foreign key (coupon_id) 
@@ -16169,7 +16169,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COUPON_USAGE" not fou
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.553+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.736+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table coupon_usage 
        add constraint FKejqwoh58dj8l7apjqo75crp88 
        foreign key (order_id) 
@@ -16317,7 +16317,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COUPON_USAGE" not fou
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.555+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.737+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table coupon_usage 
        add constraint FKcsx5pbxjnp6jvuveb3lxyklhe 
        foreign key (user_id) 
@@ -16465,7 +16465,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COUPON_USAGE" not fou
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.556+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.737+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table email_verification_tokens 
        add constraint FKi1c4mmamlb8keqt74k4lrtwhc 
        foreign key (user_id) 
@@ -16613,7 +16613,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "EMAIL_VERIFICATION_TO
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.557+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.738+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table inventory_movements 
        add constraint FK52v4o49rlyvhrcxntwrf7k79t 
        foreign key (variant_id) 
@@ -16761,7 +16761,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "INVENTORY_MOVEMENTS" 
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.558+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.739+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table notifications 
        add constraint FK9y21adhxn0ayjhfocscqox7bh 
        foreign key (user_id) 
@@ -16909,7 +16909,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "NOTIFICATIONS" not fo
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.560+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.740+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table order_items 
        add constraint FKbioxgbv59vetrxe0ejfubep1w 
        foreign key (order_id) 
@@ -17057,7 +17057,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDER_ITEMS" not foun
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.561+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.740+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table order_items 
        add constraint FKemq71edpbn9wsxnxncfn1algp 
        foreign key (variant_id) 
@@ -17205,7 +17205,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDER_ITEMS" not foun
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.562+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.741+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table order_status_history 
        add constraint FKj7bba43h8j0n4evd2wvudvpjc 
        foreign key (changed_by) 
@@ -17353,7 +17353,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDER_STATUS_HISTORY"
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.563+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.742+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table order_status_history 
        add constraint FKnmcbg3mmbt8wfva97ra40nmp3 
        foreign key (order_id) 
@@ -17501,7 +17501,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDER_STATUS_HISTORY"
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.564+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.744+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table orders 
        add constraint FK66jolu65brloux12yi37qy3ky 
        foreign key (billing_address_id) 
@@ -17649,7 +17649,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDERS" not found; SQ
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.566+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.745+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table orders 
        add constraint FKn1d1gkxckw648m2n2d5gx0yx5 
        foreign key (coupon_id) 
@@ -17797,7 +17797,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDERS" not found; SQ
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.567+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.746+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table orders 
        add constraint FKmk6q95x8ffidq82wlqjaq7sqc 
        foreign key (shipping_address_id) 
@@ -17945,7 +17945,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDERS" not found; SQ
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.568+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.748+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table orders 
        add constraint FK32ql8ubntj5uh44ph9659tiih 
        foreign key (user_id) 
@@ -18093,7 +18093,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ORDERS" not found; SQ
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.569+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.749+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table password_reset_tokens 
        add constraint FKk3ndxg5xp6v7wd4gjyusp15gq 
        foreign key (user_id) 
@@ -18241,7 +18241,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PASSWORD_RESET_TOKENS
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.571+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.751+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table payments 
        add constraint FK81gagumt0r8y3rmudcgpbk42l 
        foreign key (order_id) 
@@ -18389,7 +18389,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAYMENTS" not found; 
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.571+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.752+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_attributes 
        add constraint FKcex46yvx4g18b2pn09p79h1mc 
        foreign key (product_id) 
@@ -18537,7 +18537,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_ATTRIBUTES" n
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.573+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.752+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_attributes 
        add constraint FKp974gfv4nn66wqy1u6u807tv1 
        foreign key (variant_id) 
@@ -18685,7 +18685,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_ATTRIBUTES" n
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.574+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.753+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_categories 
        add constraint FKd112rx0alycddsms029iifrih 
        foreign key (category_id) 
@@ -18833,7 +18833,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_CATEGORIES" n
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.574+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.754+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_categories 
        add constraint FKlda9rad6s180ha3dl1ncsp8n7 
        foreign key (product_id) 
@@ -18981,7 +18981,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_CATEGORIES" n
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.575+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.756+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_images 
        add constraint FKqnq71xsohugpqwf3c9gxmsuy 
        foreign key (product_id) 
@@ -19129,7 +19129,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_IMAGES" not f
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.577+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.757+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table product_variants 
        add constraint FKosqitn4s405cynmhb87lkvuau 
        foreign key (product_id) 
@@ -19277,7 +19277,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_VARIANTS" not
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.578+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.758+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table products 
        add constraint FK4b4af0ov0jw6r9xtq3tabt5a 
        foreign key (tax_rate_id) 
@@ -19425,7 +19425,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCTS" not found; 
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.580+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.760+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table refresh_tokens 
        add constraint FK1lih5y2npsf8u5o3vhdb9y0os 
        foreign key (user_id) 
@@ -19573,7 +19573,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REFRESH_TOKENS" not f
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.581+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.761+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table refunds 
        add constraint FKpt9ic0j1y6xwlej99wnynvnpy 
        foreign key (payment_id) 
@@ -19721,7 +19721,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REFUNDS" not found; S
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.583+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.761+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table refunds 
        add constraint FKf12n4r91nubimwy79bv45q063 
        foreign key (return_id) 
@@ -19869,7 +19869,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REFUNDS" not found; S
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.583+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.763+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table return_items 
        add constraint FK2nfjf1atvp0qkpjvd517m6cq7 
        foreign key (order_item_id) 
@@ -20017,7 +20017,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RETURN_ITEMS" not fou
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.586+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.764+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table return_items 
        add constraint FK5a4moov85fw9ixxf9l0mki44o 
        foreign key (return_id) 
@@ -20165,7 +20165,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RETURN_ITEMS" not fou
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.589+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.766+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table returns 
        add constraint FKtge2tys80xohjn8v3wtiy21yi 
        foreign key (order_id) 
@@ -20313,7 +20313,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RETURNS" not found; S
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.593+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.769+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table returns 
        add constraint FKof2cd2g96d3xgt0lnqbrydgvx 
        foreign key (user_id) 
@@ -20461,7 +20461,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RETURNS" not found; S
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.608+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.770+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table reviews 
        add constraint FK2x2x74lnliqmt91bc1w95ll8n 
        foreign key (order_item_id) 
@@ -20609,7 +20609,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REVIEWS" not found; S
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.608+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.771+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table reviews 
        add constraint FKpl51cejpw4gy5swfar8br9ngi 
        foreign key (product_id) 
@@ -20757,7 +20757,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REVIEWS" not found; S
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.609+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.771+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table reviews 
        add constraint FKcgy7qjc1r99dp117y9en6lxye 
        foreign key (user_id) 
@@ -20905,7 +20905,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REVIEWS" not found; S
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.610+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.772+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table role_permissions 
        add constraint FKegdk29eiy7mdtefy5c7eirr6e 
        foreign key (permission_id) 
@@ -21053,7 +21053,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROLE_PERMISSIONS" not
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.611+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.773+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table role_permissions 
        add constraint FKn5fotdgk8d1xvo8nav9uv3muc 
        foreign key (role_id) 
@@ -21201,7 +21201,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROLE_PERMISSIONS" not
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.612+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.774+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table shipments 
        add constraint FKrnt4wht95lxxplspltrg9681s 
        foreign key (order_id) 
@@ -21349,7 +21349,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "SHIPMENTS" not found;
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.612+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.774+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table user_roles 
        add constraint FKh8ciramu9cc9q3qcqiv4ue8a6 
        foreign key (role_id) 
@@ -21497,7 +21497,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER_ROLES" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.614+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.774+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table user_roles 
        add constraint FKhfh9dx7w3ubf1co1vdev94g3f 
        foreign key (user_id) 
@@ -21645,7 +21645,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER_ROLES" not found
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.616+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.777+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table wishlist_items 
        add constraint FKqxj7lncd242b59fb78rqegyxj 
        foreign key (product_id) 
@@ -21793,7 +21793,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WISHLIST_ITEMS" not f
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.619+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.778+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table wishlist_items 
        add constraint FKkem9l8vd14pk3cc4elnpl0n00 
        foreign key (wishlist_id) 
@@ -21941,7 +21941,7 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WISHLIST_ITEMS" not f
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.620+05:30  WARN 33948 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+2026-08-03T00:30:33.779+05:30  WARN 13480 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table wishlists 
        add constraint FK330pyw2el06fn5g28ypyljt16 
        foreign key (user_id) 
@@ -22089,16 +22089,11 @@ Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WISHLISTS" not found;
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar:6.5.3.Final]
 	... 116 common frames omitted
 
-2026-08-02T17:33:56.628+05:30  INFO 33948 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-08-02T17:33:57.986+05:30  INFO 33948 --- [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-08-02T17:34:00.085+05:30  INFO 33948 --- [           main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
-2026-08-02T17:34:00.086+05:30  WARN 33948 --- [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used for username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider.
-2026-08-02T17:34:02.915+05:30  INFO 33948 --- [           main] c.s.SunglassStoreApplicationTests        : Started SunglassStoreApplicationTests in 12.598 seconds (process running for 14.0)
+2026-08-03T00:30:33.784+05:30  INFO 13480 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-03T00:30:34.711+05:30  INFO 13480 --- [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-03T00:30:35.999+05:30  INFO 13480 --- [           main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-08-03T00:30:36.001+05:30  WARN 13480 --- [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used for username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider.
+2026-08-03T00:30:38.232+05:30  INFO 13480 --- [           main] c.s.SunglassStoreApplicationTests        : Started SunglassStoreApplicationTests in 9.812 seconds (process running for 13.836)
 ]]></system-out>
-    <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (C:\Users\iambh\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.19\byte-buddy-agent-1.14.19.jar)
-WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
-WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
-WARNING: Dynamic loading of agents will be disallowed by default in a future release
-]]></system-err>
   </testcase>
 </testsuite>

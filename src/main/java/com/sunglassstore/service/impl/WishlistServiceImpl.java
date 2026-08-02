@@ -8,6 +8,8 @@ import com.sunglassstore.repository.WishlistItemRepository;
 import com.sunglassstore.repository.WishlistRepository;
 import com.sunglassstore.service.UserService;
 import com.sunglassstore.service.WishlistService;
+import com.sunglassstore.dto.response.WishlistResponse;
+import com.sunglassstore.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,11 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     @Transactional
-    public Wishlist getOrCreateWishlist(Long userId, String name) {
+    public WishlistResponse getOrCreateWishlist(Long userId, String name) {
+        return WishlistResponse.fromEntity(getOrCreateEntity(userId, normalizeName(name)));
+    }
+
+    private Wishlist getOrCreateEntity(Long userId, String name) {
         return wishlistRepository.findByUserUserIdAndWishlistName(userId, name)
                 .orElseGet(() -> {
                     User user = userService.findById(userId);
@@ -36,10 +42,13 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     @Transactional
-    public Wishlist addItem(Long userId, Long productId, String wishlistName) {
-        Wishlist wishlist = getOrCreateWishlist(userId, wishlistName);
+    public WishlistResponse addItem(Long userId, Long productId, String wishlistName) {
+        Wishlist wishlist = getOrCreateEntity(userId, normalizeName(wishlistName));
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        if (!Boolean.TRUE.equals(product.getIsActive())) {
+            throw new BadRequestException("Inactive products cannot be added to a wishlist");
+        }
 
         if (wishlistItemRepository.existsByWishlistWishlistIdAndProductProductId(
                 wishlist.getWishlistId(), productId)) {
@@ -49,20 +58,29 @@ public class WishlistServiceImpl implements WishlistService {
         WishlistItem item = new WishlistItem();
         item.setWishlist(wishlist);
         item.setProduct(product);
-        wishlistItemRepository.save(item);
+        wishlist.getItems().add(wishlistItemRepository.save(item));
 
-        return wishlistRepository.findById(wishlist.getWishlistId()).orElse(wishlist);
+        return WishlistResponse.fromEntity(wishlist);
     }
 
     @Override
     @Transactional
-    public Wishlist removeItem(Long userId, Long productId, String wishlistName) {
-        Wishlist wishlist = getOrCreateWishlist(userId, wishlistName);
+    public WishlistResponse removeItem(Long userId, Long productId, String wishlistName) {
+        String normalizedName = normalizeName(wishlistName);
+        Wishlist wishlist = wishlistRepository.findByUserUserIdAndWishlistName(userId, normalizedName)
+                .orElseThrow(() -> new ResourceNotFoundException("Wishlist not found"));
         WishlistItem item = wishlistItemRepository
                 .findByWishlistWishlistIdAndProductProductId(wishlist.getWishlistId(), productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found in wishlist"));
         wishlistItemRepository.delete(item);
+        wishlist.getItems().removeIf(value -> value.getWishlistItemId().equals(item.getWishlistItemId()));
 
-        return wishlistRepository.findById(wishlist.getWishlistId()).orElse(wishlist);
+        return WishlistResponse.fromEntity(wishlist);
+    }
+
+    private String normalizeName(String name) {
+        String normalized = name == null || name.isBlank() ? "DEFAULT" : name.trim().toUpperCase();
+        if (normalized.length() > 100) throw new BadRequestException("Wishlist name cannot exceed 100 characters");
+        return normalized;
     }
 }

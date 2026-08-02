@@ -19,6 +19,7 @@ public class CreateCouponRequest {
     private String description;
 
     @NotBlank(message = "Discount type is required")
+    @Pattern(regexp = "PERCENTAGE|FIXED|PAIR_FIXED", message = "Invalid discount type")
     private String discountType;
 
     @NotNull(message = "Discount value is required")

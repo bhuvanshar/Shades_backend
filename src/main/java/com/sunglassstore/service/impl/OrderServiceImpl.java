@@ -95,10 +95,12 @@ public class OrderServiceImpl implements OrderService {
 
         // Step 7: Calculate subtotal, discount, tax, shipping, total
         BigDecimal subtotal = BigDecimal.ZERO;
+        int totalItemQuantity = 0;
         for (CartItem item : cartItems) {
             ProductVariant variant = item.getVariant();
             BigDecimal price = variant.getPrice();
             subtotal = subtotal.add(price.multiply(BigDecimal.valueOf(item.getQuantity())));
+            totalItemQuantity += item.getQuantity();
         }
 
         if (coupon != null) {
@@ -107,8 +109,9 @@ public class OrderServiceImpl implements OrderService {
                     new com.sunglassstore.dto.request.ValidateCouponRequest();
             validateReq.setCouponCode(coupon.getCouponCode());
             validateReq.setOrderAmount(subtotal);
+            validateReq.setItemQuantity(totalItemQuantity);
             couponService.validateCoupon(userId, validateReq);
-            discountAmount = couponService.calculateDiscount(coupon, subtotal);
+            discountAmount = couponService.calculateDiscount(coupon, subtotal, totalItemQuantity);
         }
 
         BigDecimal taxableAmount = subtotal.subtract(discountAmount);

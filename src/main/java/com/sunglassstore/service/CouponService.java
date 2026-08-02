@@ -22,4 +22,6 @@ public interface CouponService {
     CouponValidationResponse validateCoupon(Long userId, ValidateCouponRequest request);
 
     BigDecimal calculateDiscount(Coupon coupon, BigDecimal orderAmount);
+
+    BigDecimal calculateDiscount(Coupon coupon, BigDecimal orderAmount, int itemQuantity);
 }

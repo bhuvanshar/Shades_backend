@@ -58,4 +58,17 @@ class CouponServiceImplTest {
         BigDecimal discount = service.calculateDiscount(coupon, new BigDecimal("100"));
         assertEquals(new BigDecimal("100.00"), discount);
     }
+
+    @Test
+    void calculateDiscount_pairFixed_usesCompletePairsOnly() {
+        CouponServiceImpl service = new CouponServiceImpl(null, null);
+        Coupon coupon = new Coupon();
+        coupon.setDiscountType(DiscountType.PAIR_FIXED);
+        coupon.setDiscountValue(new BigDecimal("500"));
+
+        assertEquals(new BigDecimal("3500.00"),
+                service.calculateDiscount(coupon, new BigDecimal("10000"), 14));
+        assertEquals(new BigDecimal("3500.00"),
+                service.calculateDiscount(coupon, new BigDecimal("10000"), 15));
+    }
 }

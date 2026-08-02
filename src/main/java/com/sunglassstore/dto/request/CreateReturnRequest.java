@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +18,10 @@ public class CreateReturnRequest {
     private Long orderId;
 
     @NotBlank(message = "Return reason is required")
+    @Size(max = 255, message = "Return reason cannot exceed 255 characters")
     private String returnReason;
 
+    @Size(max = 2000, message = "Customer comments cannot exceed 2000 characters")
     private String customerComments;
 
     @NotEmpty(message = "At least one return item is required")
@@ -36,7 +39,11 @@ public class CreateReturnRequest {
         @jakarta.validation.constraints.Min(value = 1)
         private Integer quantity;
 
+        @NotBlank(message = "Item condition is required")
+        @Size(max = 50, message = "Item condition cannot exceed 50 characters")
         private String itemCondition;
+
+        @Size(max = 255, message = "Item return reason cannot exceed 255 characters")
         private String returnReason;
     }
 }

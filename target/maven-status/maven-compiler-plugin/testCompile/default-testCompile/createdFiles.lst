@@ -1,2 +1,8 @@
-com\sunglassstore\service\CouponServiceImplTest.class
 com\sunglassstore\SunglassStoreApplicationTests.class
+com\sunglassstore\service\RefundServiceImplTest$Fixture.class
+com\sunglassstore\service\CouponServiceImplTest.class
+com\sunglassstore\service\RefundServiceImplTest.class
+com\sunglassstore\service\ReviewServiceImplTest.class
+com\sunglassstore\service\WishlistServiceImplTest.class
+com\sunglassstore\service\ReturnServiceImplTest.class
+com\sunglassstore\service\ReviewServiceImplTest$Fixture.class

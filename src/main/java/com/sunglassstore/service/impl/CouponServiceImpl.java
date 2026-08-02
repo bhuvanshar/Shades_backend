@@ -104,7 +104,13 @@ public class CouponServiceImpl implements CouponService {
             }
         }
 
-        BigDecimal discount = calculateDiscount(coupon, request.getOrderAmount());
+        if (coupon.getDiscountType() == DiscountType.PAIR_FIXED &&
+                (request.getItemQuantity() == null || request.getItemQuantity() < 2)) {
+            throw new InvalidCouponException("Add at least 2 units to use this offer");
+        }
+
+        BigDecimal discount = calculateDiscount(coupon, request.getOrderAmount(),
+                request.getItemQuantity() == null ? 0 : request.getItemQuantity());
 
         return new CouponValidationResponse(true, coupon.getCouponCode(),
                 coupon.getDiscountType().name(), coupon.getDiscountValue(),
@@ -113,11 +119,19 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public BigDecimal calculateDiscount(Coupon coupon, BigDecimal orderAmount) {
+        return calculateDiscount(coupon, orderAmount, 0);
+    }
+
+    @Override
+    public BigDecimal calculateDiscount(Coupon coupon, BigDecimal orderAmount, int itemQuantity) {
         BigDecimal discount;
 
         if (coupon.getDiscountType() == DiscountType.PERCENTAGE) {
             discount = orderAmount.multiply(coupon.getDiscountValue())
                     .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+        } else if (coupon.getDiscountType() == DiscountType.PAIR_FIXED) {
+            int completePairs = Math.max(0, itemQuantity) / 2;
+            discount = coupon.getDiscountValue().multiply(BigDecimal.valueOf(completePairs));
         } else {
             discount = coupon.getDiscountValue();
         }
