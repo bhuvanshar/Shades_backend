@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
+import com.sunglassstore.email.event.ReturnStatusEmailRequested;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class ReturnServiceImpl implements ReturnService {
     private final InventoryMovementRepository inventoryMovementRepository;
     private final PaymentRepository paymentRepository;
     private final RefundRepository refundRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
@@ -66,6 +69,9 @@ public class ReturnServiceImpl implements ReturnService {
         List<CreateReturnRequest.ReturnItemRequest> sortedRequests = new ArrayList<>(request.getItems());
         Set<Long> requestedOrderItems = new HashSet<>();
         for (CreateReturnRequest.ReturnItemRequest itemReq : sortedRequests) {
+            if (itemReq.getQuantity() == null || itemReq.getQuantity() <= 0) {
+                throw new BadRequestException("Return quantity must be positive");
+            }
             if (!requestedOrderItems.add(itemReq.getOrderItemId())) {
                 throw new BadRequestException("The same order item cannot be included more than once");
             }
@@ -110,7 +116,9 @@ public class ReturnServiceImpl implements ReturnService {
         }
 
         returnRequest.setItems(returnItems);
-        return toResponse(returnRequestRepository.save(returnRequest));
+        ReturnRequest saved = returnRequestRepository.save(returnRequest);
+        publishReturnEmail(saved);
+        return toResponse(saved);
     }
 
     @Override
@@ -140,7 +148,7 @@ public class ReturnServiceImpl implements ReturnService {
     @Transactional
     public ReturnResponse updateReturnStatus(Long returnId, ReturnStatus status, String adminComments,
                                                Map<Long, String> itemConditions) {
-        ReturnRequest returnRequest = returnRequestRepository.findById(returnId)
+        ReturnRequest returnRequest = returnRequestRepository.findByIdForUpdate(returnId)
                 .orElseThrow(() -> new ResourceNotFoundException("Return request not found"));
 
         ReturnStatus previous = returnRequest.getReturnStatus();
@@ -184,13 +192,15 @@ public class ReturnServiceImpl implements ReturnService {
             orderRepository.save(returnRequest.getOrder());
         }
 
-        return toResponse(returnRequestRepository.save(returnRequest));
+        ReturnRequest saved = returnRequestRepository.save(returnRequest);
+        publishReturnEmail(saved);
+        return toResponse(saved);
     }
 
     @Override
     @Transactional
     public ReturnResponse cancelReturn(Long userId, Long returnId) {
-        ReturnRequest returnRequest = returnRequestRepository.findById(returnId)
+        ReturnRequest returnRequest = returnRequestRepository.findByIdForUpdate(returnId)
                 .orElseThrow(() -> new ResourceNotFoundException("Return request not found"));
         if (!returnRequest.getUser().getUserId().equals(userId)) {
             throw new ResourceNotFoundException("Return request not found");
@@ -199,7 +209,15 @@ public class ReturnServiceImpl implements ReturnService {
             throw new BadRequestException("Only a return awaiting review can be cancelled");
         }
         returnRequest.setReturnStatus(ReturnStatus.CANCELLED);
-        return toResponse(returnRequestRepository.save(returnRequest));
+        ReturnRequest saved = returnRequestRepository.save(returnRequest);
+        publishReturnEmail(saved);
+        return toResponse(saved);
+    }
+
+    private void publishReturnEmail(ReturnRequest request) {
+        eventPublisher.publishEvent(new ReturnStatusEmailRequested(
+                request.getUser().getEmail(), request.getUser().getName(), request.getReturnId(),
+                request.getOrder().getOrderId(), request.getReturnStatus().name(), request.getAdminComments()));
     }
 
     private ReturnResponse toResponse(ReturnRequest request) {
@@ -235,7 +253,9 @@ public class ReturnServiceImpl implements ReturnService {
     }
 
     private void validateTransition(ReturnStatus current, ReturnStatus next) {
-        if (current == next) return;
+        if (current == next) {
+            throw new BadRequestException("Return is already in status " + current);
+        }
         boolean valid = switch (current) {
             case REQUESTED -> next == ReturnStatus.APPROVED || next == ReturnStatus.REJECTED || next == ReturnStatus.CANCELLED;
             case APPROVED -> next == ReturnStatus.PICKED_UP || next == ReturnStatus.CANCELLED;

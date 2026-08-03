@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class CreateReturnRequest {
 
     @NotNull(message = "Order ID is required")
+    @Positive(message = "Order ID must be positive")
     private Long orderId;
 
     @NotBlank(message = "Return reason is required")
@@ -33,6 +35,7 @@ public class CreateReturnRequest {
     public static class ReturnItemRequest {
 
         @NotNull(message = "Order item ID is required")
+        @Positive(message = "Order item ID must be positive")
         private Long orderItemId;
 
         @NotNull(message = "Quantity is required")

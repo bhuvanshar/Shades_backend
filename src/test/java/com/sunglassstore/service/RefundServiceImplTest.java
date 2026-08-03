@@ -12,6 +12,8 @@ import com.sunglassstore.repository.OrderRepository;
 import com.sunglassstore.service.impl.RefundServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationEventPublisher;
+import com.sunglassstore.email.event.RefundCompletedEmailRequested;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,12 +29,14 @@ class RefundServiceImplTest {
     private ReturnRequestRepository returns;
     private OrderRepository orders;
     private RefundServiceImpl service;
+    private ApplicationEventPublisher events;
 
     @BeforeEach
     void setUp() {
         refunds = mock(RefundRepository.class); payments = mock(PaymentRepository.class);
         returns = mock(ReturnRequestRepository.class); orders = mock(OrderRepository.class);
-        service = new RefundServiceImpl(refunds, payments, returns, orders);
+        events = mock(ApplicationEventPublisher.class);
+        service = new RefundServiceImpl(refunds, payments, returns, orders, events);
     }
 
     @Test
@@ -76,6 +80,10 @@ class RefundServiceImplTest {
         assertEquals(PaymentStatus.PARTIALLY_REFUNDED, fixture.payment.getPaymentStatus());
         verify(payments).findByIdForUpdate(3L);
         verify(payments).save(fixture.payment);
+        verify(events).publishEvent((Object) argThat(event -> event instanceof RefundCompletedEmailRequested email
+                && email.refundId().equals(9L)
+                && email.orderId().equals(7L)
+                && email.amount().compareTo(new BigDecimal("500.00")) == 0));
     }
 
     @Test
@@ -117,6 +125,24 @@ class RefundServiceImplTest {
         assertTrue(error.getMessage().contains("0.01"));
     }
 
+    @Test
+    void negativeRefundIsRejectedBeforeDatabaseOrEmail() {
+        BadRequestException error = assertThrows(BadRequestException.class,
+                () -> service.processRefund(3L, request("-1.00")));
+
+        assertEquals("Refund amount must be positive", error.getMessage());
+        verifyNoInteractions(payments, returns, orders, refunds, events);
+    }
+
+    @Test
+    void overPrecisionRefundIsRejectedBeforeDatabaseOrEmail() {
+        BadRequestException error = assertThrows(BadRequestException.class,
+                () -> service.processRefund(3L, request("1.001")));
+
+        assertEquals("Refund amount must have at most 2 decimal places", error.getMessage());
+        verifyNoInteractions(payments, returns, orders, refunds, events);
+    }
+
     private void stub(Fixture fixture) {
         when(payments.findByIdForUpdate(3L)).thenReturn(Optional.of(fixture.payment));
         when(returns.findByIdForUpdate(4L)).thenReturn(Optional.of(fixture.returnRequest));
@@ -130,12 +156,13 @@ class RefundServiceImplTest {
     }
 
     private Fixture fixture(BigDecimal paymentAmount, BigDecimal lineTotal, int purchased, int returned) {
-        Order order = new Order(); order.setOrderId(7L);
+        User user = new User(); user.setUserId(9L); user.setEmail("customer@example.com"); user.setName("Customer");
+        Order order = new Order(); order.setOrderId(7L); order.setUser(user);
         order.setSubtotalAmount(lineTotal); order.setTotalAmount(lineTotal); order.setShippingAmount(BigDecimal.ZERO);
         Payment payment = new Payment(); payment.setPaymentId(3L); payment.setOrder(order);
         payment.setAmount(paymentAmount); payment.setPaymentStatus(PaymentStatus.PAID);
         OrderItem orderItem = new OrderItem(); orderItem.setOrder(order); orderItem.setQuantity(purchased); orderItem.setLineTotal(lineTotal);
-        ReturnRequest returnRequest = new ReturnRequest(); returnRequest.setReturnId(4L); returnRequest.setOrder(order);
+        ReturnRequest returnRequest = new ReturnRequest(); returnRequest.setReturnId(4L); returnRequest.setOrder(order); returnRequest.setUser(user);
         returnRequest.setReturnStatus(ReturnStatus.RECEIVED);
         ReturnItem returnItem = new ReturnItem(); returnItem.setReturnRequest(returnRequest); returnItem.setOrderItem(orderItem); returnItem.setQuantity(returned);
         returnRequest.setItems(List.of(returnItem));

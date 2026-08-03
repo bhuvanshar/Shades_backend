@@ -4,11 +4,14 @@ import com.sunglassstore.dto.request.LoginRequest;
 import com.sunglassstore.dto.request.GoogleAuthRequest;
 import com.sunglassstore.dto.request.RefreshTokenRequest;
 import com.sunglassstore.dto.request.RegisterRequest;
+import com.sunglassstore.dto.request.ForgotPasswordRequest;
+import com.sunglassstore.dto.request.ResetPasswordRequest;
 import com.sunglassstore.dto.response.AuthResponse;
 import com.sunglassstore.dto.response.MessageResponse;
 import com.sunglassstore.dto.response.UserResponse;
 import com.sunglassstore.security.SecurityUser;
 import com.sunglassstore.service.AuthenticationService;
+import com.sunglassstore.service.PasswordResetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthenticationService authenticationService;
+    private final PasswordResetService passwordResetService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
@@ -41,6 +45,18 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshTokenRequest request) {
         return ResponseEntity.ok(authenticationService.refresh(request));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<MessageResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        passwordResetService.requestReset(request);
+        return ResponseEntity.ok(new MessageResponse("If an active account exists, a reset link will be sent."));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        passwordResetService.resetPassword(request);
+        return ResponseEntity.ok(new MessageResponse("Password reset successfully. You can now sign in."));
     }
 
     @PostMapping("/logout")

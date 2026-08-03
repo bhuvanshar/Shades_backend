@@ -15,6 +15,8 @@ import com.sunglassstore.repository.*;
 import com.sunglassstore.service.impl.ReturnServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationEventPublisher;
+import com.sunglassstore.email.event.ReturnStatusEmailRequested;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +37,7 @@ class ReturnServiceImplTest {
     private ProductVariantRepository variants;
     private InventoryMovementRepository movements;
     private ReturnServiceImpl service;
+    private ApplicationEventPublisher events;
 
     @BeforeEach
     void setUp() {
@@ -46,8 +49,9 @@ class ReturnServiceImplTest {
         refunds = mock(RefundRepository.class);
         variants = mock(ProductVariantRepository.class);
         movements = mock(InventoryMovementRepository.class);
+        events = mock(ApplicationEventPublisher.class);
         service = new ReturnServiceImpl(returns, returnItems, orders, orderItems,
-                variants, movements, payments, refunds);
+                variants, movements, payments, refunds, events);
     }
 
     @Test
@@ -81,7 +85,7 @@ class ReturnServiceImplTest {
     @Test
     void cancelReturn_onlyAllowsOwnerWhileRequested() {
         ReturnRequest request = persistedReturn(4L, 30L, ReturnStatus.APPROVED);
-        when(returns.findById(4L)).thenReturn(Optional.of(request));
+        when(returns.findByIdForUpdate(4L)).thenReturn(Optional.of(request));
         assertThrows(BadRequestException.class, () -> service.cancelReturn(30L, 4L));
         assertThrows(ResourceNotFoundException.class, () -> service.cancelReturn(99L, 4L));
         verify(returns, never()).save(any());
@@ -90,12 +94,14 @@ class ReturnServiceImplTest {
     @Test
     void cancelReturn_cancelsPendingRequest() {
         ReturnRequest request = persistedReturn(4L, 30L, ReturnStatus.REQUESTED);
-        when(returns.findById(4L)).thenReturn(Optional.of(request));
+        when(returns.findByIdForUpdate(4L)).thenReturn(Optional.of(request));
         when(returns.save(any(ReturnRequest.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(payments.findByOrderOrderIdOrderByCreatedAtDesc(7L)).thenReturn(List.of());
         when(refunds.findByReturnRequestReturnIdOrderByCreatedAtDesc(4L)).thenReturn(List.of());
 
         assertEquals("CANCELLED", service.cancelReturn(30L, 4L).returnStatus());
+        verify(events).publishEvent((Object) argThat(event -> event instanceof ReturnStatusEmailRequested email
+                && email.returnId().equals(4L) && email.status().equals("CANCELLED")));
     }
 
     @Test
@@ -106,7 +112,7 @@ class ReturnServiceImplTest {
         ReturnItem item = new ReturnItem(); item.setReturnItemId(8L); item.setReturnRequest(request);
         item.setOrderItem(orderItem); item.setQuantity(1); item.setItemCondition("DAMAGED");
         request.setItems(List.of(item));
-        when(returns.findById(4L)).thenReturn(Optional.of(request));
+        when(returns.findByIdForUpdate(4L)).thenReturn(Optional.of(request));
         when(returns.save(any(ReturnRequest.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(payments.findByOrderOrderIdOrderByCreatedAtDesc(7L)).thenReturn(List.of());
         when(refunds.findByReturnRequestReturnIdOrderByCreatedAtDesc(4L)).thenReturn(List.of());
@@ -125,7 +131,7 @@ class ReturnServiceImplTest {
         ReturnItem item = new ReturnItem(); item.setReturnItemId(8L); item.setReturnRequest(request);
         item.setOrderItem(orderItem); item.setQuantity(2); item.setItemCondition("UNOPENED");
         request.setItems(List.of(item));
-        when(returns.findById(4L)).thenReturn(Optional.of(request));
+        when(returns.findByIdForUpdate(4L)).thenReturn(Optional.of(request));
         when(returns.save(any(ReturnRequest.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(returnItems.sumPhysicallyReturnedQuantityByOrderItemId(99L)).thenReturn(2);
         when(payments.findByOrderOrderIdOrderByCreatedAtDesc(7L)).thenReturn(List.of());
@@ -145,7 +151,7 @@ class ReturnServiceImplTest {
         request.getOrder().setItems(List.of(orderItem));
         ReturnItem item = new ReturnItem(); item.setReturnItemId(8L); item.setReturnRequest(request);
         item.setOrderItem(orderItem); item.setQuantity(1); item.setItemCondition("UNOPENED"); request.setItems(List.of(item));
-        when(returns.findById(4L)).thenReturn(Optional.of(request));
+        when(returns.findByIdForUpdate(4L)).thenReturn(Optional.of(request));
         when(returns.save(any(ReturnRequest.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(returnItems.sumPhysicallyReturnedQuantityByOrderItemId(99L)).thenReturn(1);
         when(payments.findByOrderOrderIdOrderByCreatedAtDesc(7L)).thenReturn(List.of());
@@ -163,11 +169,37 @@ class ReturnServiceImplTest {
         OrderItem orderItem = new OrderItem(); orderItem.setOrderItemId(99L); orderItem.setOrder(request.getOrder());
         ReturnItem item = new ReturnItem(); item.setReturnItemId(8L); item.setReturnRequest(request);
         item.setOrderItem(orderItem); item.setQuantity(1); item.setItemCondition("UNOPENED"); request.setItems(List.of(item));
-        when(returns.findById(4L)).thenReturn(Optional.of(request));
+        when(returns.findByIdForUpdate(4L)).thenReturn(Optional.of(request));
 
         assertThrows(BadRequestException.class,
                 () -> service.updateReturnStatus(4L, ReturnStatus.RECEIVED, null, null));
         verify(returns, never()).save(any());
+    }
+
+    @Test
+    void createReturn_rejectsNonPositiveQuantityBeforePersistingOrEmailing() {
+        Order order = deliveredOrder(7L, 30L, LocalDateTime.now().minusDays(2));
+        when(orders.findByOrderIdAndUserUserId(7L, 30L)).thenReturn(Optional.of(order));
+
+        BadRequestException error = assertThrows(BadRequestException.class,
+                () -> service.createReturn(30L, request(7L, 99L, 0, false)));
+
+        assertEquals("Return quantity must be positive", error.getMessage());
+        verify(returns, never()).save(any());
+        verifyNoInteractions(events);
+    }
+
+    @Test
+    void duplicateStatusUpdateIsRejectedWithoutInventoryOrEmailSideEffects() {
+        ReturnRequest request = persistedReturn(4L, 30L, ReturnStatus.RECEIVED);
+        when(returns.findByIdForUpdate(4L)).thenReturn(Optional.of(request));
+
+        BadRequestException error = assertThrows(BadRequestException.class,
+                () -> service.updateReturnStatus(4L, ReturnStatus.RECEIVED, null, Map.of()));
+
+        assertEquals("Return is already in status RECEIVED", error.getMessage());
+        verify(returns, never()).save(any());
+        verifyNoInteractions(variants, movements, events);
     }
 
     private Order deliveredOrder(Long orderId, Long userId, LocalDateTime deliveredAt) {

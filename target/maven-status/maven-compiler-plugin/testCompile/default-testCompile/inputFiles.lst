@@ -1,5 +1,10 @@
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\config\StorefrontCategoryBootstrapTest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\email\CustomerEmailEventSubscriberTest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\email\EmailOutboxDeliveryServiceTest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\email\EmailTransactionIntegrationTest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\email\SmtpEmailServiceTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\service\CouponServiceImplTest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\service\PasswordResetServiceImplTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\service\RefundServiceImplTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\service\ReturnServiceImplTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\service\ReviewServiceImplTest.java

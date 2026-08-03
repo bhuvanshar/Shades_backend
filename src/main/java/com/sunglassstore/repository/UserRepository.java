@@ -4,7 +4,9 @@ import com.sunglassstore.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.repository.query.Param;
+import jakarta.persistence.LockModeType;
 
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,10 @@ import org.springframework.data.domain.Pageable;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmailIgnoreCase(String email);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT u FROM User u WHERE LOWER(u.email) = LOWER(:email)")
+    Optional<User> findByEmailIgnoreCaseForUpdate(@Param("email") String email);
 
     @EntityGraph(attributePaths = {"roles"})
     @Query("SELECT u FROM User u WHERE u.userId = :userId")

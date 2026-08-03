@@ -18,6 +18,8 @@ import com.sunglassstore.service.RefundService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
+import com.sunglassstore.email.event.RefundCompletedEmailRequested;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -30,10 +32,12 @@ public class RefundServiceImpl implements RefundService {
     private final PaymentRepository paymentRepository;
     private final ReturnRequestRepository returnRequestRepository;
     private final OrderRepository orderRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
     public RefundResponse processRefund(Long paymentId, CreateRefundRequest request) {
+        validateRequest(request);
         Payment payment = paymentRepository.findByIdForUpdate(paymentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment not found"));
 
@@ -107,6 +111,25 @@ public class RefundServiceImpl implements RefundService {
         }
         paymentRepository.save(payment);
 
+        eventPublisher.publishEvent(new RefundCompletedEmailRequested(
+                returnRequest.getUser().getEmail(), returnRequest.getUser().getName(),
+                savedRefund.getRefundId(), orderId, savedRefund.getRefundAmount()));
+
         return RefundResponse.fromEntity(savedRefund);
+    }
+
+    private void validateRequest(CreateRefundRequest request) {
+        if (request == null || request.getReturnId() == null || request.getReturnId() <= 0) {
+            throw new BadRequestException("A valid return ID is required");
+        }
+        if (request.getRefundAmount() == null || request.getRefundAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Refund amount must be positive");
+        }
+        if (request.getRefundAmount().scale() > 2) {
+            throw new BadRequestException("Refund amount must have at most 2 decimal places");
+        }
+        if (request.getReason() == null || request.getReason().isBlank()) {
+            throw new BadRequestException("Refund reason is required");
+        }
     }
 }

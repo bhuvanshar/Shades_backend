@@ -38,7 +38,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Public auth endpoints
                         .requestMatchers("/api/auth/register", "/api/auth/login",
-                                "/api/auth/google", "/api/auth/refresh").permitAll()
+                                "/api/auth/google", "/api/auth/refresh",
+                                "/api/auth/forgot-password", "/api/auth/reset-password").permitAll()
                         // Public product browsing
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
