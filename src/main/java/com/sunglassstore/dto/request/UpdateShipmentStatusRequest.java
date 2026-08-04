@@ -1,6 +1,7 @@
 package com.sunglassstore.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
+import com.sunglassstore.entity.enums.ShipmentStatus;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class UpdateShipmentStatusRequest {
 
-    @NotBlank(message = "Status is required")
-    private String status;
+    @NotNull(message = "Status is required")
+    private ShipmentStatus status;
 }

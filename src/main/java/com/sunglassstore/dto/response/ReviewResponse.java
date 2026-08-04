@@ -12,7 +12,6 @@ public record ReviewResponse(
         Long variantId,
         String variantName,
         String variantSku,
-        Long userId,
         String customerName,
         Integer rating,
         String reviewText,
@@ -26,7 +25,7 @@ public record ReviewResponse(
         return new ReviewResponse(review.getReviewId(), review.getProduct().getProductId(),
                 orderItem == null ? null : orderItem.getOrderItemId(), variant == null ? null : variant.getVariantId(),
                 variant == null ? null : variant.getVariantName(), variant == null ? null : variant.getSku(),
-                review.getUser().getUserId(), review.getUser().getName(), review.getRating(),
+                review.getUser().getName(), review.getRating(),
                 review.getReviewText(), review.getReviewStatus(), review.getCreatedAt(), review.getUpdatedAt());
     }
 }

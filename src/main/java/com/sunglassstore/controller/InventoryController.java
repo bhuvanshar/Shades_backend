@@ -2,6 +2,10 @@ package com.sunglassstore.controller;
 
 import com.sunglassstore.entity.InventoryMovement;
 import com.sunglassstore.entity.enums.MovementType;
+import com.sunglassstore.dto.request.InventoryAdjustmentRequest;
+import com.sunglassstore.dto.request.UpdateLowStockThresholdRequest;
+import com.sunglassstore.dto.response.ProductResponse;
+import jakarta.validation.Valid;
 import com.sunglassstore.service.InventoryService;
 import com.sunglassstore.dto.response.InventoryMovementResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +26,17 @@ public class InventoryController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('INVENTORY_MANAGER')")
     public ResponseEntity<InventoryMovementResponse> adjustInventory(
             @PathVariable Long variantId,
-            @RequestParam Integer quantity,
-            @RequestParam String movementType,
-            @RequestParam String reason) {
+            @Valid @RequestBody InventoryAdjustmentRequest request) {
         return ResponseEntity.ok(InventoryMovementResponse.fromEntity(inventoryService.adjustInventory(
-                variantId, quantity, MovementType.valueOf(movementType), reason)));
+                variantId, request.getQuantity(), request.getMovementType(), request.getReason())));
+    }
+
+    @PatchMapping("/variants/{variantId}/threshold")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('INVENTORY_MANAGER')")
+    public ResponseEntity<ProductResponse.VariantSummary> updateThreshold(
+            @PathVariable Long variantId, @Valid @RequestBody UpdateLowStockThresholdRequest request) {
+        return ResponseEntity.ok(ProductResponse.VariantSummary.fromEntity(
+                inventoryService.updateLowStockThreshold(variantId, request.getLowStockThreshold())));
     }
 
     @GetMapping("/variants/{variantId}/movements")

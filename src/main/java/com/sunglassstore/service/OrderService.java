@@ -18,5 +18,6 @@ public interface OrderService {
     Page<AdminOrderResponse> getAllOrdersForAdmin(Pageable pageable);
     Page<AdminOrderResponse> getUserOrdersForCustomer(Long userId, Pageable pageable);
     AdminOrderResponse getOrderForAdmin(Long orderId);
+    AdminOrderResponse getUserOrderForCustomer(Long userId, Long orderId);
     AdminOrderResponse updateOrderStatusForAdmin(Long orderId, OrderStatus status, String note);
 }

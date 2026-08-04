@@ -17,6 +17,8 @@ public interface CouponService {
 
     void deleteCoupon(Long couponId);
 
+    Coupon setCouponActive(Long couponId, boolean active);
+
     Page<Coupon> getAllCoupons(Pageable pageable);
 
     CouponValidationResponse validateCoupon(Long userId, ValidateCouponRequest request);

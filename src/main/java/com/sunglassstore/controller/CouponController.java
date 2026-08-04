@@ -55,4 +55,11 @@ public class CouponController {
         couponService.deleteCoupon(couponId);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{couponId}/active")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Coupon> setCouponActive(@PathVariable Long couponId,
+                                                   @RequestParam boolean active) {
+        return ResponseEntity.ok(couponService.setCouponActive(couponId, active));
+    }
 }

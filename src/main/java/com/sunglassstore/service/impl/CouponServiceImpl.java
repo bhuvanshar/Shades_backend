@@ -4,12 +4,16 @@ import com.sunglassstore.dto.request.CreateCouponRequest;
 import com.sunglassstore.dto.request.ValidateCouponRequest;
 import com.sunglassstore.dto.response.CouponValidationResponse;
 import com.sunglassstore.entity.Coupon;
+import com.sunglassstore.entity.Cart;
+import com.sunglassstore.entity.CartItem;
 import com.sunglassstore.entity.enums.DiscountType;
+import com.sunglassstore.entity.enums.CartStatus;
 import com.sunglassstore.exception.ConflictException;
 import com.sunglassstore.exception.InvalidCouponException;
 import com.sunglassstore.exception.ResourceNotFoundException;
 import com.sunglassstore.repository.CouponRepository;
 import com.sunglassstore.repository.CouponUsageRepository;
+import com.sunglassstore.repository.CartRepository;
 import com.sunglassstore.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,15 +31,18 @@ public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;
     private final CouponUsageRepository couponUsageRepository;
+    private final CartRepository cartRepository;
 
     @Override
     @Transactional
     public Coupon createCoupon(CreateCouponRequest request) {
-        if (couponRepository.existsByCouponCodeIgnoreCase(request.getCouponCode())) {
-            throw new ConflictException("Coupon code already exists: " + request.getCouponCode());
+        String normalizedCode = normalizeCode(request.getCouponCode());
+        if (couponRepository.existsByCouponCodeIgnoreCase(normalizedCode)) {
+            throw new ConflictException("Coupon code already exists: " + normalizedCode);
         }
 
         Coupon coupon = new Coupon();
+        validateCampaign(request);
         mapRequestToCoupon(request, coupon);
         return couponRepository.save(coupon);
     }
@@ -45,6 +52,11 @@ public class CouponServiceImpl implements CouponService {
     public Coupon updateCoupon(Long couponId, CreateCouponRequest request) {
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new ResourceNotFoundException("Coupon not found"));
+        String normalizedCode = normalizeCode(request.getCouponCode());
+        if (couponRepository.existsByCouponCodeIgnoreCaseAndCouponIdNot(normalizedCode, couponId)) {
+            throw new ConflictException("Coupon code already exists: " + normalizedCode);
+        }
+        validateCampaign(request);
         mapRequestToCoupon(request, coupon);
         return couponRepository.save(coupon);
     }
@@ -59,6 +71,15 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    @Transactional
+    public Coupon setCouponActive(Long couponId, boolean active) {
+        Coupon coupon = couponRepository.findById(couponId)
+                .orElseThrow(() -> new ResourceNotFoundException("Coupon not found"));
+        coupon.setIsActive(active);
+        return couponRepository.save(coupon);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Page<Coupon> getAllCoupons(Pageable pageable) {
         return couponRepository.findAllByOrderByCouponIdDesc(pageable);
@@ -69,6 +90,23 @@ public class CouponServiceImpl implements CouponService {
     public CouponValidationResponse validateCoupon(Long userId, ValidateCouponRequest request) {
         Coupon coupon = couponRepository.findByCouponCodeIgnoreCase(request.getCouponCode())
                 .orElseThrow(() -> new InvalidCouponException("Coupon not found: " + request.getCouponCode()));
+
+        Cart cart = cartRepository.findByUserUserIdAndCartStatus(userId, CartStatus.ACTIVE)
+                .orElseThrow(() -> new InvalidCouponException("Your cart is empty"));
+        BigDecimal orderAmount = BigDecimal.ZERO;
+        int itemQuantity = 0;
+        for (CartItem item : cart.getItems()) {
+            if (item.getQuantity() == null || item.getQuantity() <= 0 || item.getVariant() == null
+                    || item.getVariant().getPrice() == null) {
+                throw new InvalidCouponException("Your cart contains an invalid item");
+            }
+            orderAmount = orderAmount.add(item.getVariant().getPrice()
+                    .multiply(BigDecimal.valueOf(item.getQuantity())));
+            itemQuantity += item.getQuantity();
+        }
+        if (itemQuantity == 0 || orderAmount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidCouponException("Your cart is empty");
+        }
 
         // Check active
         if (!Boolean.TRUE.equals(coupon.getIsActive())) {
@@ -82,7 +120,7 @@ public class CouponServiceImpl implements CouponService {
         }
 
         // Check minimum order amount
-        if (request.getOrderAmount().compareTo(coupon.getMinimumOrderAmount()) < 0) {
+        if (orderAmount.compareTo(coupon.getMinimumOrderAmount()) < 0) {
             throw new InvalidCouponException(
                     "Minimum order amount is " + coupon.getMinimumOrderAmount());
         }
@@ -105,12 +143,11 @@ public class CouponServiceImpl implements CouponService {
         }
 
         if (coupon.getDiscountType() == DiscountType.PAIR_FIXED &&
-                (request.getItemQuantity() == null || request.getItemQuantity() < 2)) {
+                itemQuantity < 2) {
             throw new InvalidCouponException("Add at least 2 units to use this offer");
         }
 
-        BigDecimal discount = calculateDiscount(coupon, request.getOrderAmount(),
-                request.getItemQuantity() == null ? 0 : request.getItemQuantity());
+        BigDecimal discount = calculateDiscount(coupon, orderAmount, itemQuantity);
 
         return new CouponValidationResponse(true, coupon.getCouponCode(),
                 coupon.getDiscountType().name(), coupon.getDiscountValue(),
@@ -151,8 +188,9 @@ public class CouponServiceImpl implements CouponService {
     }
 
     private void mapRequestToCoupon(CreateCouponRequest request, Coupon coupon) {
-        coupon.setCouponCode(request.getCouponCode().toUpperCase().trim());
-        coupon.setDescription(request.getDescription());
+        coupon.setCouponCode(normalizeCode(request.getCouponCode()));
+        coupon.setDescription(request.getDescription() == null || request.getDescription().isBlank()
+                ? null : request.getDescription().trim());
         coupon.setDiscountType(DiscountType.valueOf(request.getDiscountType()));
         coupon.setDiscountValue(request.getDiscountValue());
         coupon.setMinimumOrderAmount(request.getMinimumOrderAmount());
@@ -161,5 +199,24 @@ public class CouponServiceImpl implements CouponService {
         coupon.setUsageLimitPerUser(request.getUsageLimitPerUser());
         coupon.setValidFrom(request.getValidFrom());
         coupon.setValidTo(request.getValidTo());
+    }
+
+    private String normalizeCode(String code) {
+        return code.trim().toUpperCase();
+    }
+
+    private void validateCampaign(CreateCouponRequest request) {
+        if (!request.getValidTo().isAfter(request.getValidFrom())) {
+            throw new com.sunglassstore.exception.BadRequestException("Offer end date must be later than its start date");
+        }
+        if ("PERCENTAGE".equals(request.getDiscountType())
+                && request.getDiscountValue().compareTo(BigDecimal.valueOf(100)) > 0) {
+            throw new com.sunglassstore.exception.BadRequestException("Percentage discount cannot exceed 100%");
+        }
+        if (request.getUsageLimit() != null && request.getUsageLimitPerUser() != null
+                && request.getUsageLimitPerUser() > request.getUsageLimit()) {
+            throw new com.sunglassstore.exception.BadRequestException(
+                    "Per-customer usage limit cannot exceed total usage limit");
+        }
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +22,7 @@ public class EmailOutboxDeliveryService {
     @Transactional
     public boolean deliverNext() {
         EmailOutbox email = repository
-                .findFirstByStatusInAndNextAttemptAtLessThanEqualOrderByCreatedAtAsc(
-                        List.of(EmailOutboxStatus.PENDING, EmailOutboxStatus.RETRY), LocalDateTime.now())
+                .findNextDueForUpdate(LocalDateTime.now())
                 .orElse(null);
         if (email == null) return false;
 
@@ -48,7 +46,10 @@ public class EmailOutboxDeliveryService {
             email.setLastError(truncate(exception.getMessage()));
             if (attempts >= maxAttempts) {
                 email.setStatus(EmailOutboxStatus.FAILED);
-                scrubPayload(email);
+                // Expiring messages contain time-sensitive secrets (for example reset links).
+                // Normal notifications retain their payload after terminal failure so an
+                // authorized operator can safely re-queue them.
+                if (email.getExpiresAt() != null) scrubPayload(email);
             } else {
                 email.setStatus(EmailOutboxStatus.RETRY);
                 long delayMinutes = Math.min(1L << Math.min(attempts - 1, 10), 24L * 60L);

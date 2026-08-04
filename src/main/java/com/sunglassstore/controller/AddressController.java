@@ -2,6 +2,7 @@ package com.sunglassstore.controller;
 
 import com.sunglassstore.dto.request.AddressRequest;
 import com.sunglassstore.entity.Address;
+import com.sunglassstore.dto.response.AddressResponse;
 import com.sunglassstore.security.SecurityUser;
 import com.sunglassstore.service.AddressService;
 import jakarta.validation.Valid;
@@ -21,22 +22,23 @@ public class AddressController {
     private final AddressService addressService;
 
     @GetMapping
-    public ResponseEntity<List<Address>> getAddresses(@AuthenticationPrincipal SecurityUser principal) {
-        return ResponseEntity.ok(addressService.getUserAddresses(principal.getUserId()));
+    public ResponseEntity<List<AddressResponse>> getAddresses(@AuthenticationPrincipal SecurityUser principal) {
+        return ResponseEntity.ok(addressService.getUserAddresses(principal.getUserId()).stream()
+                .map(AddressResponse::fromEntity).toList());
     }
 
     @PostMapping
-    public ResponseEntity<Address> createAddress(@AuthenticationPrincipal SecurityUser principal,
+    public ResponseEntity<AddressResponse> createAddress(@AuthenticationPrincipal SecurityUser principal,
                                                   @Valid @RequestBody AddressRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(addressService.createAddress(principal.getUserId(), request));
+                .body(AddressResponse.fromEntity(addressService.createAddress(principal.getUserId(), request)));
     }
 
     @PutMapping("/{addressId}")
-    public ResponseEntity<Address> updateAddress(@AuthenticationPrincipal SecurityUser principal,
+    public ResponseEntity<AddressResponse> updateAddress(@AuthenticationPrincipal SecurityUser principal,
                                                   @PathVariable Long addressId,
                                                   @Valid @RequestBody AddressRequest request) {
-        return ResponseEntity.ok(addressService.updateAddress(principal.getUserId(), addressId, request));
+        return ResponseEntity.ok(AddressResponse.fromEntity(addressService.updateAddress(principal.getUserId(), addressId, request)));
     }
 
     @DeleteMapping("/{addressId}")
@@ -47,8 +49,8 @@ public class AddressController {
     }
 
     @PatchMapping("/{addressId}/default")
-    public ResponseEntity<Address> setDefault(@AuthenticationPrincipal SecurityUser principal,
+    public ResponseEntity<AddressResponse> setDefault(@AuthenticationPrincipal SecurityUser principal,
                                                @PathVariable Long addressId) {
-        return ResponseEntity.ok(addressService.setDefault(principal.getUserId(), addressId));
+        return ResponseEntity.ok(AddressResponse.fromEntity(addressService.setDefault(principal.getUserId(), addressId)));
     }
 }

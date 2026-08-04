@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -13,9 +15,12 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Iterator;
 
 @Service
 public class LocalImageStorageService {
+    private static final int MAX_DIMENSION = 8_000;
+    private static final long MAX_PIXELS = 40_000_000L;
     private static final Map<String, String> EXTENSIONS = Map.of(
             "image/jpeg", ".jpg", "image/png", ".png", "image/gif", ".gif");
     private final Path uploadRoot;
@@ -32,8 +37,30 @@ public class LocalImageStorageService {
         String contentType = file.getContentType();
         String extension = EXTENSIONS.get(contentType);
         if (extension == null) throw new BadRequestException("Only JPEG, PNG and GIF images are supported");
-        try (InputStream validationStream = file.getInputStream()) {
-            if (ImageIO.read(validationStream) == null) throw new BadRequestException("The uploaded file is not a valid image");
+        try (InputStream validationStream = file.getInputStream();
+             ImageInputStream imageInput = ImageIO.createImageInputStream(validationStream)) {
+            if (imageInput == null) throw new BadRequestException("The uploaded file is not a valid image");
+            Iterator<ImageReader> readers = ImageIO.getImageReaders(imageInput);
+            if (!readers.hasNext()) throw new BadRequestException("The uploaded file is not a valid image");
+            ImageReader reader = readers.next();
+            try {
+                reader.setInput(imageInput, true, true);
+                int width = reader.getWidth(0);
+                int height = reader.getHeight(0);
+                if (width <= 0 || height <= 0 || width > MAX_DIMENSION || height > MAX_DIMENSION
+                        || (long) width * height > MAX_PIXELS) {
+                    throw new BadRequestException("Image dimensions are too large");
+                }
+                String format = reader.getFormatName().toLowerCase();
+                boolean typeMatches = ("image/jpeg".equals(contentType) && ("jpeg".equals(format) || "jpg".equals(format)))
+                        || ("image/png".equals(contentType) && "png".equals(format))
+                        || ("image/gif".equals(contentType) && "gif".equals(format));
+                if (!typeMatches || reader.read(0) == null) {
+                    throw new BadRequestException("The uploaded file type does not match its image content");
+                }
+            } finally {
+                reader.dispose();
+            }
         } catch (IOException ex) {
             throw new BadRequestException("The uploaded image could not be read");
         }

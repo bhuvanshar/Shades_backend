@@ -6,14 +6,15 @@ import com.sunglassstore.entity.CartItem;
 import com.sunglassstore.entity.ProductVariant;
 import com.sunglassstore.entity.User;
 import com.sunglassstore.entity.enums.CartStatus;
+import com.sunglassstore.dto.response.CartResponse;
 import com.sunglassstore.exception.BadRequestException;
 import com.sunglassstore.exception.InsufficientInventoryException;
 import com.sunglassstore.exception.ResourceNotFoundException;
 import com.sunglassstore.repository.CartItemRepository;
 import com.sunglassstore.repository.CartRepository;
 import com.sunglassstore.repository.ProductVariantRepository;
+import com.sunglassstore.repository.UserRepository;
 import com.sunglassstore.service.CartService;
-import com.sunglassstore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +28,19 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final ProductVariantRepository variantRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
-    public Cart getOrCreateCart(Long userId) {
-        return cartRepository.findByUserUserIdAndCartStatus(userId, CartStatus.ACTIVE)
+    public CartResponse getOrCreateCart(Long userId) {
+        return CartResponse.fromEntity(getOrCreateCartEntity(userId));
+    }
+
+    private Cart getOrCreateCartEntity(Long userId) {
+        User user = userRepository.findByIdForUpdate(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return cartRepository.findByUserUserIdAndCartStatusForUpdate(userId, CartStatus.ACTIVE)
                 .orElseGet(() -> {
-                    User user = userService.findById(userId);
                     Cart cart = new Cart();
                     cart.setUser(user);
                     cart.setCartStatus(CartStatus.ACTIVE);
@@ -44,8 +50,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public Cart addItem(Long userId, CartItemRequest request) {
-        Cart cart = getOrCreateCart(userId);
+    public CartResponse addItem(Long userId, CartItemRequest request) {
+        Cart cart = getOrCreateCartEntity(userId);
         ProductVariant variant = validateVariant(request.getVariantId(), request.getQuantity());
 
         Optional<CartItem> existing = cartItemRepository
@@ -63,52 +69,59 @@ public class CartServiceImpl implements CartService {
             item.setVariant(variant);
             item.setQuantity(request.getQuantity());
             cartItemRepository.save(item);
+            cart.getItems().add(item);
         }
 
-        return cartRepository.findById(cart.getCartId()).orElse(cart);
+        return CartResponse.fromEntity(cart);
     }
 
     @Override
     @Transactional
-    public Cart updateItemQuantity(Long userId, Long variantId, Integer quantity) {
-        Cart cart = getOrCreateCart(userId);
+    public CartResponse updateItemQuantity(Long userId, Long variantId, Integer quantity) {
+        Cart cart = getOrCreateCartEntity(userId);
         CartItem item = cartItemRepository.findByCartCartIdAndVariantVariantId(cart.getCartId(), variantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Item not found in cart"));
 
+        if (quantity == null) {
+            throw new BadRequestException("Quantity is required");
+        }
         if (quantity <= 0) {
             cartItemRepository.delete(item);
+            cart.getItems().remove(item);
         } else {
             validateInventory(item.getVariant(), quantity);
             item.setQuantity(quantity);
             cartItemRepository.save(item);
         }
 
-        return cartRepository.findById(cart.getCartId()).orElse(cart);
+        return CartResponse.fromEntity(cart);
     }
 
     @Override
     @Transactional
-    public Cart removeItem(Long userId, Long variantId) {
-        Cart cart = getOrCreateCart(userId);
+    public CartResponse removeItem(Long userId, Long variantId) {
+        Cart cart = getOrCreateCartEntity(userId);
         CartItem item = cartItemRepository.findByCartCartIdAndVariantVariantId(cart.getCartId(), variantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Item not found in cart"));
         cartItemRepository.delete(item);
-        return cartRepository.findById(cart.getCartId()).orElse(cart);
+        cart.getItems().remove(item);
+        return CartResponse.fromEntity(cart);
     }
 
     @Override
     @Transactional
-    public Cart clearCart(Long userId) {
-        Cart cart = getOrCreateCart(userId);
+    public CartResponse clearCart(Long userId) {
+        Cart cart = getOrCreateCartEntity(userId);
         cart.getItems().clear();
-        return cartRepository.save(cart);
+        return CartResponse.fromEntity(cartRepository.save(cart));
     }
 
     private ProductVariant validateVariant(Long variantId, int quantity) {
+        if (quantity <= 0) throw new BadRequestException("Quantity must be at least 1");
         ProductVariant variant = variantRepository.findById(variantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product variant not found"));
 
-        if (!Boolean.TRUE.equals(variant.getProduct().getIsActive())) {
+        if (!Boolean.TRUE.equals(variant.getIsActive()) || !Boolean.TRUE.equals(variant.getProduct().getIsActive())) {
             throw new BadRequestException("This product is no longer available");
         }
 

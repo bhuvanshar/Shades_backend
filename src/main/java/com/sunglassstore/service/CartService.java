@@ -1,12 +1,12 @@
 package com.sunglassstore.service;
 
 import com.sunglassstore.dto.request.CartItemRequest;
-import com.sunglassstore.entity.Cart;
+import com.sunglassstore.dto.response.CartResponse;
 
 public interface CartService {
-    Cart getOrCreateCart(Long userId);
-    Cart addItem(Long userId, CartItemRequest request);
-    Cart updateItemQuantity(Long userId, Long variantId, Integer quantity);
-    Cart removeItem(Long userId, Long variantId);
-    Cart clearCart(Long userId);
+    CartResponse getOrCreateCart(Long userId);
+    CartResponse addItem(Long userId, CartItemRequest request);
+    CartResponse updateItemQuantity(Long userId, Long variantId, Integer quantity);
+    CartResponse removeItem(Long userId, Long variantId);
+    CartResponse clearCart(Long userId);
 }

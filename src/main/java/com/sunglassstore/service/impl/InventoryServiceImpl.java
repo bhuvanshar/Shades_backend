@@ -24,24 +24,43 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     @Transactional
     public InventoryMovement adjustInventory(Long variantId, Integer quantity, MovementType type, String reason) {
+        if (quantity == null || quantity == 0) {
+            throw new BadRequestException("Quantity change must not be zero");
+        }
+        if (type != MovementType.PURCHASE && type != MovementType.ADJUSTMENT) {
+            throw new BadRequestException("Manual inventory changes must be PURCHASE or ADJUSTMENT");
+        }
         ProductVariant variant = variantRepository.findByIdForUpdate(variantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product variant not found"));
 
-        int newStock = variant.getQuantityAvailable() + quantity;
+        long newStock = (long) variant.getQuantityAvailable() + quantity;
         if (newStock < 0) {
             throw new BadRequestException("Adjustment would result in negative stock");
         }
+        if (newStock > Integer.MAX_VALUE) throw new BadRequestException("Adjustment would exceed the stock limit");
 
-        variant.setQuantityAvailable(newStock);
+        variant.setQuantityAvailable((int) newStock);
         variantRepository.save(variant);
 
         InventoryMovement movement = new InventoryMovement();
         movement.setVariant(variant);
         movement.setMovementType(type);
         movement.setQuantityChange(quantity);
-        movement.setNotes(reason);
+        movement.setNotes(reason.trim());
 
         return movementRepository.save(movement);
+    }
+
+    @Override
+    @Transactional
+    public ProductVariant updateLowStockThreshold(Long variantId, Integer threshold) {
+        if (threshold == null || threshold < 0 || threshold > 1_000_000) {
+            throw new BadRequestException("Low-stock threshold must be between 0 and 1000000");
+        }
+        ProductVariant variant = variantRepository.findByIdForUpdate(variantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product variant not found"));
+        variant.setLowStockThreshold(threshold);
+        return variantRepository.save(variant);
     }
 
     @Override

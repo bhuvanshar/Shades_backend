@@ -14,6 +14,8 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     Optional<Address> findByAddressIdAndUserUserId(Long addressId, Long userId);
 
+    boolean existsByUserUserId(Long userId);
+
     @Modifying
     @Query("UPDATE Address a SET a.isDefault = false WHERE a.user.userId = :userId AND a.addressId <> :addressId")
     void clearDefaultForUser(Long userId, Long addressId);

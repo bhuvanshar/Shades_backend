@@ -7,6 +7,8 @@ import com.sunglassstore.exception.BadRequestException;
 import com.sunglassstore.repository.AddressRepository;
 import com.sunglassstore.repository.OrderRepository;
 import com.sunglassstore.repository.UserRepository;
+import com.sunglassstore.repository.RefreshTokenRepository;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ public class AdminCustomerService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final AddressRepository addressRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional(readOnly = true)
     public Page<AdminCustomerResponse> getCustomers(Pageable pageable) {
@@ -39,7 +42,19 @@ public class AdminCustomerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         rejectAdministrator(user);
         user.setIsActive(active);
+        if (!active) {
+            user.setPasswordChangedAt(nextCredentialVersion(user.getPasswordChangedAt()));
+            refreshTokenRepository.revokeAllByUserId(userId);
+        }
         return toResponse(userRepository.save(user));
+    }
+
+    private LocalDateTime nextCredentialVersion(LocalDateTime currentVersion) {
+        LocalDateTime now = LocalDateTime.now();
+        if (currentVersion != null && !now.isAfter(currentVersion.plusSeconds(1))) {
+            return currentVersion.plusSeconds(1);
+        }
+        return now;
     }
 
     private AdminCustomerResponse toResponse(User user) {

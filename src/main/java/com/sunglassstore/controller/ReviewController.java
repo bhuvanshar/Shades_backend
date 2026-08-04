@@ -2,7 +2,9 @@ package com.sunglassstore.controller;
 
 import com.sunglassstore.dto.request.CreateReviewRequest;
 import com.sunglassstore.dto.request.UpdateReviewRequest;
+import com.sunglassstore.dto.request.ModerateReviewRequest;
 import com.sunglassstore.dto.response.ReviewResponse;
+import com.sunglassstore.dto.response.AdminReviewResponse;
 import com.sunglassstore.entity.enums.ReviewStatus;
 import com.sunglassstore.security.SecurityUser;
 import com.sunglassstore.service.ReviewService;
@@ -66,7 +68,16 @@ public class ReviewController {
     @PatchMapping("/admin/{reviewId}/status")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPPORT')")
     public ResponseEntity<ReviewResponse> updateReviewStatus(@PathVariable Long reviewId,
-                                                      @RequestParam String status) {
-        return ResponseEntity.ok(reviewService.updateReviewStatus(reviewId, ReviewStatus.valueOf(status)));
+                                                      @Valid @RequestBody ModerateReviewRequest request) {
+        return ResponseEntity.ok(reviewService.updateReviewStatus(reviewId, request.getStatus()));
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPPORT')")
+    public ResponseEntity<Page<AdminReviewResponse>> getReviewsForModeration(
+            @RequestParam(required = false) ReviewStatus status,
+            @RequestParam(defaultValue = "") String search,
+            Pageable pageable) {
+        return ResponseEntity.ok(reviewService.getReviewsForModeration(status, search, pageable));
     }
 }

@@ -5,16 +5,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
 import jakarta.persistence.LockModeType;
 
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmailIgnoreCase(String email);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT u FROM User u WHERE u.userId = :userId")
+    Optional<User> findByIdForUpdate(@Param("userId") Long userId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT u FROM User u WHERE LOWER(u.email) = LOWER(:email)")
@@ -24,6 +30,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.userId = :userId")
     Optional<User> findByIdWithRoles(@Param("userId") Long userId);
 
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("UPDATE User u SET u.name = :name, u.phoneNumber = :phoneNumber, " +
+            "u.updatedAt = CURRENT_TIMESTAMP WHERE u.userId = :userId")
+    int updateEditableProfile(@Param("userId") Long userId, @Param("name") String name,
+                              @Param("phoneNumber") String phoneNumber);
+
     boolean existsByEmailIgnoreCase(String email);
 
     @EntityGraph(attributePaths = {"roles"})
@@ -32,4 +44,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             countQuery = "SELECT COUNT(DISTINCT u) FROM User u JOIN u.roles r WHERE r.roleName = 'CUSTOMER' " +
                     "AND NOT EXISTS (SELECT 1 FROM User u2 JOIN u2.roles ar WHERE u2 = u AND ar.roleName = 'ADMIN')")
     Page<User> findCustomers(Pageable pageable);
+
+    @Query("SELECT DISTINCT u FROM User u JOIN u.roles r WHERE r.roleName IN :roleNames AND u.isActive = true")
+    List<User> findActiveUsersByRoleNames(@Param("roleNames") java.util.Collection<String> roleNames);
 }

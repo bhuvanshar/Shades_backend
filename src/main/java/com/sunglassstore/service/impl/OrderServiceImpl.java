@@ -10,29 +10,31 @@ import com.sunglassstore.exception.ResourceNotFoundException;
 import com.sunglassstore.repository.*;
 import com.sunglassstore.service.CouponService;
 import com.sunglassstore.service.OrderService;
+import com.sunglassstore.email.event.OrderCancelledEmailRequested;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.LockModeType;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
+    private final UserRepository userRepository;
     private final OrderStatusHistoryRepository orderStatusHistoryRepository;
     private final CartRepository cartRepository;
-    private final CartItemRepository cartItemRepository;
     private final AddressRepository addressRepository;
     private final ProductVariantRepository productVariantRepository;
     private final CouponRepository couponRepository;
@@ -40,8 +42,9 @@ public class OrderServiceImpl implements OrderService {
     private final InventoryMovementRepository inventoryMovementRepository;
     private final PaymentRepository paymentRepository;
     private final ShipmentRepository shipmentRepository;
+    private final RefundRepository refundRepository;
     private final CouponService couponService;
-    private final EntityManager entityManager;
+    private final ApplicationEventPublisher eventPublisher;
 
     private static final BigDecimal TAX_RATE = new BigDecimal("18.00"); // 18% GST
     private static final BigDecimal FREE_SHIPPING_THRESHOLD = new BigDecimal("500.00");
@@ -51,8 +54,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order createOrder(Long userId, CreateOrderRequest request) {
 
+        userRepository.findByIdForUpdate(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
         // Step 1: Load the authenticated user's active cart
-        Cart cart = cartRepository.findByUserUserIdAndCartStatus(userId, CartStatus.ACTIVE)
+        Cart cart = cartRepository.findByUserUserIdAndCartStatusForUpdate(userId, CartStatus.ACTIVE)
                 .orElseThrow(() -> new BadRequestException("No active cart found"));
 
         // Step 2: Confirm the cart is not empty
@@ -61,13 +67,21 @@ public class OrderServiceImpl implements OrderService {
             throw new BadRequestException("Cart is empty");
         }
 
-        // Step 3 & 4: Recheck variant availability and current prices
-        for (CartItem item : cartItems) {
-            ProductVariant variant = productVariantRepository.findById(item.getVariant().getVariantId())
+        // Lock every variant in a stable order before reading prices or stock. This prevents
+        // overselling, stale-price orders, and deadlocks between multi-item checkouts.
+        List<CartItem> sortedCartItems = new ArrayList<>(cartItems);
+        sortedCartItems.sort(Comparator.comparing(item -> item.getVariant().getVariantId()));
+        Map<Long, ProductVariant> lockedVariants = new HashMap<>();
+        for (CartItem item : sortedCartItems) {
+            if (item.getQuantity() == null || item.getQuantity() <= 0) {
+                throw new BadRequestException("Cart contains an invalid quantity");
+            }
+            Long variantId = item.getVariant().getVariantId();
+            ProductVariant variant = productVariantRepository.findByIdForUpdate(variantId)
                     .orElseThrow(() -> new BadRequestException(
-                            "Product variant no longer available: " + item.getVariant().getVariantId()));
+                            "Product variant no longer available: " + variantId));
 
-            if (!Boolean.TRUE.equals(variant.getProduct().getIsActive())) {
+            if (!Boolean.TRUE.equals(variant.getIsActive()) || !Boolean.TRUE.equals(variant.getProduct().getIsActive())) {
                 throw new BadRequestException("Product is no longer available: " + variant.getProduct().getProductName());
             }
 
@@ -77,27 +91,32 @@ public class OrderServiceImpl implements OrderService {
                                 + " (SKU: " + variant.getSku() + "). Available: "
                                 + variant.getQuantityAvailable() + ", Requested: " + item.getQuantity());
             }
+            lockedVariants.put(variantId, variant);
         }
 
         // Step 5: Validate shipping address belongs to the user
         Address shippingAddress = addressRepository.findByAddressIdAndUserUserId(
                         request.getShippingAddressId(), userId)
                 .orElseThrow(() -> new BadRequestException("Shipping address not found or does not belong to you"));
+        Address billingAddress = request.getBillingAddressId() == null
+                ? shippingAddress
+                : addressRepository.findByAddressIdAndUserUserId(request.getBillingAddressId(), userId)
+                    .orElseThrow(() -> new BadRequestException("Billing address not found or does not belong to you"));
 
         // Step 6: Validate coupon when supplied
         Coupon coupon = null;
         BigDecimal discountAmount = BigDecimal.ZERO;
 
         if (request.getCouponCode() != null && !request.getCouponCode().isBlank()) {
-            coupon = couponRepository.findByCouponCodeIgnoreCase(request.getCouponCode().trim())
+            coupon = couponRepository.findByCouponCodeIgnoreCaseForUpdate(request.getCouponCode().trim())
                     .orElseThrow(() -> new BadRequestException("Invalid coupon code"));
         }
 
         // Step 7: Calculate subtotal, discount, tax, shipping, total
         BigDecimal subtotal = BigDecimal.ZERO;
         int totalItemQuantity = 0;
-        for (CartItem item : cartItems) {
-            ProductVariant variant = item.getVariant();
+        for (CartItem item : sortedCartItems) {
+            ProductVariant variant = lockedVariants.get(item.getVariant().getVariantId());
             BigDecimal price = variant.getPrice();
             subtotal = subtotal.add(price.multiply(BigDecimal.valueOf(item.getQuantity())));
             totalItemQuantity += item.getQuantity();
@@ -108,8 +127,6 @@ public class OrderServiceImpl implements OrderService {
             com.sunglassstore.dto.request.ValidateCouponRequest validateReq =
                     new com.sunglassstore.dto.request.ValidateCouponRequest();
             validateReq.setCouponCode(coupon.getCouponCode());
-            validateReq.setOrderAmount(subtotal);
-            validateReq.setItemQuantity(totalItemQuantity);
             couponService.validateCoupon(userId, validateReq);
             discountAmount = couponService.calculateDiscount(coupon, subtotal, totalItemQuantity);
         }
@@ -120,6 +137,10 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal shippingAmount = subtotal.compareTo(FREE_SHIPPING_THRESHOLD) >= 0
                 ? BigDecimal.ZERO : STANDARD_SHIPPING;
         BigDecimal totalAmount = taxableAmount.add(taxAmount).add(shippingAmount);
+        if (request.getExpectedTotalAmount().setScale(2, RoundingMode.HALF_UP)
+                .compareTo(totalAmount.setScale(2, RoundingMode.HALF_UP)) != 0) {
+            throw new BadRequestException("Your order total changed. Return to your bag, review the latest prices and offer, then try again.");
+        }
 
         // Step 8: Create the order
         Order order = new Order();
@@ -130,6 +151,8 @@ public class OrderServiceImpl implements OrderService {
         order.setTaxAmount(taxAmount);
         order.setShippingAmount(shippingAmount);
         order.setTotalAmount(totalAmount);
+        order.setShippingAddress(shippingAddress);
+        order.setBillingAddress(billingAddress);
         order.setPurchasedAt(LocalDateTime.now());
         if (coupon != null) {
             order.setCoupon(coupon);
@@ -147,8 +170,8 @@ public class OrderServiceImpl implements OrderService {
 
         // Step 9: Create order items with snapshot data
         List<OrderItem> orderItems = new ArrayList<>();
-        for (CartItem cartItem : cartItems) {
-            ProductVariant variant = cartItem.getVariant();
+        for (CartItem cartItem : sortedCartItems) {
+            ProductVariant variant = lockedVariants.get(cartItem.getVariant().getVariantId());
             Product product = variant.getProduct();
 
             OrderItem orderItem = new OrderItem();
@@ -165,18 +188,9 @@ public class OrderServiceImpl implements OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        // Step 11 & 12: Deduct inventory with pessimistic lock and write movements
-        for (CartItem cartItem : cartItems) {
-            ProductVariant lockedVariant = productVariantRepository.findByIdForUpdate(
-                    cartItem.getVariant().getVariantId())
-                    .orElseThrow(() -> new BadRequestException("Variant not found during inventory deduction"));
-
-            if (lockedVariant.getQuantityAvailable() < cartItem.getQuantity()) {
-                throw new InsufficientInventoryException(
-                        "Insufficient stock for SKU: " + lockedVariant.getSku()
-                                + " during final deduction. Available: " + lockedVariant.getQuantityAvailable());
-            }
-
+        // Step 11 & 12: Deduct the inventory rows already locked above and write movements.
+        for (CartItem cartItem : sortedCartItems) {
+            ProductVariant lockedVariant = lockedVariants.get(cartItem.getVariant().getVariantId());
             lockedVariant.setQuantityAvailable(lockedVariant.getQuantityAvailable() - cartItem.getQuantity());
             productVariantRepository.save(lockedVariant);
 
@@ -202,6 +216,7 @@ public class OrderServiceImpl implements OrderService {
             usage.setCoupon(coupon);
             usage.setUser(cart.getUser());
             usage.setOrder(savedOrder);
+            usage.setDiscountAmount(discountAmount);
             couponUsageRepository.save(usage);
         }
 
@@ -234,7 +249,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order cancelOrder(Long userId, Long orderId) {
-        Order order = orderRepository.findByOrderIdAndUserUserId(orderId, userId)
+        Order order = orderRepository.findByOrderIdAndUserUserIdForUpdate(orderId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
         if (order.getOrderStatus() != OrderStatus.PLACED &&
@@ -242,9 +257,25 @@ public class OrderServiceImpl implements OrderService {
             throw new BadRequestException("Order cannot be cancelled in status: " + order.getOrderStatus());
         }
 
+        OrderStatus oldStatus = order.getOrderStatus();
+        BigDecimal refundAmount = settlePaymentsForCancellation(order);
         order.setOrderStatus(OrderStatus.CANCELLED);
 
-        // Restore inventory
+        restoreInventory(order);
+
+        OrderStatusHistory history = new OrderStatusHistory();
+        history.setOrder(order);
+        history.setOldStatus(oldStatus.name());
+        history.setNewStatus(OrderStatus.CANCELLED.name());
+        history.setNotes("Order cancelled by customer");
+        orderStatusHistoryRepository.save(history);
+        Order saved = orderRepository.save(order);
+        eventPublisher.publishEvent(new OrderCancelledEmailRequested(order.getUser().getEmail(),
+                order.getUser().getName(), order.getOrderId(), refundAmount));
+        return saved;
+    }
+
+    private void restoreInventory(Order order) {
         for (OrderItem item : order.getItems()) {
             ProductVariant lockedVariant = productVariantRepository.findByIdForUpdate(
                     item.getVariant().getVariantId())
@@ -261,14 +292,6 @@ public class OrderServiceImpl implements OrderService {
             movement.setNotes("Order #" + order.getOrderId() + " cancelled");
             inventoryMovementRepository.save(movement);
         }
-
-        OrderStatusHistory history = new OrderStatusHistory();
-        history.setOrder(order);
-        history.setNewStatus(OrderStatus.CANCELLED.name());
-        history.setNotes("Order cancelled by customer");
-        orderStatusHistoryRepository.save(history);
-
-        return orderRepository.save(order);
     }
 
     @Override
@@ -287,11 +310,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order updateOrderStatus(Long orderId, OrderStatus status, String note) {
-        Order order = orderRepository.findById(orderId)
+        Order order = orderRepository.findByIdForUpdate(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
         OrderStatus oldStatus = order.getOrderStatus();
         validateTransition(oldStatus, status);
+        if (status == OrderStatus.CANCELLED) {
+            BigDecimal refundAmount = settlePaymentsForCancellation(order);
+            restoreInventory(order);
+            eventPublisher.publishEvent(new OrderCancelledEmailRequested(order.getUser().getEmail(),
+                    order.getUser().getName(), order.getOrderId(), refundAmount));
+        }
         order.setOrderStatus(status);
         if (status == OrderStatus.DELIVERED) order.setDeliveredAt(LocalDateTime.now());
 
@@ -325,6 +354,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public AdminOrderResponse getUserOrderForCustomer(Long userId, Long orderId) {
+        return toAdminResponse(getUserOrder(userId, orderId));
+    }
+
+    @Override
     @Transactional
     public AdminOrderResponse updateOrderStatusForAdmin(Long orderId, OrderStatus status, String note) {
         return toAdminResponse(updateOrderStatus(orderId, status, note));
@@ -339,7 +374,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void validateTransition(OrderStatus current, OrderStatus next) {
-        if (current == next) return;
+        if (current == next) throw new BadRequestException("Order is already in status " + current);
         boolean valid = switch (current) {
             case PLACED -> next == OrderStatus.CONFIRMED || next == OrderStatus.CANCELLED;
             case CONFIRMED -> next == OrderStatus.PROCESSING || next == OrderStatus.CANCELLED;
@@ -349,5 +384,42 @@ public class OrderServiceImpl implements OrderService {
             case CANCELLED, RETURNED -> false;
         };
         if (!valid) throw new BadRequestException("Invalid order status transition: " + current + " to " + next);
+    }
+
+    private BigDecimal settlePaymentsForCancellation(Order order) {
+        BigDecimal refunded = BigDecimal.ZERO;
+        for (Payment paymentView : paymentRepository.findByOrderOrderIdOrderByCreatedAtDesc(order.getOrderId())) {
+            Payment payment = paymentRepository.findByIdForUpdate(paymentView.getPaymentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Payment not found during cancellation"));
+            if (payment.getPaymentStatus() == PaymentStatus.PENDING
+                    || payment.getPaymentStatus() == PaymentStatus.AUTHORIZED) {
+                payment.setPaymentStatus(PaymentStatus.CANCELLED);
+                paymentRepository.save(payment);
+                continue;
+            }
+            if (payment.getPaymentStatus() != PaymentStatus.PAID
+                    && payment.getPaymentStatus() != PaymentStatus.PARTIALLY_REFUNDED) continue;
+
+            BigDecimal alreadyRefunded = refundRepository.sumRefundedByPaymentId(payment.getPaymentId());
+            if (alreadyRefunded == null) alreadyRefunded = BigDecimal.ZERO;
+            BigDecimal remaining = payment.getAmount().subtract(alreadyRefunded).max(BigDecimal.ZERO);
+            if (remaining.signum() == 0) {
+                payment.setPaymentStatus(PaymentStatus.REFUNDED);
+                paymentRepository.save(payment);
+                continue;
+            }
+            Refund refund = new Refund();
+            refund.setPayment(payment);
+            refund.setRefundAmount(remaining);
+            refund.setRefundStatus(RefundStatus.COMPLETED);
+            refund.setReason("Order cancelled before fulfilment");
+            refund.setProviderReference("CANCEL-" + order.getOrderId() + "-" + payment.getPaymentId());
+            refund.setProcessedAt(LocalDateTime.now());
+            refundRepository.save(refund);
+            payment.setPaymentStatus(PaymentStatus.REFUNDED);
+            paymentRepository.save(payment);
+            refunded = refunded.add(remaining);
+        }
+        return refunded;
     }
 }

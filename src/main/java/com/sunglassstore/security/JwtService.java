@@ -48,6 +48,7 @@ public class JwtService {
                 .claim("name", user.getName())
                 .claim("roles", roles)
                 .claim("authorities", permissions)
+                .claim("pwd", user.getPasswordVersion())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
                 .signWith(signingKey)
@@ -66,6 +67,20 @@ public class JwtService {
         try {
             Claims claims = extractClaims(token);
             return !claims.getExpiration().before(new Date());
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public boolean isTokenValid(String token, SecurityUser user) {
+        try {
+            Claims claims = extractClaims(token);
+            Number passwordVersion = claims.get("pwd", Number.class);
+            return user.isEnabled() && user.isAccountNonLocked()
+                    && user.getUsername().equalsIgnoreCase(claims.getSubject())
+                    && !claims.getExpiration().before(new Date())
+                    && passwordVersion != null
+                    && passwordVersion.longValue() == user.getPasswordVersion();
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 import com.sunglassstore.dto.response.ReviewableVariantResponse;
+import com.sunglassstore.dto.response.AdminReviewResponse;
 
 public interface ReviewService {
     ReviewResponse createReview(Long userId, CreateReviewRequest request);
@@ -17,4 +18,5 @@ public interface ReviewService {
     List<ReviewResponse> getMyProductReviews(Long userId, Long productId);
     List<ReviewableVariantResponse> getReviewableVariants(Long userId, Long productId);
     ReviewResponse updateReviewStatus(Long reviewId, ReviewStatus status);
+    Page<AdminReviewResponse> getReviewsForModeration(ReviewStatus status, String search, Pageable pageable);
 }

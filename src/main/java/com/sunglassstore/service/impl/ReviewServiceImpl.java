@@ -3,6 +3,7 @@ package com.sunglassstore.service.impl;
 import com.sunglassstore.dto.request.CreateReviewRequest;
 import com.sunglassstore.dto.request.UpdateReviewRequest;
 import com.sunglassstore.dto.response.ReviewResponse;
+import com.sunglassstore.dto.response.AdminReviewResponse;
 import com.sunglassstore.entity.Product;
 import com.sunglassstore.entity.Review;
 import com.sunglassstore.entity.User;
@@ -17,6 +18,8 @@ import com.sunglassstore.repository.UserRepository;
 import com.sunglassstore.repository.ReturnItemRepository;
 import com.sunglassstore.repository.RefundRepository;
 import com.sunglassstore.service.ReviewService;
+import com.sunglassstore.service.NotificationService;
+import com.sunglassstore.entity.enums.NotificationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +40,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final OrderItemRepository orderItemRepository;
     private final ReturnItemRepository returnItemRepository;
     private final RefundRepository refundRepository;
+    private final NotificationService notificationService;
+    private final com.sunglassstore.service.CommunicationPreferenceService communicationPreferences;
 
     @Override
     @Transactional
@@ -64,7 +69,7 @@ public class ReviewServiceImpl implements ReviewService {
         review.setOrderItem(orderItem);
         review.setRating(request.getRating());
         review.setReviewText(cleanReviewText(request.getReviewText()));
-        review.setReviewStatus(ReviewStatus.APPROVED);
+        review.setReviewStatus(ReviewStatus.PENDING);
 
         return ReviewResponse.fromEntity(reviewRepository.save(review));
     }
@@ -77,7 +82,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         review.setRating(request.getRating());
         review.setReviewText(cleanReviewText(request.getReviewText()));
-        review.setReviewStatus(ReviewStatus.APPROVED);
+        review.setReviewStatus(ReviewStatus.PENDING);
 
         return ReviewResponse.fromEntity(reviewRepository.save(review));
     }
@@ -116,10 +121,33 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public ReviewResponse updateReviewStatus(Long reviewId, ReviewStatus status) {
+        if (status == null || status == ReviewStatus.PENDING) {
+            throw new BadRequestException("A review can only be approved or rejected during moderation");
+        }
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ResourceNotFoundException("Review not found"));
+        if (review.getReviewStatus() == status) {
+            throw new BadRequestException("Review is already " + status.name().toLowerCase());
+        }
         review.setReviewStatus(status);
-        return ReviewResponse.fromEntity(reviewRepository.save(review));
+        Review saved = reviewRepository.save(review);
+        if (communicationPreferences.allowsInApp(saved.getUser().getUserId(),
+                com.sunglassstore.service.CommunicationPreferenceService.Topic.REVIEW)) {
+        notificationService.createNotification(saved.getUser().getUserId(), NotificationType.IN_APP,
+                "Review " + status.name().toLowerCase() + " · Product #" + saved.getProduct().getProductId(),
+                status == ReviewStatus.APPROVED
+                        ? "Your review for " + saved.getProduct().getProductName() + " is now visible to shoppers."
+                        : "Your review for " + saved.getProduct().getProductName() + " was not published. You can edit and resubmit it.");
+        }
+        return ReviewResponse.fromEntity(saved);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<AdminReviewResponse> getReviewsForModeration(ReviewStatus status, String search, Pageable pageable) {
+        String normalizedSearch = search == null ? "" : search.trim();
+        return reviewRepository.searchForModeration(status, normalizedSearch, pageable)
+                .map(AdminReviewResponse::fromEntity);
     }
 
     private String cleanReviewText(String text) {

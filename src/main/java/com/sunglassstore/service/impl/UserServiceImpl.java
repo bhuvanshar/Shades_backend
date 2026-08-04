@@ -1,5 +1,6 @@
 package com.sunglassstore.service.impl;
 
+import com.sunglassstore.dto.request.UpdateProfileRequest;
 import com.sunglassstore.entity.User;
 import com.sunglassstore.exception.ResourceNotFoundException;
 import com.sunglassstore.repository.UserRepository;
@@ -26,5 +27,18 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+    }
+
+    @Override
+    @Transactional
+    public User updateProfile(Long userId, UpdateProfileRequest request) {
+        String name = request.getName().trim();
+        String phone = request.getPhoneNumber();
+        String normalizedPhone = phone == null || phone.isBlank() ? null : phone.trim();
+        if (userRepository.updateEditableProfile(userId, name, normalizedPhone) == 0) {
+            throw new ResourceNotFoundException("User not found with id: " + userId);
+        }
+        return userRepository.findByIdWithRoles(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
     }
 }

@@ -35,7 +35,7 @@ public class AddressServiceImpl implements AddressService {
         mapRequestToAddress(request, address);
         address.setUser(user);
 
-        if (Boolean.TRUE.equals(request.getIsDefault())) {
+        if (Boolean.TRUE.equals(request.getIsDefault()) || !addressRepository.existsByUserUserId(userId)) {
             addressRepository.clearDefaultForUser(userId, -1L);
             address.setIsDefault(true);
         }

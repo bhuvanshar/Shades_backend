@@ -8,10 +8,11 @@ import com.sunglassstore.dto.response.AuthResponse;
 import com.sunglassstore.dto.response.UserResponse;
 
 public interface AuthenticationService {
-    AuthResponse register(RegisterRequest request);
+    void register(RegisterRequest request);
     AuthResponse login(LoginRequest request);
     AuthResponse loginWithGoogle(GoogleAuthRequest request);
     AuthResponse refresh(RefreshTokenRequest request);
     void logout(Long userId);
+    void logoutByRefreshToken(String refreshToken);
     UserResponse getCurrentUser(Long userId);
 }

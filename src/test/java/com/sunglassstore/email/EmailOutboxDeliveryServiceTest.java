@@ -30,7 +30,7 @@ class EmailOutboxDeliveryServiceTest {
     @Test
     void successfulDeliveryMarksMessageSent() {
         EmailOutbox email = queued(0);
-        when(repository.findFirstByStatusInAndNextAttemptAtLessThanEqualOrderByCreatedAtAsc(any(), any()))
+        when(repository.findNextDueForUpdate(any()))
                 .thenReturn(Optional.of(email));
 
         assertTrue(delivery.deliverNext());
@@ -45,7 +45,7 @@ class EmailOutboxDeliveryServiceTest {
     @Test
     void temporaryFailureSchedulesRetryWithError() {
         EmailOutbox email = queued(0);
-        when(repository.findFirstByStatusInAndNextAttemptAtLessThanEqualOrderByCreatedAtAsc(any(), any()))
+        when(repository.findNextDueForUpdate(any()))
                 .thenReturn(Optional.of(email));
         doThrow(new EmailDeliveryException("SMTP down", new RuntimeException()))
                 .when(emailService).send(any());
@@ -61,7 +61,7 @@ class EmailOutboxDeliveryServiceTest {
     @Test
     void finalFailureStopsAutomaticRetry() {
         EmailOutbox email = queued(2);
-        when(repository.findFirstByStatusInAndNextAttemptAtLessThanEqualOrderByCreatedAtAsc(any(), any()))
+        when(repository.findNextDueForUpdate(any()))
                 .thenReturn(Optional.of(email));
         doThrow(new EmailDeliveryException("Rejected", new RuntimeException()))
                 .when(emailService).send(any());
@@ -70,14 +70,14 @@ class EmailOutboxDeliveryServiceTest {
 
         assertEquals(EmailOutboxStatus.FAILED, email.getStatus());
         assertEquals(3, email.getAttemptCount());
-        assertEquals("", email.getBody());
+        assertEquals("Body", email.getBody());
     }
 
     @Test
     void expiredSensitiveEmailIsNeverSentAndPayloadIsScrubbed() {
         EmailOutbox email = queued(0);
         email.setExpiresAt(LocalDateTime.now().minusSeconds(1));
-        when(repository.findFirstByStatusInAndNextAttemptAtLessThanEqualOrderByCreatedAtAsc(any(), any()))
+        when(repository.findNextDueForUpdate(any()))
                 .thenReturn(Optional.of(email));
 
         assertTrue(delivery.deliverNext());

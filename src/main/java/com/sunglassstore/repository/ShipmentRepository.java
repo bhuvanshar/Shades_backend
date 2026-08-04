@@ -10,4 +10,5 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
     Page<Shipment> findByOrderOrderId(Long orderId, Pageable pageable);
     List<Shipment> findByOrderOrderIdOrderByCreatedAtDesc(Long orderId);
+    boolean existsByTrackingNumberIgnoreCase(String trackingNumber);
 }

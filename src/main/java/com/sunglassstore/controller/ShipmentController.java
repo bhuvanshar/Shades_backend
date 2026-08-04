@@ -3,7 +3,6 @@ package com.sunglassstore.controller;
 import com.sunglassstore.dto.request.CreateShipmentRequest;
 import com.sunglassstore.dto.request.UpdateShipmentStatusRequest;
 import com.sunglassstore.entity.Shipment;
-import com.sunglassstore.entity.enums.ShipmentStatus;
 import com.sunglassstore.dto.response.ShipmentResponse;
 import com.sunglassstore.service.ShipmentService;
 import jakarta.validation.Valid;
@@ -35,11 +34,12 @@ public class ShipmentController {
     public ResponseEntity<ShipmentResponse> updateStatus(@PathVariable Long shipmentId,
                                                   @Valid @RequestBody UpdateShipmentStatusRequest request) {
         return ResponseEntity.ok(ShipmentResponse.fromEntity(shipmentService.updateShipmentStatus(
-                shipmentId, ShipmentStatus.valueOf(request.getStatus()))));
+                shipmentId, request.getStatus())));
     }
 
     @GetMapping("/orders/{orderId}")
-    public ResponseEntity<Page<Shipment>> getShipments(@PathVariable Long orderId, Pageable pageable) {
-        return ResponseEntity.ok(shipmentService.getShipments(orderId, pageable));
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPPORT')")
+    public ResponseEntity<Page<ShipmentResponse>> getShipments(@PathVariable Long orderId, Pageable pageable) {
+        return ResponseEntity.ok(shipmentService.getShipments(orderId, pageable).map(ShipmentResponse::fromEntity));
     }
 }

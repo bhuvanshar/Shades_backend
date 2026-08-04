@@ -1,6 +1,7 @@
 package com.sunglassstore.service;
 
 import com.sunglassstore.dto.request.CreateReviewRequest;
+import com.sunglassstore.dto.request.UpdateReviewRequest;
 import com.sunglassstore.entity.Order;
 import com.sunglassstore.entity.OrderItem;
 import com.sunglassstore.entity.Product;
@@ -8,6 +9,7 @@ import com.sunglassstore.entity.ProductVariant;
 import com.sunglassstore.entity.Review;
 import com.sunglassstore.entity.User;
 import com.sunglassstore.entity.enums.OrderStatus;
+import com.sunglassstore.entity.enums.ReviewStatus;
 import com.sunglassstore.exception.BadRequestException;
 import com.sunglassstore.exception.ConflictException;
 import com.sunglassstore.repository.OrderItemRepository;
@@ -19,6 +21,8 @@ import com.sunglassstore.repository.RefundRepository;
 import com.sunglassstore.service.impl.ReviewServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +39,8 @@ class ReviewServiceImplTest {
     private ReturnItemRepository returnItems;
     private RefundRepository refunds;
     private ReviewServiceImpl service;
+    private NotificationService notificationService;
+    private CommunicationPreferenceService communicationPreferences;
 
     @BeforeEach
     void setUp() {
@@ -44,7 +50,10 @@ class ReviewServiceImplTest {
         orderItems = mock(OrderItemRepository.class);
         returnItems = mock(ReturnItemRepository.class);
         refunds = mock(RefundRepository.class);
-        service = new ReviewServiceImpl(reviews, products, users, orderItems, returnItems, refunds);
+        notificationService = mock(NotificationService.class);
+        communicationPreferences = mock(CommunicationPreferenceService.class);
+        when(communicationPreferences.allowsInApp(anyLong(), any())).thenReturn(true);
+        service = new ReviewServiceImpl(reviews, products, users, orderItems, returnItems, refunds, notificationService, communicationPreferences);
     }
 
     @Test
@@ -64,7 +73,66 @@ class ReviewServiceImplTest {
         assertEquals(10L, result.variantId());
         assertEquals("Ocean Blue", result.variantName());
         assertEquals("SW-BLUE", result.variantSku());
+        assertEquals(ReviewStatus.PENDING, result.reviewStatus());
         verify(reviews).save(argThat(review -> review.getOrderItem() == fixture.item));
+    }
+
+    @Test
+    void editingApprovedReviewReturnsItToPendingModeration() {
+        Fixture fixture = fixture(5L, 3L, OrderStatus.DELIVERED);
+        Review review = review(fixture, ReviewStatus.APPROVED);
+        UpdateReviewRequest request = new UpdateReviewRequest(); request.setRating(4); request.setReviewText(" Updated ");
+        when(reviews.findByReviewIdAndUserUserId(40L, 5L)).thenReturn(Optional.of(review));
+        when(reviews.save(any())).thenAnswer(call -> call.getArgument(0));
+
+        var result = service.updateReview(5L, 40L, request);
+
+        assertEquals(ReviewStatus.PENDING, result.reviewStatus());
+        assertEquals("Updated", result.reviewText());
+    }
+
+    @Test
+    void moderationRejectsPendingAsAnAdminDecision() {
+        assertThrows(BadRequestException.class, () -> service.updateReviewStatus(40L, ReviewStatus.PENDING));
+        verify(reviews, never()).findById(any());
+    }
+
+    @Test
+    void moderationCannotRepeatCurrentStatus() {
+        Fixture fixture = fixture(5L, 3L, OrderStatus.DELIVERED);
+        when(reviews.findById(40L)).thenReturn(Optional.of(review(fixture, ReviewStatus.APPROVED)));
+        assertThrows(BadRequestException.class, () -> service.updateReviewStatus(40L, ReviewStatus.APPROVED));
+        verify(reviews, never()).save(any());
+    }
+
+    @Test
+    void moderatorCanApprovePendingReview() {
+        Fixture fixture = fixture(5L, 3L, OrderStatus.DELIVERED);
+        Review review = review(fixture, ReviewStatus.PENDING);
+        when(reviews.findById(40L)).thenReturn(Optional.of(review));
+        when(reviews.save(any())).thenAnswer(call -> call.getArgument(0));
+
+        var result = service.updateReviewStatus(40L, ReviewStatus.APPROVED);
+
+        assertEquals(ReviewStatus.APPROVED, result.reviewStatus());
+        verify(notificationService).createNotification(eq(5L), eq(com.sunglassstore.entity.enums.NotificationType.IN_APP),
+                eq("Review approved · Product #3"), contains("visible to shoppers"));
+    }
+
+    @Test
+    void moderationSearchUsesNormalizedSearchAndMapsAdminContext() {
+        Fixture fixture = fixture(5L, 3L, OrderStatus.DELIVERED);
+        fixture.user.setEmail("customer@example.com");
+        Review review = review(fixture, ReviewStatus.PENDING);
+        var pageable = PageRequest.of(0, 20);
+        when(reviews.searchForModeration(ReviewStatus.PENDING, "blue", pageable))
+                .thenReturn(new PageImpl<>(List.of(review), pageable, 1));
+
+        var result = service.getReviewsForModeration(ReviewStatus.PENDING, " blue ", pageable);
+
+        assertEquals(1, result.getTotalElements());
+        assertEquals("Barcelona", result.getContent().getFirst().productName());
+        assertEquals("customer@example.com", result.getContent().getFirst().customerEmail());
     }
 
     @Test
@@ -148,6 +216,14 @@ class ReviewServiceImplTest {
         Order order = new Order(); order.setOrderId(30L); order.setUser(user); order.setOrderStatus(status);
         OrderItem item = new OrderItem(); item.setOrderItemId(20L); item.setOrder(order); item.setVariant(variant); item.setQuantity(1);
         return new Fixture(user, product, item);
+    }
+
+    private Review review(Fixture fixture, ReviewStatus status) {
+        Review review = new Review(); review.setReviewId(40L); review.setUser(fixture.user);
+        review.setProduct(fixture.product); review.setOrderItem(fixture.item); review.setRating(5);
+        review.setReviewText("Excellent"); review.setReviewStatus(status);
+        review.setCreatedAt(java.time.LocalDateTime.now()); review.setUpdatedAt(java.time.LocalDateTime.now());
+        return review;
     }
 
     private record Fixture(User user, Product product, OrderItem item) {}

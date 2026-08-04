@@ -10,6 +10,7 @@ import com.sunglassstore.exception.ConflictException;
 import com.sunglassstore.exception.ResourceNotFoundException;
 import com.sunglassstore.repository.*;
 import com.sunglassstore.service.ProductService;
+import com.sunglassstore.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductAttributeRepository attributeRepository;
     private final CategoryRepository categoryRepository;
     private final com.sunglassstore.service.LocalImageStorageService imageStorageService;
+    private final InventoryService inventoryService;
 
     @Override
     @Transactional(readOnly = true)
@@ -55,7 +57,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public Page<ProductResponse> searchProducts(String keyword, Pageable pageable) {
-        return productRepository.search(keyword, pageable).map(ProductResponse::fromEntity);
+        String normalized = keyword == null ? "" : keyword.trim();
+        if (normalized.length() > 100) {
+            throw new BadRequestException("Search keyword cannot exceed 100 characters");
+        }
+        return productRepository.search(normalized, pageable).map(ProductResponse::fromEntity);
     }
 
     @Override
@@ -97,10 +103,13 @@ public class ProductServiceImpl implements ProductService {
             variant.setSku(variantRequest.getSku());
             variant.setVariantName(variantRequest.getVariantName());
             variant.setPrice(variantRequest.getPrice());
-            variant.setQuantityAvailable(variantRequest.getQuantityAvailable());
+            int openingStock = variantRequest.getQuantityAvailable();
+            variant.setQuantityAvailable(0);
             variant.setLowStockThreshold(variantRequest.getLowStockThreshold());
             setVariantAttributes(saved, variant, variantRequest.getAttributes());
             variantRepository.save(variant);
+            if (openingStock > 0) inventoryService.adjustInventory(variant.getVariantId(), openingStock,
+                    com.sunglassstore.entity.enums.MovementType.PURCHASE, "Opening stock from product creation");
             saved.getVariants().add(variant);
         }
 
@@ -162,10 +171,13 @@ public class ProductServiceImpl implements ProductService {
             variant.setSku(variantRequest.getSku());
             variant.setVariantName(variantRequest.getVariantName());
             variant.setPrice(variantRequest.getPrice());
-            variant.setQuantityAvailable(variantRequest.getQuantityAvailable());
+            int previousStock = variant.getQuantityAvailable();
             variant.setLowStockThreshold(variantRequest.getLowStockThreshold());
             setVariantAttributes(product, variant, variantRequest.getAttributes());
             variantRepository.save(variant);
+            int stockChange = variantRequest.getQuantityAvailable() - previousStock;
+            if (stockChange != 0) inventoryService.adjustInventory(variant.getVariantId(), stockChange,
+                    com.sunglassstore.entity.enums.MovementType.ADJUSTMENT, "Stock updated from product editor");
         }
 
         return ProductResponse.fromEntity(productRepository.save(product));
@@ -214,11 +226,15 @@ public class ProductServiceImpl implements ProductService {
         variant.setVariantName(request.getVariantName());
         
         variant.setPrice(request.getPrice());
-        variant.setQuantityAvailable(request.getQuantityAvailable());
+        int openingStock = request.getQuantityAvailable();
+        variant.setQuantityAvailable(0);
 
         variant.setLowStockThreshold(request.getLowStockThreshold());
         setVariantAttributes(product, variant, request.getAttributes());
-        return ProductResponse.VariantSummary.fromEntity(variantRepository.save(variant));
+        ProductVariant saved = variantRepository.save(variant);
+        if (openingStock > 0) inventoryService.adjustInventory(saved.getVariantId(), openingStock,
+                com.sunglassstore.entity.enums.MovementType.PURCHASE, "Opening stock from variant creation");
+        return ProductResponse.VariantSummary.fromEntity(saved);
     }
 
     @Override
@@ -235,11 +251,15 @@ public class ProductServiceImpl implements ProductService {
         variant.setVariantName(request.getVariantName());
         variant.setSku(request.getSku());
         variant.setPrice(request.getPrice());
-        variant.setQuantityAvailable(request.getQuantityAvailable());
+        int previousStock = variant.getQuantityAvailable();
         variant.setLowStockThreshold(request.getLowStockThreshold());
         setVariantAttributes(variant.getProduct(), variant, request.getAttributes());
 
-        return ProductResponse.VariantSummary.fromEntity(variantRepository.save(variant));
+        ProductVariant saved = variantRepository.save(variant);
+        int stockChange = request.getQuantityAvailable() - previousStock;
+        if (stockChange != 0) inventoryService.adjustInventory(saved.getVariantId(), stockChange,
+                com.sunglassstore.entity.enums.MovementType.ADJUSTMENT, "Stock updated from variant editor");
+        return ProductResponse.VariantSummary.fromEntity(saved);
     }
 
     @Override

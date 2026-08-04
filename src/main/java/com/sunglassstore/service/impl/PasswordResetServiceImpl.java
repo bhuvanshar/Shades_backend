@@ -71,13 +71,21 @@ public class PasswordResetServiceImpl implements PasswordResetService {
 
         User user = token.getUser();
         user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
-        user.setPasswordChangedAt(LocalDateTime.now());
+        user.setPasswordChangedAt(nextCredentialVersion(user.getPasswordChangedAt()));
         user.setFailedLoginAttempts(0);
         user.setAccountLocked(false);
         user.setLockedUntil(null);
         userRepository.save(user);
         tokenRepository.invalidateAllForUser(user.getUserId());
         refreshTokenRepository.revokeAllByUserId(user.getUserId());
+    }
+
+    private LocalDateTime nextCredentialVersion(LocalDateTime currentVersion) {
+        LocalDateTime now = LocalDateTime.now();
+        if (currentVersion != null && !now.isAfter(currentVersion.plusSeconds(1))) {
+            return currentVersion.plusSeconds(1);
+        }
+        return now;
     }
 
     private String hash(String rawToken) {

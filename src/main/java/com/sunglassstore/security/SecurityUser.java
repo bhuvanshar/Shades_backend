@@ -9,6 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Adapts our User entity to Spring Security's UserDetails interface.
@@ -23,6 +27,7 @@ public class SecurityUser implements UserDetails {
     private final String name;
     private final boolean active;
     private final boolean accountLocked;
+    private final long passwordVersion;
     private final Set<GrantedAuthority> authorities;
 
     public SecurityUser(User user) {
@@ -32,7 +37,27 @@ public class SecurityUser implements UserDetails {
         this.name = user.getName();
         this.active = Boolean.TRUE.equals(user.getIsActive());
         this.accountLocked = Boolean.TRUE.equals(user.getAccountLocked());
+        this.passwordVersion = passwordFingerprint(user.getPasswordHash());
         this.authorities = buildAuthorities(user);
+    }
+
+    /**
+     * Ties access tokens to the current password without depending on a database
+     * DATETIME conversion. LocalDateTime has no timezone, so using it as an epoch
+     * caused otherwise unrelated profile updates to invalidate tokens when the
+     * JDBC, JVM and MySQL session timezones differed.
+     */
+    private static long passwordFingerprint(String passwordHash) {
+        if (passwordHash == null) {
+            return 0L;
+        }
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256")
+                    .digest(passwordHash.getBytes(StandardCharsets.UTF_8));
+            return ByteBuffer.wrap(digest).getLong();
+        } catch (NoSuchAlgorithmException exception) {
+            throw new IllegalStateException("SHA-256 is not available", exception);
+        }
     }
 
     private Set<GrantedAuthority> buildAuthorities(User user) {

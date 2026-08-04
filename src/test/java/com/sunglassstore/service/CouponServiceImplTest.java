@@ -13,7 +13,7 @@ class CouponServiceImplTest {
 
     @Test
     void calculateDiscount_percentage() {
-        CouponServiceImpl service = new CouponServiceImpl(null, null);
+        CouponServiceImpl service = new CouponServiceImpl(null, null, null);
         Coupon coupon = new Coupon();
         coupon.setDiscountType(DiscountType.PERCENTAGE);
         coupon.setDiscountValue(new BigDecimal("10"));
@@ -25,7 +25,7 @@ class CouponServiceImplTest {
 
     @Test
     void calculateDiscount_percentage_capped() {
-        CouponServiceImpl service = new CouponServiceImpl(null, null);
+        CouponServiceImpl service = new CouponServiceImpl(null, null, null);
         Coupon coupon = new Coupon();
         coupon.setDiscountType(DiscountType.PERCENTAGE);
         coupon.setDiscountValue(new BigDecimal("50"));
@@ -37,7 +37,7 @@ class CouponServiceImplTest {
 
     @Test
     void calculateDiscount_fixed() {
-        CouponServiceImpl service = new CouponServiceImpl(null, null);
+        CouponServiceImpl service = new CouponServiceImpl(null, null, null);
         Coupon coupon = new Coupon();
         coupon.setDiscountType(DiscountType.FIXED);
         coupon.setDiscountValue(new BigDecimal("75"));
@@ -49,7 +49,7 @@ class CouponServiceImplTest {
 
     @Test
     void calculateDiscount_cannotExceedOrderAmount() {
-        CouponServiceImpl service = new CouponServiceImpl(null, null);
+        CouponServiceImpl service = new CouponServiceImpl(null, null, null);
         Coupon coupon = new Coupon();
         coupon.setDiscountType(DiscountType.FIXED);
         coupon.setDiscountValue(new BigDecimal("200"));
@@ -61,7 +61,7 @@ class CouponServiceImplTest {
 
     @Test
     void calculateDiscount_pairFixed_usesCompletePairsOnly() {
-        CouponServiceImpl service = new CouponServiceImpl(null, null);
+        CouponServiceImpl service = new CouponServiceImpl(null, null, null);
         Coupon coupon = new Coupon();
         coupon.setDiscountType(DiscountType.PAIR_FIXED);
         coupon.setDiscountValue(new BigDecimal("500"));
