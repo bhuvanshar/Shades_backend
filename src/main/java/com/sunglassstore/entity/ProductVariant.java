@@ -32,6 +32,10 @@ public class ProductVariant {
     @Column(name = "VARIANT_NAME")
     private String variantName;
 
+    /** Optional per-variant copy; when null the storefront falls back to the product description. */
+    @Column(name = "VARIANT_DESCRIPTION", columnDefinition = "TEXT")
+    private String variantDescription;
+
     @Column(name = "PRICE", nullable = false, precision = 12, scale = 2)
     private BigDecimal price;
 

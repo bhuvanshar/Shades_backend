@@ -102,6 +102,7 @@ public class ProductServiceImpl implements ProductService {
             variant.setProduct(saved);
             variant.setSku(variantRequest.getSku());
             variant.setVariantName(variantRequest.getVariantName());
+            variant.setVariantDescription(variantRequest.getVariantDescription());
             variant.setPrice(variantRequest.getPrice());
             int openingStock = variantRequest.getQuantityAvailable();
             variant.setQuantityAvailable(0);
@@ -170,6 +171,7 @@ public class ProductServiceImpl implements ProductService {
             }
             variant.setSku(variantRequest.getSku());
             variant.setVariantName(variantRequest.getVariantName());
+            variant.setVariantDescription(variantRequest.getVariantDescription());
             variant.setPrice(variantRequest.getPrice());
             int previousStock = variant.getQuantityAvailable();
             variant.setLowStockThreshold(variantRequest.getLowStockThreshold());
@@ -224,6 +226,7 @@ public class ProductServiceImpl implements ProductService {
         variant.setProduct(product);
         variant.setSku(request.getSku());
         variant.setVariantName(request.getVariantName());
+        variant.setVariantDescription(request.getVariantDescription());
         
         variant.setPrice(request.getPrice());
         int openingStock = request.getQuantityAvailable();
@@ -249,6 +252,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         variant.setVariantName(request.getVariantName());
+        variant.setVariantDescription(request.getVariantDescription());
         variant.setSku(request.getSku());
         variant.setPrice(request.getPrice());
         int previousStock = variant.getQuantityAvailable();

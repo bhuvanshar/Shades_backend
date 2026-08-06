@@ -4,6 +4,7 @@ import com.sunglassstore.dto.request.AddressRequest;
 import com.sunglassstore.entity.Address;
 import com.sunglassstore.entity.User;
 import com.sunglassstore.entity.enums.AddressType;
+import com.sunglassstore.exception.BadRequestException;
 import com.sunglassstore.exception.ResourceNotFoundException;
 import com.sunglassstore.repository.AddressRepository;
 import com.sunglassstore.service.AddressService;
@@ -85,7 +86,28 @@ public class AddressServiceImpl implements AddressService {
         address.setAddressLine2(request.getAddressLine2());
         address.setCity(request.getCity());
         address.setState(request.getState());
-        address.setPincode(request.getPincode());
+        address.setPincode(normalisePincode(request.getPincode(), request.getCountry()));
         address.setCountry(request.getCountry());
+    }
+
+    /**
+     * Trims surrounding whitespace and enforces the postal-code length for the destination country.
+     * The value stays a String throughout so a leading zero is never lost to numeric coercion.
+     * Only India has a fixed national rule here; every other destination is accepted at a generic
+     * 3-10 digits rather than guessed at, so a legitimate foreign address is never rejected.
+     */
+    static String normalisePincode(String pincode, String country) {
+        String trimmed = pincode == null ? "" : pincode.trim();
+        if (!trimmed.matches("^[0-9]+$")) {
+            throw new BadRequestException("Pincode must contain digits only.");
+        }
+        boolean india = country != null && country.trim().equalsIgnoreCase("India");
+        if (india && !trimmed.matches("^[1-9][0-9]{5}$")) {
+            throw new BadRequestException("Enter a valid 6-digit Indian PIN code.");
+        }
+        if (!india && (trimmed.length() < 3 || trimmed.length() > 10)) {
+            throw new BadRequestException("Enter a valid postal code of 3 to 10 digits.");
+        }
+        return trimmed;
     }
 }

@@ -29,6 +29,7 @@ com\sunglassstore\controller\CouponControllerIntegrationTest.class
 com\sunglassstore\controller\AdminEmailOutboxControllerIntegrationTest.class
 com\sunglassstore\service\CouponServiceImplTest.class
 com\sunglassstore\controller\ReviewControllerIntegrationTest.class
+com\sunglassstore\service\impl\AddressPincodeValidationTest.class
 com\sunglassstore\email\SmtpEmailServiceTest.class
 com\sunglassstore\service\EmailVerificationServiceImplTest.class
 com\sunglassstore\service\RefundServiceImplTest.class

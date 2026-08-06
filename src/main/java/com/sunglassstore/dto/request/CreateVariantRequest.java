@@ -20,6 +20,9 @@ public class CreateVariantRequest {
     @Size(max = 255)
     private String variantName;
 
+    /** Optional; when blank the storefront falls back to the product description. */
+    private String variantDescription;
+
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.00")
     private BigDecimal price;

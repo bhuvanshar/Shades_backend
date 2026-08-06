@@ -49,11 +49,12 @@ public class ProductResponse {
 
     public record CategorySummary(Long categoryId, String categoryName) {}
 
-    public record VariantSummary(Long variantId, String sku, String variantName, BigDecimal price,
-                                 Integer quantityAvailable, Integer lowStockThreshold, Boolean isActive,
+    public record VariantSummary(Long variantId, String sku, String variantName, String variantDescription,
+                                 BigDecimal price, Integer quantityAvailable, Integer lowStockThreshold, Boolean isActive,
                                  Map<String, String> attributes) {
         public static VariantSummary fromEntity(com.sunglassstore.entity.ProductVariant variant) {
             return new VariantSummary(variant.getVariantId(), variant.getSku(), variant.getVariantName(),
+                    variant.getVariantDescription(),
                     variant.getPrice(), variant.getQuantityAvailable(), variant.getLowStockThreshold(), variant.getIsActive(),
                     variant.getAttributes().stream().collect(Collectors.toMap(ProductAttribute::getAttributeName,
                             ProductAttribute::getAttributeValue, (first, second) -> second)));

@@ -1,6 +1,7 @@
 package com.sunglassstore.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +37,12 @@ public class AddressRequest {
     @Size(max = 100)
     private String state;
 
+    // Digits only, and kept as a String so a leading zero (e.g. Spanish "08001") survives.
+    // The country-specific length rule lives in AddressServiceImpl so its message actually
+    // reaches the client: GlobalExceptionHandler buries per-field bean-validation messages in
+    // validationErrors and sends a generic "message", which is the only field the frontend reads.
     @NotBlank(message = "Pincode is required")
+    @Pattern(regexp = "^[0-9]+$", message = "Pincode must contain digits only")
     @Size(max = 20)
     private String pincode;
 
