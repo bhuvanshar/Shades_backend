@@ -12,6 +12,13 @@ public interface OrderService {
     Page<Order> getUserOrders(Long userId, Pageable pageable);
     Order getUserOrder(Long userId, Long orderId);
     Order cancelOrder(Long userId, Long orderId);
+
+    /**
+     * Cancels an order that was created but never paid for, releasing its reserved stock.
+     * Returns false when the order is no longer eligible — already paid, already cancelled, or
+     * gone — so the caller can distinguish "released" from "left alone" without catching.
+     */
+    boolean expireUnpaidOrder(Long orderId);
     Page<Order> getAllOrders(Pageable pageable);
     Order getOrderById(Long orderId);
     Order updateOrderStatus(Long orderId, OrderStatus status, String note);

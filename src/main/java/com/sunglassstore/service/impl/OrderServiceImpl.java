@@ -275,6 +275,26 @@ public class OrderServiceImpl implements OrderService {
         return saved;
     }
 
+    /**
+     * Expiry path for an abandoned checkout. Everything happens in one transaction so the
+     * eligibility re-check and the cancellation cannot be separated: the row lock is taken first,
+     * so a payment that arrives concurrently either committed before this lock (and is seen here,
+     * leaving the order alone) or blocks until this transaction finishes.
+     *
+     * Stock restore is at-most-once because cancelOrder refuses anything not PLACED or CONFIRMED,
+     * and this method leaves the order CANCELLED.
+     */
+    @Override
+    @Transactional
+    public boolean expireUnpaidOrder(Long orderId) {
+        Order order = orderRepository.findByIdForUpdate(orderId).orElse(null);
+        if (order == null || order.getOrderStatus() != OrderStatus.PLACED) return false;
+        if (paymentRepository.existsByOrderOrderIdAndPaymentStatusIn(orderId,
+                List.of(PaymentStatus.PAID, PaymentStatus.PARTIALLY_REFUNDED))) return false;
+        cancelOrder(order.getUser().getUserId(), orderId);
+        return true;
+    }
+
     private void restoreInventory(Order order) {
         for (OrderItem item : order.getItems()) {
             ProductVariant lockedVariant = productVariantRepository.findByIdForUpdate(

@@ -12,6 +12,7 @@ com\sunglassstore\service\impl\PasswordResetServiceImpl.class
 com\sunglassstore\service\CartService.class
 com\sunglassstore\controller\OrderController.class
 com\sunglassstore\service\AuthenticationService.class
+com\sunglassstore\service\impl\UnpaidOrderExpiryServiceImpl.class
 com\sunglassstore\dto\response\CartResponse.class
 com\sunglassstore\dto\response\MessageResponse.class
 com\sunglassstore\service\AdminEmailOutboxService.class
@@ -180,6 +181,7 @@ com\sunglassstore\SunglassStoreApplication.class
 com\sunglassstore\dto\response\PaymentResult.class
 com\sunglassstore\entity\ProductImage.class
 com\sunglassstore\exception\ConflictException.class
+com\sunglassstore\service\UnpaidOrderExpiryService.class
 com\sunglassstore\repository\PaymentRepository.class
 com\sunglassstore\controller\PaymentController.class
 com\sunglassstore\email\EmailService.class
@@ -256,6 +258,7 @@ com\sunglassstore\service\impl\WishlistServiceImpl.class
 com\sunglassstore\dto\response\ReturnResponse$RefundInfo.class
 com\sunglassstore\entity\Category.class
 com\sunglassstore\email\EmailOutboxService.class
+com\sunglassstore\scheduler\UnpaidOrderExpiryScheduler.class
 com\sunglassstore\email\CustomerEmailEventSubscriber.class
 com\sunglassstore\entity\enums\AddressType.class
 com\sunglassstore\entity\RefreshToken.class
