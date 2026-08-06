@@ -715,6 +715,7 @@ CREATE TABLE REVIEWS (
     CONSTRAINT CHK_REVIEW_STATUS
         CHECK (
             REVIEW_STATUS IN (
+                'PUBLISHED',
                 'PENDING',
                 'APPROVED',
                 'REJECTED'

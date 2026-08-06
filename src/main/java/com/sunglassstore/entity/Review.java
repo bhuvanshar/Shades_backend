@@ -40,7 +40,7 @@ public class Review {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "REVIEW_STATUS", nullable = false, length = 20)
-    private ReviewStatus reviewStatus = ReviewStatus.PENDING;
+    private ReviewStatus reviewStatus = ReviewStatus.PUBLISHED;
 
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     private LocalDateTime createdAt;

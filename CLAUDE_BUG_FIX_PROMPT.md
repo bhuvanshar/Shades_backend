@@ -104,3 +104,104 @@ Continue until all nine issues work correctly and the relevant automated checks 
 - Any assumptions, remaining limitations, or environment blockers.
 
 If an external credential or service prevents a test, complete every locally testable part, clearly identify the exact blocker, and provide the precise command and setup needed to finish verification. Do not claim full success for anything that was not actually tested.
+
+---
+
+# Additional Required Fixes
+
+Investigate, implement, and end-to-end test these issues in the same frontend and backend repositories. Treat them as required completion criteria alongside the original nine issues.
+
+## 10. Publish customer reviews globally without admin approval
+
+Current behavior:
+
+- A signed-in customer purchases a product.
+- After the order reaches the Delivered state, the customer can submit a review and can see their own review.
+- Other users cannot see the review until an administrator approves it.
+
+Required behavior:
+
+- A valid review from an eligible customer must be published globally immediately after successful submission.
+- Admin approval must not be required.
+- Remove the approval dependency consistently from backend creation/query logic, frontend filtering, rating aggregation, and caches.
+- Preserve all other review rules, including authentication, delivered-order eligibility, product/order association, rating validation, duplicate-review prevention, safe rendering, and edit/delete permissions if supported.
+- Existing reviews waiting for approval must not remain unintentionally hidden. Implement a safe migration or compatibility rule so legitimate historical reviews become globally visible, while preserving reviews explicitly rejected, deleted, flagged, or moderated for abuse if such states exist.
+- Do not simply hard-code the UI to show pending reviews; update the underlying review lifecycle and API contract cleanly.
+
+Mandatory E2E tests:
+
+- Customer A buys a product, the order becomes Delivered, and Customer A submits a review.
+- Confirm the review appears immediately after submission and remains visible after a hard refresh.
+- Sign out, visit the product as a guest, and confirm the review is visible.
+- Sign in as Customer B and confirm the same review is visible.
+- Confirm the product's review count and average rating update immediately and remain correct after refresh.
+- Confirm a customer without a delivered purchase cannot review, and confirm duplicate/invalid reviews are still rejected.
+- Verify legitimate historical unapproved reviews follow the new visibility rule without exposing rejected, deleted, or moderated reviews.
+
+## 11. Sign-out/navigation error after admin or customer sign-in
+
+Current error:
+
+```text
+ERROR
+Something went wrong. Please try again.
+    at parseResponse (http://localhost:3000/Ziggy/static/js/bundle.js:19453:19)
+    at async signOut (http://localhost:3000/Ziggy/static/js/bundle.js:4259:7)
+```
+
+The error occurs when navigating back after signing in as an administrator. Investigate the same flow for customer accounts as well.
+
+Required behavior:
+
+- Browser Back, Forward, refresh, sign-in, and explicit sign-out must work without uncaught errors for both administrator and customer sessions.
+- Determine whether navigation is unexpectedly triggering sign-out, whether the session/token is stale or missing, and whether the sign-out endpoint returns an empty/non-JSON response or an error status that `parseResponse` mishandles.
+- Correct the root cause across routing/history handling, authentication state hydration, API response parsing, cookies/tokens, and the logout endpoint as applicable.
+- Make sign-out idempotent: an already expired or missing session must still result in a safe signed-out frontend state rather than an exception.
+- Do not broadly swallow API errors. Handle expected empty responses such as HTTP 204 correctly, preserve useful handling for genuine failures, clear credentials safely, and redirect users to the correct public/auth page.
+- Ensure admin and customer roles cannot see stale protected content from browser history after signing out.
+
+Mandatory E2E tests for both admin and customer accounts:
+
+- Sign in, navigate through multiple protected pages, then use browser Back and Forward repeatedly.
+- Refresh a protected page after sign-in and verify the session restores correctly.
+- Sign out normally and confirm there is no console error, error screen, or rejected request left unhandled.
+- Press Back after sign-out and confirm protected data is not exposed and the user is redirected appropriately.
+- Repeat sign-out or call it with an expired/missing session and confirm it remains safe.
+- Test relevant logout response forms, including the actual server status/body, and verify the frontend parser handles them correctly.
+- Inspect browser console errors and failed network requests; do not mark this fixed while related uncaught exceptions remain.
+
+## 12. Fix the Disapprove button in admin Returns & Refunds
+
+Current behavior:
+
+- In the admin Returns & Refunds order detail view, the green Approve button renders correctly.
+- The Disapprove button does not render or display correctly.
+
+Required behavior:
+
+- Make the Disapprove action clearly visible, correctly aligned, responsive, and visually consistent with the existing design system.
+- Use an appropriate destructive/rejection style that is distinguishable from the green Approve action and meets accessible contrast requirements.
+- Ensure the label is not clipped, hidden, overlapped, transparent, or affected by an incorrect disabled/loading style.
+- Confirm the issue is not only cosmetic: clicking Disapprove must invoke the correct confirmation and API workflow, prevent duplicate submissions, show loading/error feedback, and update the return/refund status only after success.
+- Approve and Disapprove must remain separate actions and must send the correct status without sharing stale handlers or request payloads.
+- Preserve keyboard accessibility, focus visibility, and mobile usability.
+
+Mandatory E2E tests:
+
+- Open an eligible return/refund request in the admin interface at desktop and mobile viewport sizes.
+- Confirm both Approve and Disapprove buttons are fully visible, readable, aligned, and keyboard accessible.
+- Disapprove a test request, confirm the intended modal/prompt if the project uses one, and verify the correct API request and persisted database status.
+- Refresh the page and confirm the disapproved state remains correct.
+- Test an API failure and confirm the request does not appear disapproved and the administrator receives useful feedback.
+- Separately approve another request to prove the existing Approve flow still works and was not regressed.
+
+## Additional completion report requirements
+
+For issues 10–12, include in the final report:
+
+- The reproduced behavior and exact root cause.
+- Frontend, backend, schema/migration, and test files changed.
+- API status codes and response shapes involved in the sign-out fix.
+- The final review visibility/moderation rule, including treatment of existing pending, rejected, deleted, or flagged reviews.
+- Browser/viewports used to verify the Returns & Refunds actions.
+- Automated test commands and results, plus confirmation that browser console and network logs were checked during E2E testing.

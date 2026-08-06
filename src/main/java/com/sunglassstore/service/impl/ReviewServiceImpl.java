@@ -34,6 +34,10 @@ import com.sunglassstore.entity.enums.OrderStatus;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
+    /** What a shopper may see: published, plus anything a moderator explicitly approved. */
+    private static final java.util.List<ReviewStatus> VISIBLE_STATUSES =
+            java.util.List.of(ReviewStatus.PUBLISHED, ReviewStatus.APPROVED);
+
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
@@ -69,7 +73,8 @@ public class ReviewServiceImpl implements ReviewService {
         review.setOrderItem(orderItem);
         review.setRating(request.getRating());
         review.setReviewText(cleanReviewText(request.getReviewText()));
-        review.setReviewStatus(ReviewStatus.PENDING);
+        // Published immediately: eligibility is the gate, not a moderator.
+        review.setReviewStatus(ReviewStatus.PUBLISHED);
 
         return ReviewResponse.fromEntity(reviewRepository.save(review));
     }
@@ -82,7 +87,12 @@ public class ReviewServiceImpl implements ReviewService {
 
         review.setRating(request.getRating());
         review.setReviewText(cleanReviewText(request.getReviewText()));
-        review.setReviewStatus(ReviewStatus.PENDING);
+        // An edit to a live review stays live. An edit to one a moderator took down goes back into
+        // the queue rather than straight back onto the page — otherwise a takedown could be undone
+        // by simply retyping the text.
+        review.setReviewStatus(review.getReviewStatus() == ReviewStatus.REJECTED
+                ? ReviewStatus.PENDING
+                : ReviewStatus.PUBLISHED);
 
         return ReviewResponse.fromEntity(reviewRepository.save(review));
     }
@@ -98,7 +108,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional(readOnly = true)
     public Page<ReviewResponse> getProductReviews(Long productId, Pageable pageable) {
-        return reviewRepository.findByProductProductIdAndReviewStatus(productId, ReviewStatus.APPROVED, pageable)
+        // Everything a moderator has not taken down. PENDING and REJECTED stay hidden.
+        return reviewRepository.findByProductProductIdAndReviewStatusIn(productId, VISIBLE_STATUSES, pageable)
                 .map(ReviewResponse::fromEntity);
     }
 

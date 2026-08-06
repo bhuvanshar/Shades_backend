@@ -15,6 +15,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Page<Review> findByProductProductIdAndReviewStatus(Long productId, ReviewStatus status, Pageable pageable);
 
+    /** Publicly visible reviews for a product. */
+    Page<Review> findByProductProductIdAndReviewStatusIn(Long productId, java.util.Collection<ReviewStatus> statuses, Pageable pageable);
+
     Optional<Review> findByReviewIdAndUserUserId(Long reviewId, Long userId);
 
     List<Review> findByUserUserIdAndProductProductIdOrderByCreatedAtDesc(Long userId, Long productId);

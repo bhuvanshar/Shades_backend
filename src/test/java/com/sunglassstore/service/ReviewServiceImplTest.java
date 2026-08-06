@@ -73,12 +73,13 @@ class ReviewServiceImplTest {
         assertEquals(10L, result.variantId());
         assertEquals("Ocean Blue", result.variantName());
         assertEquals("SW-BLUE", result.variantSku());
-        assertEquals(ReviewStatus.PENDING, result.reviewStatus());
+        // Eligibility is the gate, not a moderator: an eligible review is live on submission.
+        assertEquals(ReviewStatus.PUBLISHED, result.reviewStatus());
         verify(reviews).save(argThat(review -> review.getOrderItem() == fixture.item));
     }
 
     @Test
-    void editingApprovedReviewReturnsItToPendingModeration() {
+    void editingALiveReviewKeepsItLive() {
         Fixture fixture = fixture(5L, 3L, OrderStatus.DELIVERED);
         Review review = review(fixture, ReviewStatus.APPROVED);
         UpdateReviewRequest request = new UpdateReviewRequest(); request.setRating(4); request.setReviewText(" Updated ");
@@ -87,10 +88,32 @@ class ReviewServiceImplTest {
 
         var result = service.updateReview(5L, 40L, request);
 
-        assertEquals(ReviewStatus.PENDING, result.reviewStatus());
+        assertEquals(ReviewStatus.PUBLISHED, result.reviewStatus());
         assertEquals("Updated", result.reviewText());
     }
 
+    @Test
+    void editingARejectedReviewGoesBackIntoTheQueueRatherThanStraightBackOnThePage() {
+        // A takedown must not be undoable by retyping the text.
+        Fixture fixture = fixture(5L, 3L, OrderStatus.DELIVERED);
+        Review review = review(fixture, ReviewStatus.REJECTED);
+        UpdateReviewRequest request = new UpdateReviewRequest(); request.setRating(4); request.setReviewText("Reworded");
+        when(reviews.findByReviewIdAndUserUserId(40L, 5L)).thenReturn(Optional.of(review));
+        when(reviews.save(any())).thenAnswer(call -> call.getArgument(0));
+
+        var result = service.updateReview(5L, 40L, request);
+
+        assertEquals(ReviewStatus.PENDING, result.reviewStatus());
+        assertFalse(result.reviewStatus().isPubliclyVisible());
+    }
+
+    @Test
+    void theProductListingShowsPublishedAndApprovedButNeverPendingOrRejected() {
+        assertTrue(ReviewStatus.PUBLISHED.isPubliclyVisible());
+        assertTrue(ReviewStatus.APPROVED.isPubliclyVisible());
+        assertFalse(ReviewStatus.PENDING.isPubliclyVisible());
+        assertFalse(ReviewStatus.REJECTED.isPubliclyVisible());
+    }
     @Test
     void moderationRejectsPendingAsAnAdminDecision() {
         assertThrows(BadRequestException.class, () -> service.updateReviewStatus(40L, ReviewStatus.PENDING));
