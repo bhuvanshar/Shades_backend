@@ -21,6 +21,14 @@ public class ProductResponse {
     private String brand;
     private BigDecimal basePrice;
     private Boolean isActive;
+    private java.time.Instant publishedAt;
+    /**
+     * Canonical answer to "does this product get a New badge", decided by NewProductPolicy on the
+     * server. Clients must render this rather than recomputing an age from a timestamp: the badge
+     * has to be identical on the home page, Shop, Collections, every listing and the product page,
+     * and it cannot depend on the customer's system clock.
+     */
+    private Boolean isNew;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Set<CategorySummary> categories;
@@ -28,7 +36,11 @@ public class ProductResponse {
     private List<ImageSummary> images;
     private Map<String, String> attributes;
 
-    public static ProductResponse fromEntity(Product product) {
+    /**
+     * @param isNew decided by NewProductPolicy. Required rather than defaulted so a new call site
+     *              cannot quietly ship a response whose badge is always false.
+     */
+    public static ProductResponse fromEntity(Product product, boolean isNew) {
         ProductResponse response = new ProductResponse();
         response.setProductId(product.getProductId());
         response.setProductName(product.getProductName());
@@ -36,6 +48,8 @@ public class ProductResponse {
         response.setBrand(product.getBrand());
         response.setBasePrice(product.getBasePrice());
         response.setIsActive(product.getIsActive());
+        response.setPublishedAt(product.getPublishedAt());
+        response.setIsNew(isNew);
         response.setCreatedAt(product.getCreatedAt());
         response.setUpdatedAt(product.getUpdatedAt());
         response.setCategories(product.getCategories().stream().map(category ->

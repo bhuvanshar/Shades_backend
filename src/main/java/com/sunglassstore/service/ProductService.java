@@ -13,6 +13,12 @@ public interface ProductService {
     ProductResponse getProductById(Long productId);
     Page<ProductResponse> searchProducts(String keyword, Pageable pageable);
     Page<ProductResponse> getProductsByCategory(Long categoryId, Pageable pageable);
+
+    /**
+     * Public Best Sellers ranking, highest net sales first. See ProductRepository.findBestSellers
+     * for the eligibility, refund and tie-breaking rules.
+     */
+    java.util.List<com.sunglassstore.dto.response.BestSellerResponse> getBestSellers(int limit);
     ProductResponse createProduct(CreateProductRequest request);
     ProductResponse updateProduct(Long productId, CreateProductRequest request);
     void deleteProduct(Long productId);

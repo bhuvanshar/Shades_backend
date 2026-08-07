@@ -110,11 +110,13 @@ com\sunglassstore\service\AdminCustomerService.class
 com\sunglassstore\entity\enums\CartStatus.class
 com\sunglassstore\dto\request\CreateCategoryRequest.class
 com\sunglassstore\entity\enums\MovementType.class
+com\sunglassstore\dto\response\BestSellerResponse.class
 com\sunglassstore\entity\ReturnRequest.class
 com\sunglassstore\email\EmailDeliveryException.class
 com\sunglassstore\controller\WishlistController.class
 com\sunglassstore\service\ReviewService.class
 com\sunglassstore\repository\AuditLogRepository.class
+com\sunglassstore\catalog\BestSellerRow.class
 com\sunglassstore\dto\response\AdminOrderResponse$ShipmentInfo.class
 com\sunglassstore\repository\InventoryMovementRepository.class
 com\sunglassstore\repository\LoginAttemptRepository.class
@@ -229,6 +231,7 @@ com\sunglassstore\service\impl\ReviewServiceImpl.class
 com\sunglassstore\entity\User.class
 com\sunglassstore\service\AddressService.class
 com\sunglassstore\service\ShipmentService.class
+com\sunglassstore\catalog\NewProductPolicy.class
 com\sunglassstore\dto\request\ResetPasswordRequest.class
 com\sunglassstore\entity\InventoryMovement.class
 com\sunglassstore\service\PaymentService.class

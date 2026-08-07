@@ -29,6 +29,18 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllActiveProducts(pageable));
     }
 
+    /**
+     * Public Best Sellers. Declared before /{productId} for readability — Spring matches the
+     * literal segment ahead of the template regardless, so "best-sellers" is never parsed as an id.
+     *
+     * `limit` is what the homepage carousel pages through; the service clamps it.
+     */
+    @GetMapping("/best-sellers")
+    public ResponseEntity<java.util.List<com.sunglassstore.dto.response.BestSellerResponse>> getBestSellers(
+            @RequestParam(defaultValue = "20") int limit) {
+        return ResponseEntity.ok(productService.getBestSellers(limit));
+    }
+
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
         return ResponseEntity.ok(productService.getProductById(productId));

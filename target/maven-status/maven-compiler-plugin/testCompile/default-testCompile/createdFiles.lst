@@ -9,6 +9,7 @@ com\sunglassstore\notification\CustomerNotificationEventSubscriberTest.class
 com\sunglassstore\controller\CookieAuthenticationIntegrationTest.class
 com\sunglassstore\service\WishlistServiceImplTest.class
 com\sunglassstore\service\ReturnServiceImplTest.class
+com\sunglassstore\catalog\NewProductPolicyTest.class
 com\sunglassstore\config\StorefrontCategoryBootstrapTest.class
 com\sunglassstore\service\CartConcurrencyIntegrationTest.class
 com\sunglassstore\service\AuthenticationSecurityHardeningTest.class

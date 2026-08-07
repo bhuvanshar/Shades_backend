@@ -35,23 +35,60 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final com.sunglassstore.service.LocalImageStorageService imageStorageService;
     private final InventoryService inventoryService;
+    private final com.sunglassstore.catalog.NewProductPolicy newProductPolicy;
+
+    /**
+     * Every ProductResponse in the application is built here, so the New badge is decided in
+     * exactly one place. ProductResponse.fromEntity takes the flag rather than computing it, which
+     * is what stops a future call site from quietly shipping an always-false badge.
+     */
+    private ProductResponse toResponse(Product product) {
+        return ProductResponse.fromEntity(product, newProductPolicy.isNew(product));
+    }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ProductResponse> getAllActiveProducts(Pageable pageable) {
-        return productRepository.findByIsActiveTrue(pageable).map(ProductResponse::fromEntity);
+        return productRepository.findByIsActiveTrue(pageable).map(this::toResponse);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ProductResponse> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable).map(ProductResponse::fromEntity);
+        return productRepository.findAll(pageable).map(this::toResponse);
+    }
+
+    /** Ceiling on how much of the ranking one call may ask for. */
+    private static final int MAX_BEST_SELLERS = 50;
+
+    @Override
+    @Transactional(readOnly = true)
+    public java.util.List<com.sunglassstore.dto.response.BestSellerResponse> getBestSellers(int limit) {
+        int capped = Math.min(Math.max(limit, 1), MAX_BEST_SELLERS);
+        java.util.List<com.sunglassstore.catalog.BestSellerRow> ranked =
+                productRepository.findBestSellers(capped);
+        if (ranked.isEmpty()) {
+            return java.util.List.of();
+        }
+        // Two queries in total, not one per product: the aggregate decides the ranking and this
+        // fetches exactly the products it named. findAllById returns them in no particular order,
+        // so the ranking order is reapplied from `ranked` below rather than taken from this list.
+        java.util.Map<Long, Product> byId = productRepository
+                .findAllById(ranked.stream().map(com.sunglassstore.catalog.BestSellerRow::getProductId).toList())
+                .stream().collect(java.util.stream.Collectors.toMap(Product::getProductId, product -> product));
+        return ranked.stream()
+                .filter(row -> byId.containsKey(row.getProductId()))
+                .map(row -> new com.sunglassstore.dto.response.BestSellerResponse(
+                        toResponse(byId.get(row.getProductId())),
+                        row.getSoldQuantity() == null ? 0L : row.getSoldQuantity(),
+                        row.getSoldRevenue()))
+                .toList();
     }
 
     @Override
     @Transactional(readOnly = true)
     public ProductResponse getProductById(Long productId) {
-        return ProductResponse.fromEntity(findProduct(productId));
+        return toResponse(findProduct(productId));
     }
 
     @Override
@@ -61,13 +98,13 @@ public class ProductServiceImpl implements ProductService {
         if (normalized.length() > 100) {
             throw new BadRequestException("Search keyword cannot exceed 100 characters");
         }
-        return productRepository.search(normalized, pageable).map(ProductResponse::fromEntity);
+        return productRepository.search(normalized, pageable).map(this::toResponse);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ProductResponse> getProductsByCategory(Long categoryId, Pageable pageable) {
-        return productRepository.findByCategoryId(categoryId, pageable).map(ProductResponse::fromEntity);
+        return productRepository.findByCategoryId(categoryId, pageable).map(this::toResponse);
     }
 
     @Override
@@ -125,7 +162,7 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-        return ProductResponse.fromEntity(productRepository.findById(saved.getProductId()).orElse(saved));
+        return toResponse(productRepository.findById(saved.getProductId()).orElse(saved));
     }
 
     @Override
@@ -182,7 +219,9 @@ public class ProductServiceImpl implements ProductService {
                     com.sunglassstore.entity.enums.MovementType.ADJUSTMENT, "Stock updated from product editor");
         }
 
-        return ProductResponse.fromEntity(productRepository.save(product));
+        // updateProduct never touches publishedAt: editing a name, price, description or stock
+        // level must not make an old product New again.
+        return toResponse(productRepository.save(product));
     }
 
     private void validateStorefrontCategory(Category category) {
@@ -210,7 +249,13 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse setProductActive(Long productId, boolean active) {
         Product product = findProduct(productId);
         product.setIsActive(active);
-        return ProductResponse.fromEntity(productRepository.save(product));
+        // First activation is the publication event the New badge is measured from. publish() is
+        // idempotent, so relisting a delisted product keeps its original date rather than making
+        // an old product New again.
+        if (active) {
+            product.publish();
+        }
+        return toResponse(productRepository.save(product));
     }
 
     @Override
