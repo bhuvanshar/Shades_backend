@@ -33,6 +33,26 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
+    /**
+     * A path variable that will not convert — {@code GET /api/products/best-sellers} against a
+     * {@code Long productId} mapping, say. This used to fall through to the catch-all below and
+     * return 500, which reads as "the server is broken" when the truth is "that is not a valid id".
+     *
+     * It is worth its own handler because it is exactly how a route-ordering mistake shows up: when
+     * a literal path stops being matched ahead of its {@code /{id}} sibling, the symptom is this
+     * exception. A 400 names the problem; a 500 sends whoever is debugging it looking at the
+     * database.
+     */
+    @ExceptionHandler(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleTypeMismatch(
+            org.springframework.web.method.annotation.MethodArgumentTypeMismatchException ex,
+            HttpServletRequest request) {
+        String expected = ex.getRequiredType() == null ? "the expected type" : ex.getRequiredType().getSimpleName();
+        return buildResponse(HttpStatus.BAD_REQUEST,
+                "'" + ex.getValue() + "' is not a valid value for " + ex.getName() + " (expected " + expected + ")",
+                request);
+    }
+
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorResponse> handleConflict(ConflictException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), request);
