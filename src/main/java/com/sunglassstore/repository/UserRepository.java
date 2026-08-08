@@ -36,6 +36,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
     int updateEditableProfile(@Param("userId") Long userId, @Param("name") String name,
                               @Param("phoneNumber") String phoneNumber);
 
+    /**
+     * The same update, conditional on the caller having seen the current row.
+     *
+     * ID *and* expected version in the WHERE clause, version incremented in the same statement, so
+     * the check and the write are one atomic operation — two concurrent editors cannot both match
+     * the same version. An affected-row count of 0 means either the row is gone or somebody else
+     * committed first; the service distinguishes those before choosing 404 or 409.
+     */
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("UPDATE User u SET u.name = :name, u.phoneNumber = :phoneNumber, u.version = u.version + 1, "
+            + "u.updatedAt = CURRENT_TIMESTAMP WHERE u.userId = :userId AND u.version = :expectedVersion")
+    int updateEditableProfileIfVersionMatches(@Param("userId") Long userId, @Param("name") String name,
+                                              @Param("phoneNumber") String phoneNumber,
+                                              @Param("expectedVersion") Long expectedVersion);
+
     boolean existsByEmailIgnoreCase(String email);
 
     @EntityGraph(attributePaths = {"roles"})

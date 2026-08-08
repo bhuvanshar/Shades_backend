@@ -16,6 +16,8 @@ public class UserResponse {
     private String email;
     private String name;
     private String phoneNumber;
+    /** Round-tripped by clients so a profile edit can be refused if the row changed underneath. */
+    private Long version;
     private Boolean isActive;
     private Boolean emailVerified;
     private Set<String> roles;
@@ -28,6 +30,7 @@ public class UserResponse {
         response.setEmail(user.getEmail());
         response.setName(user.getName());
         response.setPhoneNumber(user.getPhoneNumber());
+        response.setVersion(user.getVersion());
         response.setIsActive(user.getIsActive());
         response.setEmailVerified(user.getEmailVerified());
         response.setRoles(user.getRoles().stream()

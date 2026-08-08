@@ -58,6 +58,45 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), request);
     }
 
+    /**
+     * A stale write: the caller's expected version no longer matches.
+     *
+     * 409 rather than 400 because the request was not malformed — it was correct against data that
+     * has since moved. The message tells the customer what to do about it, and the write is NOT
+     * retried: replaying a value chosen against stale data is exactly the silent overwrite the
+     * version check exists to prevent.
+     *
+     * ObjectOptimisticLockingFailureException is Hibernate's own version of this, raised for the
+     * entities whose @Version it manages (Address). Both funnel to the same answer so a client sees
+     * one behaviour whichever mechanism detected the conflict.
+     */
+    @ExceptionHandler({ OptimisticLockConflictException.class,
+            org.springframework.orm.ObjectOptimisticLockingFailureException.class })
+    public ResponseEntity<ErrorResponse> handleOptimisticLock(Exception ex, HttpServletRequest request) {
+        LOGGER.warn("Optimistic lock conflict on {} - {}", request.getRequestURI(), ex.getClass().getSimpleName());
+        return buildResponse(HttpStatus.CONFLICT,
+                "This information was updated elsewhere. Refresh and review the latest version before trying again.",
+                request);
+    }
+
+    /**
+     * Transient database contention: a deadlock victim or a lock-wait timeout.
+     *
+     * Surfaced as 409 rather than 500 because it is a retryable state conflict, not a fault — the
+     * request was valid and would likely succeed on its own. Nothing is retried automatically here:
+     * these arrive from arbitrary write paths, and replaying one that is not idempotent could
+     * duplicate an order or a payment. The message says the operation can be retried; the decision
+     * stays with the caller.
+     */
+    @ExceptionHandler({ org.springframework.dao.CannotAcquireLockException.class,
+            org.springframework.dao.PessimisticLockingFailureException.class,
+            org.springframework.dao.QueryTimeoutException.class })
+    public ResponseEntity<ErrorResponse> handleLockContention(Exception ex, HttpServletRequest request) {
+        LOGGER.warn("Database contention on {} - {}", request.getRequestURI(), ex.getClass().getSimpleName());
+        return buildResponse(HttpStatus.CONFLICT,
+                "The system was busy processing another change. Please try that again.", request);
+    }
+
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorResponse> handleUnauthorized(UnauthorizedException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);

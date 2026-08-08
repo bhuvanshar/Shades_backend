@@ -23,4 +23,10 @@ public class UpdateProfileRequest {
 
     @IndianMobile
     private String phoneNumber;
+
+    /**
+     * The version the customer was looking at when they edited. Optional for backwards
+     * compatibility; when present the update is refused if the row has moved on.
+     */
+    private Long version;
 }

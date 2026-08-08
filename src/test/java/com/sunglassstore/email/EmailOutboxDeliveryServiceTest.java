@@ -1,101 +1,84 @@
 package com.sunglassstore.email;
 
-import com.sunglassstore.entity.EmailOutbox;
-import com.sunglassstore.entity.enums.EmailOutboxStatus;
-import com.sunglassstore.repository.EmailOutboxRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.mockito.InOrder;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
+/**
+ * Orchestration only: that the SMTP call is bracketed BETWEEN two short database transactions
+ * rather than sitting inside one.
+ *
+ * The ordering assertion is the point of this file. It pins the property the split exists for —
+ * claim commits, then the network call happens holding no lock and no connection, then the outcome
+ * is recorded — so a future refactor that folds the send back inside a transaction fails here.
+ */
 class EmailOutboxDeliveryServiceTest {
-    private EmailOutboxRepository repository;
+    private EmailOutboxTransactions transactions;
     private EmailService emailService;
     private EmailOutboxDeliveryService delivery;
 
     @BeforeEach
     void setUp() {
-        repository = mock(EmailOutboxRepository.class);
+        transactions = mock(EmailOutboxTransactions.class);
         emailService = mock(EmailService.class);
-        delivery = new EmailOutboxDeliveryService(repository, emailService);
-        ReflectionTestUtils.setField(delivery, "maxAttempts", 3);
+        delivery = new EmailOutboxDeliveryService(transactions, emailService);
+    }
+
+    private static EmailOutboxTransactions.Claim claimed() {
+        return new EmailOutboxTransactions.Claim(true,
+                new EmailOutboxTransactions.Claimed(7L, "customer@example.com", "Subject", "Body"));
     }
 
     @Test
-    void successfulDeliveryMarksMessageSent() {
-        EmailOutbox email = queued(0);
-        when(repository.findNextDueForUpdate(any()))
-                .thenReturn(Optional.of(email));
-
-        assertTrue(delivery.deliverNext());
-
-        assertEquals(EmailOutboxStatus.SENT, email.getStatus());
-        assertNotNull(email.getSentAt());
-        assertEquals("", email.getBody());
-        verify(emailService).send(any(EmailMessage.class));
-        verify(repository).save(email);
-    }
-
-    @Test
-    void temporaryFailureSchedulesRetryWithError() {
-        EmailOutbox email = queued(0);
-        when(repository.findNextDueForUpdate(any()))
-                .thenReturn(Optional.of(email));
-        doThrow(new EmailDeliveryException("SMTP down", new RuntimeException()))
-                .when(emailService).send(any());
-
-        assertTrue(delivery.deliverNext());
-
-        assertEquals(EmailOutboxStatus.RETRY, email.getStatus());
-        assertEquals(1, email.getAttemptCount());
-        assertEquals("SMTP down", email.getLastError());
-        assertTrue(email.getNextAttemptAt().isAfter(LocalDateTime.now()));
-    }
-
-    @Test
-    void finalFailureStopsAutomaticRetry() {
-        EmailOutbox email = queued(2);
-        when(repository.findNextDueForUpdate(any()))
-                .thenReturn(Optional.of(email));
-        doThrow(new EmailDeliveryException("Rejected", new RuntimeException()))
-                .when(emailService).send(any());
-
-        delivery.deliverNext();
-
-        assertEquals(EmailOutboxStatus.FAILED, email.getStatus());
-        assertEquals(3, email.getAttemptCount());
-        assertEquals("Body", email.getBody());
-    }
-
-    @Test
-    void expiredSensitiveEmailIsNeverSentAndPayloadIsScrubbed() {
-        EmailOutbox email = queued(0);
-        email.setExpiresAt(LocalDateTime.now().minusSeconds(1));
-        when(repository.findNextDueForUpdate(any()))
-                .thenReturn(Optional.of(email));
-
-        assertTrue(delivery.deliverNext());
-
-        assertEquals(EmailOutboxStatus.FAILED, email.getStatus());
-        assertEquals("", email.getBody());
-        assertEquals("Email expired before delivery", email.getLastError());
+    void nothingDueMeansNoSendAndNoFurtherDraining() {
+        when(transactions.claimNext()).thenReturn(new EmailOutboxTransactions.Claim(false, null));
+        assertFalse(delivery.deliverNext());
         verifyNoInteractions(emailService);
     }
 
-    private EmailOutbox queued(int attempts) {
-        EmailOutbox email = new EmailOutbox();
-        email.setRecipient("customer@example.com");
-        email.setSubject("Subject");
-        email.setBody("Body");
-        email.setAttemptCount(attempts);
-        email.setStatus(attempts == 0 ? EmailOutboxStatus.PENDING : EmailOutboxStatus.RETRY);
-        email.setNextAttemptAt(LocalDateTime.now().minusSeconds(1));
-        return email;
+    @Test
+    void aMessageSettledInTheDatabaseStillCountsAsProgress() {
+        // An expired message is handled entirely inside the claim transaction. The scheduler must
+        // keep draining, so this reports true even though nothing was sent.
+        when(transactions.claimNext()).thenReturn(new EmailOutboxTransactions.Claim(true, null));
+        assertTrue(delivery.deliverNext());
+        verifyNoInteractions(emailService);
+    }
+
+    @Test
+    void theSendHappensBetweenTheTwoTransactions() {
+        when(transactions.claimNext()).thenReturn(claimed());
+
+        assertTrue(delivery.deliverNext());
+
+        InOrder order = inOrder(transactions, emailService);
+        order.verify(transactions).claimNext();
+        order.verify(emailService).send(any());
+        order.verify(transactions).recordSent(7L);
+        order.verifyNoMoreInteractions();
+    }
+
+    @Test
+    void aFailedSendIsRecordedRatherThanPropagated() {
+        when(transactions.claimNext()).thenReturn(claimed());
+        doThrow(new EmailDeliveryException("SMTP down", new RuntimeException()))
+                .when(emailService).send(any());
+
+        assertTrue(delivery.deliverNext(), "a failed attempt is still progress");
+
+        verify(transactions).recordFailure(eq(7L), eq("SMTP down"));
+        verify(transactions, never()).recordSent(any());
     }
 }

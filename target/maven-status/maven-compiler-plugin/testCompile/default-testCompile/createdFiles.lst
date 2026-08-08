@@ -30,11 +30,13 @@ com\sunglassstore\controller\CouponControllerIntegrationTest.class
 com\sunglassstore\service\impl\UnpaidOrderExpiryServiceImplTest.class
 com\sunglassstore\controller\AdminEmailOutboxControllerIntegrationTest.class
 com\sunglassstore\validation\PhoneNumbersTest.class
+com\sunglassstore\concurrency\CheckoutConcurrencyIntegrationTest.class
 com\sunglassstore\service\CouponServiceImplTest.class
 com\sunglassstore\controller\ReviewControllerIntegrationTest.class
 com\sunglassstore\service\impl\AddressPincodeValidationTest.class
 com\sunglassstore\email\SmtpEmailServiceTest.class
 com\sunglassstore\service\EmailVerificationServiceImplTest.class
+com\sunglassstore\email\EmailOutboxTransactionsTest.class
 com\sunglassstore\service\RefundServiceImplTest.class
 com\sunglassstore\service\ReviewServiceImplTest.class
 com\sunglassstore\email\CustomerEmailEventSubscriberTest.class

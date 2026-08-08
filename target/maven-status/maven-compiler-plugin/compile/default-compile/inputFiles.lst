@@ -86,6 +86,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\email\EmailOutboxDeliveryService.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\email\EmailOutboxScheduler.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\email\EmailOutboxService.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\email\EmailOutboxTransactions.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\email\EmailService.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\email\event\EmailVerificationRequested.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\email\event\OrderCancelledEmailRequested.java
@@ -149,6 +150,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\GlobalExceptionHandler.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\InsufficientInventoryException.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\InvalidCouponException.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\OptimisticLockConflictException.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\ResourceNotFoundException.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\UnauthorizedException.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\notification\CustomerNotificationEventSubscriber.java

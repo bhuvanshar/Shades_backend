@@ -31,6 +31,17 @@ public class User {
 
     @Column(name = "NAME", nullable = false)
     private String name;
+    /**
+     * Row version for optimistic locking on the profile edit path.
+     *
+     * Deliberately NOT annotated @Version. Hibernate would then version-check EVERY write to a
+     * User — including background ones like lastLoginAt and failedLoginAttempts — and start
+     * raising conflicts in flows that have no concurrent-edit problem. This column is read and
+     * incremented by exactly one query: UserRepository.updateEditableProfile.
+     */
+    @Column(name = "VERSION", nullable = false)
+    private Long version = 0L;
+
 
     @Column(name = "PHONE_NUMBER", length = 20)
     private String phoneNumber;

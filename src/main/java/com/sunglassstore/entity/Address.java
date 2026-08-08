@@ -30,6 +30,15 @@ public class Address {
 
     @Column(name = "RECIPIENT_NAME", nullable = false)
     private String recipientName;
+    /**
+     * Hibernate-managed optimistic lock. Safe to automate here because an address is only ever
+     * written through the customer read-edit-save path, so a version bump always corresponds to a
+     * real user edit — unlike User, which is also written by background auth bookkeeping.
+     */
+    @jakarta.persistence.Version
+    @Column(name = "VERSION", nullable = false)
+    private Long version = 0L;
+
 
     @Column(name = "PHONE_NUMBER", length = 20)
     private String phoneNumber;

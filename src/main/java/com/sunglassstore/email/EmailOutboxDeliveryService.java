@@ -1,71 +1,59 @@
 package com.sunglassstore.email;
 
-import com.sunglassstore.entity.EmailOutbox;
-import com.sunglassstore.entity.enums.EmailOutboxStatus;
-import com.sunglassstore.repository.EmailOutboxRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
+/**
+ * Delivers one queued email per call.
+ *
+ * Deliberately NOT @Transactional. It used to be, and that was a real reliability problem rather
+ * than a stylistic one: the method held a {@code SELECT ... FOR UPDATE} row lock on the outbox row
+ * AND a pooled database connection for the entire duration of an SMTP conversation with an external
+ * mail server. A slow or hanging Gmail connection therefore pinned a connection out of a pool of
+ * ten, and the row stayed locked behind it. Enough stuck sends and the pool is exhausted, which
+ * takes down request handling that has nothing to do with email.
+ *
+ * The work is now three phases, and only the first and third touch the database:
+ *
+ *   1. claim  — short transaction: lease the row, commit, release the lock.
+ *   2. send   — NO transaction, NO connection held. The network call happens here.
+ *   3. record — short transaction: write the outcome.
+ *
+ * The delivery guarantee is unchanged and is still at-least-once: if the process dies between (1)
+ * and (3) the lease expires and the message is retried, which is the normal and correct property of
+ * an outbox. Duplicate suppression comes from the lease window being longer than the SMTP timeout.
+ */
 @Service
 @RequiredArgsConstructor
 public class EmailOutboxDeliveryService {
-    private final EmailOutboxRepository repository;
+
+    private final EmailOutboxTransactions transactions;
     private final EmailService emailService;
 
-    @Value("${app.email.outbox.max-attempts:8}")
-    private int maxAttempts;
-
-    @Transactional
+    /** @return true when a message was claimed, so the scheduler knows to keep draining. */
     public boolean deliverNext() {
-        EmailOutbox email = repository
-                .findNextDueForUpdate(LocalDateTime.now())
-                .orElse(null);
-        if (email == null) return false;
-
-        if (email.getExpiresAt() != null && !email.getExpiresAt().isAfter(LocalDateTime.now())) {
-            email.setStatus(EmailOutboxStatus.FAILED);
-            email.setLastError("Email expired before delivery");
-            scrubPayload(email);
-            repository.save(email);
+        EmailOutboxTransactions.Claim claim = transactions.claimNext();
+        if (!claim.progressed()) {
+            return false;
+        }
+        // Settled in the database (expired). Work was done, so the scheduler should keep draining.
+        if (claim.message() == null) {
             return true;
         }
+        EmailOutboxTransactions.Claimed claimed = claim.message();
 
         try {
-            emailService.send(new EmailMessage(email.getRecipient(), email.getSubject(), email.getBody()));
-            email.setStatus(EmailOutboxStatus.SENT);
-            email.setSentAt(LocalDateTime.now());
-            email.setLastError(null);
-            scrubPayload(email);
+            // Outside any transaction. This is the whole reason the method is split up.
+            emailService.send(new EmailMessage(claimed.recipient(), claimed.subject(), claimed.body()));
+            transactions.recordSent(claimed.id());
         } catch (RuntimeException exception) {
-            int attempts = email.getAttemptCount() + 1;
-            email.setAttemptCount(attempts);
-            email.setLastError(truncate(exception.getMessage()));
-            if (attempts >= maxAttempts) {
-                email.setStatus(EmailOutboxStatus.FAILED);
-                // Expiring messages contain time-sensitive secrets (for example reset links).
-                // Normal notifications retain their payload after terminal failure so an
-                // authorized operator can safely re-queue them.
-                if (email.getExpiresAt() != null) scrubPayload(email);
-            } else {
-                email.setStatus(EmailOutboxStatus.RETRY);
-                long delayMinutes = Math.min(1L << Math.min(attempts - 1, 10), 24L * 60L);
-                email.setNextAttemptAt(LocalDateTime.now().plusMinutes(delayMinutes));
-            }
+            transactions.recordFailure(claimed.id(), truncate(exception.getMessage()));
         }
-        repository.save(email);
         return true;
     }
 
     private String truncate(String message) {
         if (message == null || message.isBlank()) return "Email delivery failed";
         return message.length() <= 1000 ? message : message.substring(0, 1000);
-    }
-
-    private void scrubPayload(EmailOutbox email) {
-        email.setBody("");
     }
 }

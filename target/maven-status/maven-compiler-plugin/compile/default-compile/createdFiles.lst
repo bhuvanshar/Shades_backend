@@ -88,7 +88,9 @@ com\sunglassstore\service\ProductService.class
 com\sunglassstore\dto\response\AdminOrderResponse$Item.class
 com\sunglassstore\repository\NotificationRepository.class
 com\sunglassstore\controller\ReviewController.class
+com\sunglassstore\email\EmailOutboxTransactions.class
 com\sunglassstore\dto\request\UpdateShipmentStatusRequest.class
+com\sunglassstore\exception\OptimisticLockConflictException.class
 com\sunglassstore\dto\request\UpdateReturnStatusRequest.class
 com\sunglassstore\repository\ReturnItemRepository.class
 com\sunglassstore\entity\LoginAttempt.class
@@ -124,8 +126,10 @@ com\sunglassstore\repository\InventoryMovementRepository.class
 com\sunglassstore\repository\LoginAttemptRepository.class
 com\sunglassstore\dto\request\RegisterRequest.class
 com\sunglassstore\dto\response\ShipmentResponse.class
+com\sunglassstore\email\EmailOutboxTransactions$Claimed.class
 com\sunglassstore\repository\WishlistItemRepository.class
 com\sunglassstore\dto\response\ReviewResponse.class
+com\sunglassstore\email\EmailOutboxTransactions$Claim.class
 com\sunglassstore\dto\response\ReviewableVariantResponse.class
 com\sunglassstore\entity\CartItem.class
 com\sunglassstore\controller\CommunicationPreferenceController.class
