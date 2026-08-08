@@ -83,6 +83,42 @@ public class Order {
     @Column(name = "SHIPPING_COUNTRY", nullable = false, length = 100)
     private String shippingCountry;
 
+    /**
+     * Immutable snapshot of the automatic quantity offer that was applied, if any.
+     *
+     * Copied values rather than a join on purpose: an administrator may later change the discount,
+     * rename the offer or archive it, and this order must keep the terms it was charged under. Set
+     * once during createOrder and never written again — updatable = false makes that a mapping
+     * guarantee rather than a convention, so a later save() cannot quietly rewrite history.
+     */
+    @Column(name = "AUTO_OFFER_ID", updatable = false)
+    private Long autoOfferId;
+
+    @Column(name = "AUTO_OFFER_NAME", length = 120, updatable = false)
+    private String autoOfferName;
+
+    @Column(name = "AUTO_OFFER_REQUIRED_QUANTITY", updatable = false)
+    private Integer autoOfferRequiredQuantity;
+
+    @Column(name = "AUTO_OFFER_DISCOUNT_PER_GROUP", precision = 12, scale = 2, updatable = false)
+    private BigDecimal autoOfferDiscountPerGroup;
+
+    @Column(name = "AUTO_OFFER_ELIGIBLE_QUANTITY", updatable = false)
+    private Integer autoOfferEligibleQuantity;
+
+    @Column(name = "AUTO_OFFER_GROUPS", updatable = false)
+    private Integer autoOfferGroups;
+
+    @Column(name = "AUTO_OFFER_DISCOUNT", precision = 12, scale = 2, updatable = false)
+    private BigDecimal autoOfferDiscount;
+
+    /**
+     * Client-generated key identifying one checkout attempt. The unique index on this column is
+     * what makes a retried submission return the original order instead of placing a second one.
+     */
+    @Column(name = "IDEMPOTENCY_KEY", length = 80, updatable = false)
+    private String idempotencyKey;
+
     @Column(name = "PURCHASED_AT", nullable = false, updatable = false)
     private LocalDateTime purchasedAt;
 

@@ -7,7 +7,11 @@ import com.sunglassstore.entity.enums.*;
 import com.sunglassstore.exception.BadRequestException;
 import com.sunglassstore.exception.InsufficientInventoryException;
 import com.sunglassstore.exception.ResourceNotFoundException;
+import com.sunglassstore.offer.AutomaticOfferPricing;
+import com.sunglassstore.offer.MerchandisePromotionPolicy;
+import com.sunglassstore.offer.OrderTotals;
 import com.sunglassstore.repository.*;
+import com.sunglassstore.service.AutomaticOfferService;
 import com.sunglassstore.service.CouponService;
 import com.sunglassstore.service.OrderService;
 import com.sunglassstore.email.event.OrderCancelledEmailRequested;
@@ -26,6 +30,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -44,15 +50,28 @@ public class OrderServiceImpl implements OrderService {
     private final ShipmentRepository shipmentRepository;
     private final RefundRepository refundRepository;
     private final CouponService couponService;
+    private final AutomaticOfferService automaticOfferService;
     private final ApplicationEventPublisher eventPublisher;
 
-    private static final BigDecimal TAX_RATE = new BigDecimal("18.00"); // 18% GST
-    private static final BigDecimal FREE_SHIPPING_THRESHOLD = new BigDecimal("500.00");
-    private static final BigDecimal STANDARD_SHIPPING = new BigDecimal("49.00");
+    // Tax, shipping and total now live in OrderTotals, because the cart quote has to produce the
+    // same number this method will compute — checkout sends it back as expectedTotalAmount and a
+    // paisa of disagreement rejects a correct order. One copy of the rules, two callers.
 
     @Override
     @Transactional
     public Order createOrder(Long userId, CreateOrderRequest request) {
+
+        // Idempotency first, before any lock is taken or any stock is touched. A retried checkout
+        // must be a read, not a second attempt at the whole transaction.
+        String idempotencyKey = request.getIdempotencyKey() == null || request.getIdempotencyKey().isBlank()
+                ? null : request.getIdempotencyKey().trim();
+        if (idempotencyKey != null) {
+            Optional<Order> alreadyPlaced =
+                    orderRepository.findByIdempotencyKeyAndUserUserId(idempotencyKey, userId);
+            if (alreadyPlaced.isPresent()) {
+                return alreadyPlaced.get();
+            }
+        }
 
         userRepository.findByIdForUpdate(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -131,12 +150,54 @@ public class OrderServiceImpl implements OrderService {
             discountAmount = couponService.calculateDiscount(coupon, subtotal, totalItemQuantity);
         }
 
-        BigDecimal taxableAmount = subtotal.subtract(discountAmount);
-        BigDecimal taxAmount = taxableAmount.multiply(TAX_RATE)
-                .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-        BigDecimal shippingAmount = subtotal.compareTo(FREE_SHIPPING_THRESHOLD) >= 0
-                ? BigDecimal.ZERO : STANDARD_SHIPPING;
-        BigDecimal totalAmount = taxableAmount.add(taxAmount).add(shippingAmount);
+        // Step 7b: the automatic quantity offer.
+        //
+        // Recalculated here from the locked variants rather than trusted from the request, and
+        // resolved against one instant for the whole transaction — an offer that expired while the
+        // customer was on the checkout page is simply not effective at `pricedAt`, and the total
+        // check below is what then stops the order rather than charging the stale amount.
+        LocalDateTime pricedAt = LocalDateTime.now();
+        Map<Long, Long> variantToProduct = new HashMap<>();
+        for (CartItem item : sortedCartItems) {
+            ProductVariant variant = lockedVariants.get(item.getVariant().getVariantId());
+            variantToProduct.put(variant.getVariantId(), variant.getProduct().getProductId());
+        }
+        AutomaticOffer automaticOffer = automaticOfferService.effectiveOffer(pricedAt).orElse(null);
+        Set<Long> eligibleVariantIds = automaticOffer == null
+                ? Set.of()
+                : automaticOfferService.eligibleVariantIds(automaticOffer, variantToProduct);
+        List<AutomaticOfferPricing.Line> offerLines = new ArrayList<>();
+        for (CartItem item : sortedCartItems) {
+            ProductVariant variant = lockedVariants.get(item.getVariant().getVariantId());
+            offerLines.add(new AutomaticOfferPricing.Line(variant.getVariantId(), item.getQuantity(),
+                    variant.getPrice(), eligibleVariantIds.contains(variant.getVariantId())));
+        }
+        AutomaticOfferPricing.Result automaticResult =
+                automaticOfferService.priceLines(automaticOffer, offerLines);
+
+        // Step 7c: one promotion, decided centrally. Both discounts are fully computed first, so
+        // which one the customer gets cannot depend on the order the request happened to be built in.
+        MerchandisePromotionPolicy.Decision decision = MerchandisePromotionPolicy.decide(
+                automaticResult.discount(),
+                automaticOffer == null ? null : automaticOffer.getOfferName(),
+                discountAmount,
+                coupon == null ? null : "Coupon " + coupon.getCouponCode());
+
+        boolean couponApplied = decision.applied() == MerchandisePromotionPolicy.AppliedPromotion.COUPON;
+        boolean automaticApplied =
+                decision.applied() == MerchandisePromotionPolicy.AppliedPromotion.AUTOMATIC_OFFER;
+        discountAmount = decision.discount();
+        if (!couponApplied) {
+            // The coupon lost the comparison, so it is not recorded against the order and its usage
+            // count is untouched: a customer must not spend a single-use coupon on an order that did
+            // not use it.
+            coupon = null;
+        }
+
+        OrderTotals totals = OrderTotals.of(subtotal, discountAmount);
+        BigDecimal taxAmount = totals.tax();
+        BigDecimal shippingAmount = totals.shipping();
+        BigDecimal totalAmount = totals.total();
         if (request.getExpectedTotalAmount().setScale(2, RoundingMode.HALF_UP)
                 .compareTo(totalAmount.setScale(2, RoundingMode.HALF_UP)) != 0) {
             throw new BadRequestException("Your order total changed. Return to your bag, review the latest prices and offer, then try again.");
@@ -154,8 +215,22 @@ public class OrderServiceImpl implements OrderService {
         order.setShippingAddress(shippingAddress);
         order.setBillingAddress(billingAddress);
         order.setPurchasedAt(LocalDateTime.now());
+        order.setIdempotencyKey(idempotencyKey);
         if (coupon != null) {
             order.setCoupon(coupon);
+        }
+        // Immutable snapshot of the offer terms. Written only when the offer actually paid out, so
+        // an order that lost the stacking comparison does not claim an offer it was not charged
+        // under. Every figure the customer was quoted is copied, because the offer row may be
+        // edited or archived tomorrow and this order's history must not move with it.
+        if (automaticApplied) {
+            order.setAutoOfferId(automaticOffer.getAutomaticOfferId());
+            order.setAutoOfferName(automaticOffer.getOfferName());
+            order.setAutoOfferRequiredQuantity(automaticOffer.getRequiredQuantity());
+            order.setAutoOfferDiscountPerGroup(automaticOffer.getDiscountPerGroup());
+            order.setAutoOfferEligibleQuantity(automaticResult.eligibleQuantity());
+            order.setAutoOfferGroups(automaticResult.completeGroups());
+            order.setAutoOfferDiscount(automaticResult.discount());
         }
 
         // Step 10: Copy shipping address values into order snapshot columns
@@ -169,6 +244,15 @@ public class OrderServiceImpl implements OrderService {
         order.setShippingCountry(shippingAddress.getCountry());
 
         // Step 9: Create order items with snapshot data
+        //
+        // Each line also records its share of the order-level discount. That share is what a partial
+        // return refunds against later: without it, refunding a returned unit would have to guess how
+        // much of the discount belonged to it, and the only available guess — the list price — would
+        // refund more than the customer paid.
+        Map<Long, BigDecimal> lineDiscounts = automaticApplied
+                ? automaticResult.lineDiscounts()
+                : couponApplied ? allocateProportionally(sortedCartItems, lockedVariants, discountAmount)
+                : Map.of();
         List<OrderItem> orderItems = new ArrayList<>();
         for (CartItem cartItem : sortedCartItems) {
             ProductVariant variant = lockedVariants.get(cartItem.getVariant().getVariantId());
@@ -182,6 +266,8 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setUnitPrice(variant.getPrice());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setLineTotal(variant.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+            orderItem.setDiscountAmount(lineDiscounts.getOrDefault(variant.getVariantId(),
+                    BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP));
             orderItems.add(orderItem);
         }
         order.setItems(orderItems);
@@ -293,6 +379,22 @@ public class OrderServiceImpl implements OrderService {
                 List.of(PaymentStatus.PAID, PaymentStatus.PARTIALLY_REFUNDED))) return false;
         cancelOrder(order.getUser().getUserId(), orderId);
         return true;
+    }
+
+    /**
+     * Per-line shares of a coupon discount, so a coupon order records the same kind of allocation an
+     * automatic-offer order does. A coupon has no eligibility scope, so every line shares it.
+     */
+    private Map<Long, BigDecimal> allocateProportionally(List<CartItem> items,
+                                                         Map<Long, ProductVariant> lockedVariants,
+                                                         BigDecimal discount) {
+        List<AutomaticOfferPricing.Line> lines = new ArrayList<>();
+        for (CartItem item : items) {
+            ProductVariant variant = lockedVariants.get(item.getVariant().getVariantId());
+            lines.add(new AutomaticOfferPricing.Line(variant.getVariantId(), item.getQuantity(),
+                    variant.getPrice(), true));
+        }
+        return AutomaticOfferPricing.allocateAcross(lines, discount);
     }
 
     private void restoreInventory(Order order) {

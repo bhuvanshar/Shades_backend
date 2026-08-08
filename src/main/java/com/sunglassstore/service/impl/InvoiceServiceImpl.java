@@ -212,7 +212,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 
             float x = 355;
             totalRow("Amount before discount", order.subtotalAmount(), x, false);
-            totalRow("Discount", order.discountAmount().negate(), x, false);
+            // The discount line is named after whatever actually granted it, taken from the order's
+            // own snapshot. A generic "Discount" on a document the customer keeps for months would
+            // leave no record of which offer applied — and the offer itself may since have changed.
+            totalRow(discountLabel(order), order.discountAmount().negate(), x, false);
             totalRow("Taxable amount", taxable, x, false);
             if (intraState) {
                 totalRow("CGST", halfTax, x, false);
@@ -224,6 +227,27 @@ public class InvoiceServiceImpl implements InvoiceService {
             totalRow("NET AMOUNT", order.totalAmount(), x, true);
             text("Amount in words: " + amountInWords(order.totalAmount()), 46, y + 6, BOLD, 7, INK);
             y -= 10;
+        }
+
+        /**
+         * "Discount (2 for ₹500 Weekend — 3 groups)" rather than "Discount".
+         *
+         * Truncated so a long administrator-chosen offer name cannot run past the totals column and
+         * over the amount beside it.
+         */
+        private String discountLabel(com.sunglassstore.dto.response.AdminOrderResponse order) {
+            var offer = order.appliedOffer();
+            if (offer != null) {
+                String name = offer.offerName() == null ? "Automatic offer" : offer.offerName();
+                if (name.length() > 28) name = name.substring(0, 27).trim() + "…";
+                Integer groups = offer.completeGroups();
+                return "Discount (" + name + (groups == null ? "" : " — " + groups
+                        + (groups == 1 ? " group" : " groups")) + ")";
+            }
+            if (order.couponCode() != null) {
+                return "Discount (coupon " + order.couponCode() + ")";
+            }
+            return "Discount";
         }
 
         private void totalRow(String name, BigDecimal value, float x, boolean bold) throws IOException {

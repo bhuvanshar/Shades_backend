@@ -34,6 +34,7 @@ class OrderServiceImplTest {
     private ShipmentRepository shipments;
     private RefundRepository refunds;
     private CouponService couponService;
+    private com.sunglassstore.service.AutomaticOfferService automaticOffers;
     private ApplicationEventPublisher events;
     private OrderServiceImpl service;
 
@@ -46,8 +47,17 @@ class OrderServiceImplTest {
         movements = mock(InventoryMovementRepository.class); payments = mock(PaymentRepository.class);
         shipments = mock(ShipmentRepository.class); refunds = mock(RefundRepository.class);
         couponService = mock(CouponService.class); events = mock(ApplicationEventPublisher.class);
+        automaticOffers = mock(com.sunglassstore.service.AutomaticOfferService.class);
+        // No automatic offer in force for these tests: they cover locking, pricing from the locked
+        // variant, and inventory. The offer's own effect on a checkout is tested against a real
+        // database in AutomaticOfferOrderIntegrationTest, where an in-force offer is a row rather
+        // than a stubbed return value.
+        when(automaticOffers.effectiveOffer(any())).thenReturn(java.util.Optional.empty());
+        when(automaticOffers.priceLines(any(), any()))
+                .thenReturn(com.sunglassstore.offer.AutomaticOfferPricing.NONE);
         service = new OrderServiceImpl(orders, users, histories, carts, addresses, variants,
-                coupons, couponUsages, movements, payments, shipments, refunds, couponService, events);
+                coupons, couponUsages, movements, payments, shipments, refunds, couponService,
+                automaticOffers, events);
     }
 
     @Test

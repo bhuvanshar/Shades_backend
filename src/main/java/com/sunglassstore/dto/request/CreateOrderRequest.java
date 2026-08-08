@@ -27,4 +27,15 @@ public class CreateOrderRequest {
     @DecimalMin(value = "0.00", message = "Expected order total cannot be negative")
     @Digits(integer = 10, fraction = 2, message = "Expected order total must have at most 2 decimal places")
     private BigDecimal expectedTotalAmount;
+
+    /**
+     * Identifies one checkout attempt, generated once by the client and reused across retries.
+     *
+     * Optional for backwards compatibility: an older client simply gets the previous behaviour,
+     * where a resubmitted checkout could place a second order. Supplied, a repeat returns the
+     * original order instead — so a retried request cannot apply the offer, charge, or deduct stock
+     * twice.
+     */
+    @Size(max = 80, message = "Idempotency key cannot exceed 80 characters")
+    private String idempotencyKey;
 }

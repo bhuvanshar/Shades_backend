@@ -10,6 +10,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\controller\AdminCustomerController.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\controller\AdminEmailOutboxController.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\controller\AuthController.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\controller\AutomaticOfferController.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\controller\CartController.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\controller\CategoryController.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\controller\CommunicationPreferenceController.java
@@ -25,6 +26,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\controller\ShipmentController.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\controller\WishlistController.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\AddressRequest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\AutomaticOfferRequest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\CartItemRequest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\CreateCategoryRequest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\CreateCouponRequest.java
@@ -41,6 +43,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\InventoryAdjustmentRequest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\LoginRequest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\ModerateReviewRequest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\OfferQuoteRequest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\PaymentRequest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\RefreshTokenRequest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\RegisterRequest.java
@@ -54,11 +57,13 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\UpdateShipmentStatusRequest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\ValidateCouponRequest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\request\VerifyEmailRequest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\ActiveOfferResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\AddressResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\AdminCustomerResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\AdminOrderResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\AdminReviewResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\AuthResponse.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\AutomaticOfferResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\BestSellerResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\CartResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\CheckoutOrderResponse.java
@@ -70,6 +75,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\InventoryMovementResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\MessageResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\NotificationResponse.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\OfferQuoteResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\PaymentResponse.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\PaymentResult.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\dto\response\ProductResponse.java
@@ -98,6 +104,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\Address.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\AppConfig.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\AuditLog.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\AutomaticOffer.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\Cart.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\CartItem.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\Category.java
@@ -113,6 +120,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\enums\MovementType.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\enums\NotificationStatus.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\enums\NotificationType.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\enums\OfferScopeType.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\enums\OrderStatus.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\enums\PaymentMethod.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\enums\PaymentStatus.java
@@ -155,8 +163,13 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\UnauthorizedException.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\notification\CustomerNotificationEventSubscriber.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\notification\event\OrderPaymentConfirmed.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\offer\AutomaticOfferPricing.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\offer\MerchandisePromotionPolicy.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\offer\OfferMessages.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\offer\OrderTotals.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\repository\AddressRepository.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\repository\AuditLogRepository.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\repository\AutomaticOfferRepository.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\repository\CartItemRepository.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\repository\CartRepository.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\repository\CategoryRepository.java
@@ -201,6 +214,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\AdminCustomerService.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\AdminEmailOutboxService.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\AuthenticationService.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\AutomaticOfferService.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\CartService.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\CategoryService.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\CommunicationPreferenceService.java
@@ -208,6 +222,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\EmailVerificationService.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\impl\AddressServiceImpl.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\impl\AuthenticationServiceImpl.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\impl\AutomaticOfferServiceImpl.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\impl\CartServiceImpl.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\impl\CategoryServiceImpl.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\service\impl\CommunicationPreferenceServiceImpl.java

@@ -65,6 +65,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/uploads/products/**").permitAll()
                         // Coupon validation for authenticated users
                         .requestMatchers("/api/coupons/**").authenticated()
+                        // The automatic offer has to reach a signed-out visitor: the banner renders
+                        // on the storefront before anyone logs in, and a guest bag has no
+                        // server-side cart, so its lines are priced from the request body. Both are
+                        // reads — they return prices, never accept them. Every mutation lives under
+                        // /admin below and is additionally gated by @PreAuthorize on the method.
+                        .requestMatchers(HttpMethod.GET, "/api/offers/automatic/active").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/offers/automatic/quote").permitAll()
+                        .requestMatchers("/api/offers/automatic/admin/**").hasRole("ADMIN")
                         // Admin endpoints
                         .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "SUPPORT", "INVENTORY_MANAGER")
                         // Swagger/OpenAPI

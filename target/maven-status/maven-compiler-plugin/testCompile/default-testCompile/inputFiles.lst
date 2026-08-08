@@ -1,4 +1,5 @@
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\catalog\NewProductPolicyTest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\concurrency\AutomaticOfferConcurrencyIntegrationTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\concurrency\CheckoutConcurrencyIntegrationTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\config\StorefrontCategoryBootstrapTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\controller\AdminEmailOutboxControllerIntegrationTest.java
@@ -13,6 +14,10 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\email\EmailTransactionIntegrationTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\email\SmtpEmailServiceTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\notification\CustomerNotificationEventSubscriberTest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\offer\AutomaticOfferPricingTest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\offer\MerchandisePromotionPolicyTest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\offer\OfferMessagesTest.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\offer\OrderTotalsTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\security\AuthRateLimitFilterTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\security\JwtSecurityHardeningTest.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\test\java\com\sunglassstore\service\AdminEmailOutboxServiceTest.java

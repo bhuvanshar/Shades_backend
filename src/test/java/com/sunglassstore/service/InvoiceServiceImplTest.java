@@ -95,6 +95,8 @@ class InvoiceServiceImplTest {
                 items,
                 List.of(new AdminOrderResponse.PaymentInfo(3L, total, "MOCK",
                         paymentStatus, "MOCK", "MOCK-PAID-42", purchasedAt, purchasedAt)),
-                List.of(), List.of());
+                // No automatic offer and no coupon: these fixtures exist to check the invoice's
+                // layout and arithmetic, and the offer-labelled discount line has its own test.
+                List.of(), List.of(), null, null);
     }
 }

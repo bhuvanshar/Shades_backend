@@ -21,6 +21,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Page<Order> findByUserUserIdOrderByPurchasedAtDesc(Long userId, Pageable pageable);
 
+    /**
+     * Idempotency lookup. Scoped to the user as well as the key so one customer's key can never
+     * return another customer's order, however the key was generated.
+     */
+    Optional<Order> findByIdempotencyKeyAndUserUserId(String idempotencyKey, Long userId);
+
     Optional<Order> findByOrderIdAndUserUserId(Long orderId, Long userId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

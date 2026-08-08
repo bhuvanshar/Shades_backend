@@ -10,6 +10,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByIsActiveTrue(Pageable pageable);
 
+    /**
+     * Which of these products sit in any of these categories.
+     *
+     * Used to resolve a category-scoped automatic offer against the handful of products in one cart,
+     * rather than loading Product.categories for each of them (that association is lazy, and
+     * touching it per line is one query per product). Returns product ids only because eligibility
+     * is all the caller needs.
+     */
+    @Query(value = """
+            SELECT DISTINCT pc.PRODUCT_ID FROM PRODUCT_CATEGORIES pc
+            WHERE pc.PRODUCT_ID IN (:productIds) AND pc.CATEGORY_ID IN (:categoryIds)
+            """, nativeQuery = true)
+    java.util.List<Long> findProductIdsInCategories(
+            @org.springframework.data.repository.query.Param("productIds") java.util.Collection<Long> productIds,
+            @org.springframework.data.repository.query.Param("categoryIds") java.util.Collection<Long> categoryIds);
+
     @Query(value = "SELECT DISTINCT p FROM Product p " +
            "LEFT JOIN p.variants v ON v.isActive = true " +
            "LEFT JOIN p.categories c " +

@@ -10,7 +10,14 @@ public record AdminOrderResponse(
         BigDecimal taxAmount, BigDecimal shippingAmount, BigDecimal totalAmount,
         LocalDateTime purchasedAt, LocalDateTime deliveredAt, LocalDateTime updatedAt,
         Customer customer, ShippingAddress shippingAddress, List<Item> items,
-        List<PaymentInfo> payments, List<ShipmentInfo> shipments, List<History> history) {
+        List<PaymentInfo> payments, List<ShipmentInfo> shipments, List<History> history,
+        /**
+         * The automatic offer this order was charged under, read from the order's own snapshot
+         * columns rather than from the offer table. Null when no automatic offer applied. This one
+         * record serves the customer's order detail and the administrator's, because both read
+         * through this DTO — so neither can show terms the other does not.
+         */
+        AppliedOffer appliedOffer, String couponCode) {
 
     public static AdminOrderResponse fromEntity(Order order, List<Payment> payments,
                                                  List<Shipment> shipments, List<OrderStatusHistory> history) {
@@ -34,7 +41,19 @@ public record AdminOrderResponse(
                         s.getTrackingNumber(), s.getShipmentStatus().name(), s.getShippedAt(),
                         s.getExpectedDeliveryAt(), s.getDeliveredAt())).toList(),
                 history.stream().map(h -> new History(h.getOldStatus(), h.getNewStatus(),
-                        h.getNotes(), h.getChangedAt())).toList());
+                        h.getNotes(), h.getChangedAt())).toList(),
+                appliedOffer(order),
+                order.getCoupon() == null ? null : order.getCoupon().getCouponCode());
+    }
+
+    private static AppliedOffer appliedOffer(Order order) {
+        if (order.getAutoOfferDiscount() == null) {
+            return null;
+        }
+        return new AppliedOffer(order.getAutoOfferId(), order.getAutoOfferName(),
+                order.getAutoOfferRequiredQuantity(), order.getAutoOfferDiscountPerGroup(),
+                order.getAutoOfferEligibleQuantity(), order.getAutoOfferGroups(),
+                order.getAutoOfferDiscount());
     }
 
     public record Customer(Long userId, String name, String email, String phoneNumber) {}
@@ -50,4 +69,9 @@ public record AdminOrderResponse(
                                LocalDateTime shippedAt, LocalDateTime expectedDeliveryAt,
                                LocalDateTime deliveredAt) {}
     public record History(String oldStatus, String newStatus, String notes, LocalDateTime changedAt) {}
+
+    /** Frozen offer terms. Every field is a copy taken when the order was placed. */
+    public record AppliedOffer(Long automaticOfferId, String offerName, Integer requiredQuantity,
+                               BigDecimal discountPerGroup, Integer eligibleQuantity,
+                               Integer completeGroups, BigDecimal discount) {}
 }

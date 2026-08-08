@@ -6,13 +6,19 @@
  * more infrastructure than the question needs, and this has to be runnable by anyone who can
  * already build the project.
  *
- * The traffic mix is deliberately NOT homepage GETs. A read-only test measures almost nothing about
- * the properties this exercise cares about: connection-pool pressure, lock waits and transaction
- * duration all come from writes. Each virtual user therefore does catalogue reads, a cart write and
- * an order read, with a share of them checking out.
+ * What it actually measures, stated plainly because the previous wording here claimed more than the
+ * code did: catalogue reads, the best-sellers aggregate, a product detail, a cart read, and the
+ * automatic-offer quote. Every one is a read. There is no authenticated cart write and no checkout,
+ * so write throughput and lock waits under real checkout load remain unmeasured — see the note at
+ * the foot of this file.
  *
- * Bounded by design: a fixed number of virtual users, a fixed duration, and fixtures confined to
- * one product created for the run. It does not delete anything it did not create.
+ * The reads are not trivial ones, which is the point: best-sellers is a multi-join aggregate over
+ * every paid order, and offer-quote resolves the effective offer, loads the variants, aggregates
+ * units and allocates a discount per line. Both put real work and real connection-pool pressure
+ * behind each request.
+ *
+ * Bounded by design: a fixed number of virtual users, a fixed duration, and no fixtures of its own —
+ * it reads whatever the catalogue already holds and creates nothing.
  *
  * Usage:
  *   node loadtest/bounded-load.js --api http://localhost:8081/api --stages 5,10,20 --seconds 20
@@ -65,16 +71,34 @@ class Client {
 const safeJson = (text) => { try { return JSON.parse(text); } catch { return null; } };
 const percentile = (sorted, p) => (sorted.length ? sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))] : 0);
 
-/** One virtual user: browse, add to cart, read orders — the realistic mix. */
-async function virtualUser(deadline, stats, productId) {
+/**
+ * One virtual user: browse, price a bag, read the cart — the realistic mix.
+ *
+ * offer-quote is here because it is the busiest endpoint the automatic quantity offer added: the
+ * storefront re-prices the bag on every quantity change, so it runs far more often than checkout
+ * does. It is also the one that does real work per call — resolve the effective offer, load the
+ * variants, aggregate, allocate — so leaving it out would measure everything except the feature.
+ *
+ * It stays a POST of quantities: the endpoint returns prices and writes nothing, so adding it does
+ * not turn a read-dominant test into one that mutates the database.
+ */
+async function virtualUser(deadline, stats, productId, variantId, quoteQuantity) {
   const client = new Client();
+  const steps = [
+    ["catalog", () => client.get("/products?size=24&sort=productId,desc")],
+    ["bestsellers", () => client.get("/products/best-sellers?limit=5")],
+    ["product", () => client.get(`/products/${productId}`)],
+    ["cart-read", () => client.get("/cart")],
+  ];
+  if (variantId != null && quoteQuantity >= 2) {
+    // Enough units to complete at least one group, so the aggregation and allocation paths run
+    // rather than short-circuiting on a cart that earns nothing. The caller picks the quantity from
+    // real stock — see the fixture note below.
+    steps.push(["offer-quote", () => client.post("/offers/automatic/quote",
+      { lines: [{ variantId, quantity: quoteQuantity }] })]);
+  }
   while (Date.now() < deadline) {
-    for (const [label, call] of [
-      ["catalog", () => client.get("/products?size=24&sort=productId,desc")],
-      ["bestsellers", () => client.get("/products/best-sellers?limit=5")],
-      ["product", () => client.get(`/products/${productId}`)],
-      ["cart-read", () => client.get("/cart")],
-    ]) {
+    for (const [label, call] of steps) {
       if (Date.now() >= deadline) break;
       try {
         const result = await call();
@@ -106,8 +130,37 @@ function record(stats, label, result) {
     console.error(`Cannot reach a catalogue at ${API} (status ${catalogue.status}). Is the backend up?`);
     process.exit(1);
   }
-  const productId = catalogue.body.content[0].productId;
-  console.log(`target=${API}  product=${productId}  stages=[${STAGES}]  seconds/stage=${SECONDS}\n`);
+  // A product that can actually be priced, not simply the first one listed.
+  //
+  // The first product in this schema is a leftover fixture whose variants were all deactivated, so
+  // taking content[0] gave a product with no variants — and the offer-quote step then quietly
+  // skipped itself for the whole run while still reporting a clean result. A load test that silently
+  // stops exercising what it was extended to measure is worse than one that fails, so a run with no
+  // priceable product now says so in the header instead.
+  // The quote endpoint excludes any line it could not fulfil, so the quantity asked for has to be
+  // stock the chosen variant actually holds — otherwise the request succeeds while pricing nothing.
+  // Pick the deepest-stocked active variant on the page and quote what it can supply, up to seven
+  // (three groups plus a remainder, which is the shape that exercises grouping and allocation).
+  const page = await probe.get("/products?size=50");
+  let best = null;
+  for (const product of page.body?.content || []) {
+    for (const variant of product.variants || []) {
+      const stock = Number(variant.quantityAvailable);
+      if (variant.isActive !== false && stock >= 2
+          && (best === null || stock > best.stock)) {
+        best = { productId: product.productId, variantId: variant.variantId, stock };
+      }
+    }
+  }
+  const productId = best?.productId ?? catalogue.body.content[0].productId;
+  const variantId = best?.variantId ?? null;
+  const quoteQuantity = best ? Math.min(7, best.stock) : 0;
+  const offer = await probe.get("/offers/automatic/active");
+  console.log(`target=${API}  product=${productId}  `
+    + `variant=${variantId ?? "NONE FOUND - offer-quote step will be skipped"}`
+    + `${variantId ? ` x${quoteQuantity}` : ""}  `
+    + `offer=${offer.body?.active ? offer.body.offerName : "none active"}  `
+    + `stages=[${STAGES}]  seconds/stage=${SECONDS}\n`);
   console.log("vusers |  reqs |  rps  |  p50 |  p95 |  p99 |  max | errors");
   console.log("-------+-------+-------+------+------+------+------+-------");
 
@@ -115,7 +168,7 @@ function record(stats, label, result) {
     const stats = { latencies: [], errors: [], total: 0, failed: 0, byOperation: {} };
     const deadline = Date.now() + SECONDS * 1000;
     const started = Date.now();
-    await Promise.all(Array.from({ length: vusers }, () => virtualUser(deadline, stats, productId)));
+    await Promise.all(Array.from({ length: vusers }, () => virtualUser(deadline, stats, productId, variantId, quoteQuantity)));
     const elapsed = (Date.now() - started) / 1000;
     const sorted = [...stats.latencies].sort((a, b) => a - b);
     console.log(
@@ -131,3 +184,13 @@ function record(stats, label, result) {
   }
   console.log("\nLatencies are milliseconds, measured client-side, so they include this process's own overhead.");
 })();
+
+// Not measured here, and worth knowing before trusting these numbers as a capacity statement:
+//
+//  - No authenticated cart write and no checkout, so write throughput, row-lock waits during
+//    inventory decrement and transaction duration under real purchase load are all unmeasured.
+//    Each virtual user would need its own verified account, and POST /api/auth/register is capped at
+//    10 per IP per minute, so a write-heavy run needs accounts seeded ahead of time rather than
+//    created inline.
+//  - One machine, one process, localhost. Network latency, TLS and any proxy in front of the app are
+//    all absent, and the client's own overhead is inside the latencies reported.
