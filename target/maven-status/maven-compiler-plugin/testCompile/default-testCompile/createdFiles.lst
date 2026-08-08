@@ -29,6 +29,7 @@ com\sunglassstore\service\UserServiceImplTest.class
 com\sunglassstore\controller\CouponControllerIntegrationTest.class
 com\sunglassstore\service\impl\UnpaidOrderExpiryServiceImplTest.class
 com\sunglassstore\controller\AdminEmailOutboxControllerIntegrationTest.class
+com\sunglassstore\validation\PhoneNumbersTest.class
 com\sunglassstore\service\CouponServiceImplTest.class
 com\sunglassstore\controller\ReviewControllerIntegrationTest.class
 com\sunglassstore\service\impl\AddressPincodeValidationTest.class

@@ -1,6 +1,7 @@
 package com.sunglassstore.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import com.sunglassstore.validation.IndianMobile;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -12,8 +13,14 @@ public class UpdateProfileRequest {
     @NotBlank(message = "Name is required")
     @Size(max = 255, message = "Name must be at most 255 characters")
     private String name;
+    // One rule, one message. @Size(max = 20) and a looser @Pattern used to sit here too — three
 
-    @Size(max = 20, message = "Phone number must be at most 20 characters")
-    @Pattern(regexp = "^[0-9+() -]*$", message = "Phone number contains invalid characters")
+    // constraints on one field, whichever fired first deciding what the customer read. @IndianMobile
+
+    // rejects everything they would and more, so they are redundant; the profile form having a phone
+
+    // pattern while registration and addresses had none is exactly the drift this consolidates.
+
+    @IndianMobile
     private String phoneNumber;
 }

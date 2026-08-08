@@ -47,7 +47,13 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getUserOrderForCustomer(principal.getUserId(), orderId));
     }
 
-    @GetMapping(value = "/{orderId}/invoice", produces = MediaType.APPLICATION_PDF_VALUE)
+    // JSON is listed alongside PDF so that ERRORS can still be represented. With PDF alone, an
+    // order that is not found — or not yours — made the service throw, and Spring then had no
+    // acceptable representation for the JSON error body: HttpMediaTypeNotAcceptableException, which
+    // surfaced as 500. Authorization was being enforced correctly the whole time; only the status
+    // was wrong, and a 500 on an access decision is both misleading and noisy in the logs.
+    // A successful response is unaffected — invoiceResponse() sets application/pdf explicitly.
+    @GetMapping(value = "/{orderId}/invoice", produces = { MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<byte[]> downloadMyInvoice(@AuthenticationPrincipal SecurityUser principal,
                                                      @PathVariable Long orderId) {
         byte[] invoice = invoiceService.generate(orderService.getUserOrderForCustomer(principal.getUserId(), orderId));
@@ -73,7 +79,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderForAdmin(orderId));
     }
 
-    @GetMapping(value = "/admin/{orderId}/invoice", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(value = "/admin/{orderId}/invoice", produces = { MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE })
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPPORT')")
     public ResponseEntity<byte[]> downloadAdminInvoice(@PathVariable Long orderId) {
         return invoiceResponse(orderId, invoiceService.generate(orderService.getOrderForAdmin(orderId)));

@@ -1,6 +1,7 @@
 package com.sunglassstore.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import com.sunglassstore.validation.IndianMobile;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -15,8 +16,15 @@ public class AddressRequest {
     @NotBlank(message = "Recipient name is required")
     @Size(max = 255)
     private String recipientName;
+    // One rule, one message. @Size(max = 20) and a looser @Pattern used to sit here too — three
 
-    @Size(max = 20)
+    // constraints on one field, whichever fired first deciding what the customer read. @IndianMobile
+
+    // rejects everything they would and more, so they are redundant; the profile form having a phone
+
+    // pattern while registration and addresses had none is exactly the drift this consolidates.
+
+    @IndianMobile
     private String phoneNumber;
 
     @Size(max = 50)

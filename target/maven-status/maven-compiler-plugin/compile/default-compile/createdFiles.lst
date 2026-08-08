@@ -6,8 +6,10 @@ com\sunglassstore\dto\response\EmailOutboxAdminResponse.class
 com\sunglassstore\service\CouponService.class
 com\sunglassstore\email\event\OrderCancelledEmailRequested.class
 com\sunglassstore\repository\ProductVariantRepository.class
+com\sunglassstore\validation\IndianMobileValidator.class
 com\sunglassstore\service\impl\AuthenticationServiceImpl.class
 com\sunglassstore\config\UploadWebConfig.class
+com\sunglassstore\validation\IndianMobile.class
 com\sunglassstore\service\impl\PasswordResetServiceImpl.class
 com\sunglassstore\service\CartService.class
 com\sunglassstore\controller\OrderController.class
@@ -169,6 +171,7 @@ com\sunglassstore\entity\Address.class
 com\sunglassstore\entity\enums\ShipmentStatus.class
 com\sunglassstore\controller\RefundController.class
 com\sunglassstore\entity\enums\ReturnStatus.class
+com\sunglassstore\validation\PhoneNumbers.class
 com\sunglassstore\config\PaginationConfig.class
 com\sunglassstore\entity\PasswordResetToken.class
 com\sunglassstore\dto\response\AdminOrderResponse$Customer.class

@@ -76,8 +76,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(normalizedEmail);
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         user.setName(request.getName().trim());
-        user.setPhoneNumber(request.getPhoneNumber() == null || request.getPhoneNumber().isBlank()
-                ? null : request.getPhoneNumber().trim());
+        // Canonical E.164, so "9876543210" and "+91 98765 43210" cannot become two customers with
+        // what is really the same number. @IndianMobile has already rejected anything unacceptable.
+        user.setPhoneNumber(com.sunglassstore.validation.PhoneNumbers.toStored(request.getPhoneNumber()));
         user.setPasswordChangedAt(LocalDateTime.now());
 
         Role customerRole = roleRepository.findByRoleName("CUSTOMER")

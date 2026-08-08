@@ -81,7 +81,7 @@ public class AddressServiceImpl implements AddressService {
         address.setAddressType(AddressType.valueOf(request.getAddressType()));
         address.setRecipientName(request.getRecipientName());
         address.setHouseNumber(request.getHouseNumber());
-        address.setPhoneNumber(request.getPhoneNumber());
+        address.setPhoneNumber(com.sunglassstore.validation.PhoneNumbers.toStored(request.getPhoneNumber()));
         address.setAddressLine1(request.getAddressLine1());
         address.setAddressLine2(request.getAddressLine2());
         address.setCity(request.getCity());

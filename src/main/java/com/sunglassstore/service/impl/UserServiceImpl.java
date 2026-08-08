@@ -34,7 +34,9 @@ public class UserServiceImpl implements UserService {
     public User updateProfile(Long userId, UpdateProfileRequest request) {
         String name = request.getName().trim();
         String phone = request.getPhoneNumber();
-        String normalizedPhone = phone == null || phone.isBlank() ? null : phone.trim();
+        // Canonical E.164 for storage. @IndianMobile has already rejected anything unacceptable,
+        // so this only reshapes a value that is known good.
+        String normalizedPhone = com.sunglassstore.validation.PhoneNumbers.toStored(phone);
         if (userRepository.updateEditableProfile(userId, name, normalizedPhone) == 0) {
             throw new ResourceNotFoundException("User not found with id: " + userId);
         }
