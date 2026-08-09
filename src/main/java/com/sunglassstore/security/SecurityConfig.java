@@ -58,7 +58,18 @@ public class SecurityConfig {
                                 "/api/auth/forgot-password", "/api/auth/reset-password",
                                 "/api/auth/verify-email", "/api/auth/resend-verification",
                                 "/api/auth/csrf", "/api/auth/logout").permitAll()
-                        // Public product browsing
+                        // Admin product reads, gated BEFORE the public GET rule below — order
+                        // matters, the first matching rule wins. /api/products/admin/all is a GET,
+                        // so the public rule would otherwise permit it at this layer and leave
+                        // @PreAuthorize on the method as the only thing standing between a guest
+                        // and the full catalogue including unpublished drafts. It does hold (a
+                        // guest gets 403), but one annotation being the entire boundary is a
+                        // single point of failure: deleting it would silently make drafts public.
+                        // Same belt-and-braces treatment as /api/offers/automatic/admin/** below.
+                        .requestMatchers("/api/products/admin/**").hasAnyRole("ADMIN", "INVENTORY_MANAGER")
+                        // Public product browsing. Reads only — every mutation under /api/products
+                        // is a POST/PUT/PATCH/DELETE and falls through to .anyRequest().authenticated()
+                        // plus @PreAuthorize on the method.
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/reviews/products/*").permitAll()

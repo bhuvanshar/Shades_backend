@@ -23,4 +23,11 @@ public class CreateImageRequest {
     private Integer displayOrder = 0;
 
     private Boolean isPrimary = false;
+
+    /**
+     * The colourway this photograph shows, or null for a general product photo. Validated against
+     * the product's own variants — an id belonging to someone else's product is rejected rather
+     * than stored, which the database would also refuse now that VARIANT_ID is a foreign key.
+     */
+    private Long variantId;
 }

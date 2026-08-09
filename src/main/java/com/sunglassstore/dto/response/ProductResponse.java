@@ -15,7 +15,16 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class ProductResponse {
+    /**
+     * Still present, and deliberately so. The public URL no longer carries it, which is what the
+     * change was for, but the cart, wishlist, review and inventory APIs all address a product by
+     * this id and every one of them authorises the caller independently. Re-keying those APIs onto
+     * the slug would be a large change that buys no additional protection — an id is not a
+     * credential in either scheme. See ProductSlugs for the same point stated the other way round.
+     */
     private Long productId;
+    /** The public identifier. This, not productId, is what a storefront URL must be built from. */
+    private String slug;
     private String productName;
     private String productDescription;
     private String brand;
@@ -43,6 +52,7 @@ public class ProductResponse {
     public static ProductResponse fromEntity(Product product, boolean isNew) {
         ProductResponse response = new ProductResponse();
         response.setProductId(product.getProductId());
+        response.setSlug(product.getSlug());
         response.setProductName(product.getProductName());
         response.setProductDescription(product.getProductDescription());
         response.setBrand(product.getBrand());
@@ -75,16 +85,19 @@ public class ProductResponse {
         }
     }
 
-    public record ImageSummary(Long imageId, String imageUrl, String altText, Integer displayOrder,
-                               Boolean isPrimary, Long variantId) {
+    /**
+     * @param imageId  internal id, kept because the admin image endpoints address images by it.
+     * @param publicId the identifier storefront markup should key on — see ProductImage.publicId.
+     * @param variantId now read from the VARIANT_ID column. It used to be recovered by matching
+     *                  "/variants/(\d+)/" against imageUrl, so the association was a property of
+     *                  the file's storage path: relocating the upload directory or putting a CDN in
+     *                  front of it unlinked every variant photo at once.
+     */
+    public record ImageSummary(Long imageId, String publicId, String imageUrl, String altText,
+                               Integer displayOrder, Boolean isPrimary, Long variantId) {
         public static ImageSummary fromEntity(com.sunglassstore.entity.ProductImage image) {
-            return new ImageSummary(image.getImageId(), image.getImageUrl(), image.getAltText(),
-                    image.getDisplayOrder(), image.getIsPrimary(), extractVariantId(image.getImageUrl()));
-        }
-        private static Long extractVariantId(String url) {
-            if (url == null) return null;
-            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("/variants/(\\d+)/").matcher(url);
-            return matcher.find() ? Long.valueOf(matcher.group(1)) : null;
+            return new ImageSummary(image.getImageId(), image.getPublicId(), image.getImageUrl(),
+                    image.getAltText(), image.getDisplayOrder(), image.getIsPrimary(), image.getVariantId());
         }
     }
 }

@@ -54,7 +54,14 @@ public class ProductVariant {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
+    /**
+     * Batched for the same reason as Product's collections, and measured separately because it is a
+     * second, nested N+1: VariantSummary.fromEntity reads this for every variant of every product
+     * in a listing page. Batching Product's collections alone took a 200-product listing from 1,868
+     * SELECTs to 361 — the residue was one query per variant, which this removes.
+     */
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @org.hibernate.annotations.BatchSize(size = 64)
     private List<ProductAttribute> attributes = new ArrayList<>();
 
     @PrePersist

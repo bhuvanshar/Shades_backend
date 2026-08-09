@@ -11,6 +11,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByIsActiveTrue(Pageable pageable);
 
     /**
+     * Resolve a product by its public slug. Served by UQ_PRODUCTS_SLUG, so this is an index lookup
+     * rather than a scan — it is on the hot path for every product page view.
+     *
+     * Deliberately NOT filtered to active products: the service decides what an inactive product
+     * means for the caller (404 for a customer, visible for an admin preview). Baking the filter in
+     * here would make an admin previewing a draft indistinguishable from a typo'd slug.
+     */
+    java.util.Optional<Product> findBySlug(String slug);
+
+    boolean existsBySlug(String slug);
+
+    /** The slug for a numeric id, without loading the row — all the legacy redirect needs. */
+    @Query("SELECT p.slug FROM Product p WHERE p.productId = :productId")
+    java.util.Optional<String> findSlugByProductId(Long productId);
+
+    /**
      * Which of these products sit in any of these categories.
      *
      * Used to resolve a category-scoped automatic offer against the handful of products in one cart,

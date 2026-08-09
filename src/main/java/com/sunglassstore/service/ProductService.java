@@ -11,6 +11,12 @@ public interface ProductService {
     Page<ProductResponse> getAllActiveProducts(Pageable pageable);
     Page<ProductResponse> getAllProducts(Pageable pageable);
     ProductResponse getProductById(Long productId);
+
+    /** Public resolution by slug. 404s for an unknown slug and for an inactive product alike. */
+    ProductResponse getProductBySlug(String slug);
+
+    /** The slug a legacy numeric /product/{id} link should redirect to. */
+    String findCanonicalSlug(Long productId);
     Page<ProductResponse> searchProducts(String keyword, Pageable pageable);
     Page<ProductResponse> getProductsByCategory(Long categoryId, Pageable pageable);
 
@@ -28,4 +34,13 @@ public interface ProductService {
     void deleteVariant(Long productId, Long variantId);
     ProductResponse.ImageSummary addImage(Long productId, CreateImageRequest request);
     void deleteImage(Long productId, Long imageId);
+
+    /** Replaces the gallery order. The list must name exactly this product's images. */
+    java.util.List<ProductResponse.ImageSummary> reorderImages(Long productId, java.util.List<Long> imageIdsInOrder);
+
+    /** Promotes one image to primary and demotes the incumbent, in that order. */
+    java.util.List<ProductResponse.ImageSummary> setPrimaryImage(Long productId, Long imageId);
+
+    /** Edits alt text and variant association. Does not move the file. */
+    ProductResponse.ImageSummary updateImage(Long productId, Long imageId, CreateImageRequest request);
 }

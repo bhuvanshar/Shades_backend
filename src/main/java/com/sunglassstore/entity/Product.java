@@ -1,5 +1,6 @@
 package com.sunglassstore.entity;
 
+import com.sunglassstore.catalog.ProductSlugs;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,20 @@ public class Product {
 
     @Column(name = "PRODUCT_NAME", nullable = false)
     private String productName;
+
+    /**
+     * The public identifier used in storefront URLs, in place of PRODUCT_ID.
+     *
+     * Assigned once, when the product is created, and never touched by an ordinary update — a
+     * rename must not move the product's address, or every link anyone has shared breaks silently.
+     * Only an explicit slug edit by an admin changes it, and ProductServiceImpl is the only place
+     * that may do so.
+     *
+     * Not a security boundary: it is unguessable-ish, but every endpoint still authorises. See
+     * ProductSlugs.
+     */
+    @Column(name = "SLUG", nullable = false, unique = true, length = ProductSlugs.MAX_LENGTH)
+    private String slug;
 
     @Column(name = "PRODUCT_DESCRIPTION", columnDefinition = "TEXT")
     private String productDescription;
@@ -72,18 +87,48 @@ public class Product {
     // happens to produce. That made the default selection non-deterministic in principle even
     // though it usually came back in PK order. Ascending variantId is insertion order, which is
     // also the order the admin UI adds colourways in.
+    /**
+     * @BatchSize on every association below is a measured fix, not a precaution.
+     *
+     * ProductResponse.fromEntity touches variants, images, categories and attributes for each
+     * product, and all four are lazy — so one listing page issued a query per collection per
+     * product. Measured on the 1,182-product test catalogue:
+     *
+     *   GET /api/products?size=200  ->  1,868 SELECT statements, 1,367 ms
+     *
+     * Hibernate batches the initialisation of up to 64 of these at a time instead, which turns
+     * roughly 4 x 200 round trips into roughly 4 x 4.
+     *
+     * @BatchSize rather than a fetch join: Product holds three List collections, and fetch-joining
+     * more than one bag in a single query is a MultipleBagFetchException. Paginating a fetch join
+     * is also unsound — the row multiplication makes LIMIT count join rows rather than products,
+     * which Hibernate can only fix by pulling the whole result set into memory.
+     */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("variantId ASC")
+    @org.hibernate.annotations.BatchSize(size = 64)
     private List<ProductVariant> variants = new ArrayList<>();
 
+    /**
+     * Gallery order, decided here so every surface agrees: primary first, then DISPLAY_ORDER, then
+     * IMAGE_ID.
+     *
+     * The IMAGE_ID tie-break is what makes it deterministic. Ordering by DISPLAY_ORDER alone left
+     * images that share a value — which every multi-file upload produces, since they are all sent
+     * with the same index base — in whatever order the join happened to return, so a product card
+     * could show a different photo between two requests.
+     */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("displayOrder ASC")
+    @OrderBy("isPrimary DESC, displayOrder ASC, imageId ASC")
+    @org.hibernate.annotations.BatchSize(size = 64)
     private List<ProductImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @org.hibernate.annotations.BatchSize(size = 64)
     private List<ProductAttribute> attributes = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @org.hibernate.annotations.BatchSize(size = 64)
     @JoinTable(
             name = "PRODUCT_CATEGORIES",
             joinColumns = @JoinColumn(name = "PRODUCT_ID"),
@@ -95,6 +140,12 @@ public class Product {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        // A floor, not the normal path. ProductServiceImpl.createProduct assigns the real slug —
+        // derived from the name and checked for uniqueness first. This only fires for a Product
+        // persisted by some other route (fixtures, a future importer), where the alternative is a
+        // NOT NULL violation on SLUG. Always suffixed, because nothing has checked availability
+        // here: an opaque unique-by-construction slug beats a pretty one that collides.
+        if (slug == null || slug.isBlank()) slug = ProductSlugs.withFreshSuffix(ProductSlugs.toBaseSlug(productName));
         // A product created already active is published at that moment. One created as a draft
         // gets its stamp from publish() when an admin activates it.
         if (Boolean.TRUE.equals(isActive)) {

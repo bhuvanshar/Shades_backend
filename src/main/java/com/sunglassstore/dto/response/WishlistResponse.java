@@ -18,7 +18,13 @@ public record WishlistResponse(Long wishlistId, String wishlistName, LocalDateTi
                         .toList());
     }
 
-    public record Item(Long wishlistItemId, Long productId, String productName, String brand,
+    /**
+     * @param slug carried so the wishlist can link to a product without the storefront having to
+     *             look it up in the catalogue listing. The wishlist renders straight from this
+     *             response and never loads product_list, so without the slug here its links would
+     *             be the only ones left on numeric ids.
+     */
+    public record Item(Long wishlistItemId, Long productId, String slug, String productName, String brand,
                        BigDecimal price, String imageUrl, String imageAlt, boolean active,
                        int quantityAvailable, LocalDateTime addedAt) {
         private static Item fromProduct(Long wishlistItemId, Product product, LocalDateTime addedAt) {
@@ -29,7 +35,7 @@ public record WishlistResponse(Long wishlistId, String wishlistName, LocalDateTi
             BigDecimal price = activeVariants.stream().map(ProductVariant::getPrice).min(BigDecimal::compareTo)
                     .orElse(product.getBasePrice());
             int stock = activeVariants.stream().mapToInt(value -> Math.max(0, value.getQuantityAvailable())).sum();
-            return new Item(wishlistItemId, product.getProductId(), product.getProductName(), product.getBrand(), price,
+            return new Item(wishlistItemId, product.getProductId(), product.getSlug(), product.getProductName(), product.getBrand(), price,
                     image == null ? null : image.getImageUrl(), image == null ? product.getProductName() : image.getAltText(),
                     Boolean.TRUE.equals(product.getIsActive()), stock, addedAt);
         }

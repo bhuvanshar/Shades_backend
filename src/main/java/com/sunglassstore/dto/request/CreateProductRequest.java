@@ -17,6 +17,15 @@ public class CreateProductRequest {
     @Size(max = 255)
     private String productName;
 
+    /**
+     * Optional public URL for the product. Omitted on create, the server derives one from the name;
+     * omitted on update, the existing one is KEPT — a rename must not move the product's URL.
+     * Supplying a different value is the only way to change it, and is validated against the same
+     * rules as a generated slug.
+     */
+    @Size(max = 160)
+    private String slug;
+
     private String productDescription;
 
     @Size(max = 150)

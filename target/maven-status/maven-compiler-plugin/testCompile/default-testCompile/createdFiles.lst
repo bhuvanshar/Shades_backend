@@ -33,6 +33,7 @@ com\sunglassstore\service\AuthenticationSecurityHardeningTest.class
 com\sunglassstore\offer\OfferMessagesTest.class
 com\sunglassstore\service\PasswordResetServiceImplTest.class
 com\sunglassstore\service\InventoryServiceImplTest.class
+com\sunglassstore\catalog\ProductSlugsTest.class
 com\sunglassstore\service\PaymentServiceImplTest.class
 com\sunglassstore\service\InvoiceServiceImplTest.class
 com\sunglassstore\service\UserServiceImplTest.class

@@ -114,6 +114,7 @@ com\sunglassstore\repository\CouponRepository.class
 com\sunglassstore\dto\request\CreateReviewRequest.class
 com\sunglassstore\dto\response\AdminCustomerResponse.class
 com\sunglassstore\entity\enums\OrderStatus.class
+com\sunglassstore\catalog\ProductSlugs.class
 com\sunglassstore\dto\response\AutomaticOfferResponse.class
 com\sunglassstore\service\ReturnService.class
 com\sunglassstore\security\JwtAuthenticationFilter.class
