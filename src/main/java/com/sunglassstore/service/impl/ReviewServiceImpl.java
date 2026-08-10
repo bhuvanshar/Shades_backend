@@ -52,8 +52,11 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewResponse createReview(Long userId, CreateReviewRequest request) {
         OrderItem orderItem = orderItemRepository.findById(request.getOrderItemId())
                 .orElseThrow(() -> new ResourceNotFoundException("Purchased variant not found"));
+        // A deleted product has no variant to match against, and nothing to attach a review to, so
+        // this fails the same way an unrelated order item does rather than throwing.
         if (!orderItem.getOrder().getUser().getUserId().equals(userId)
                 || orderItem.getOrder().getOrderStatus() != OrderStatus.DELIVERED
+                || orderItem.getVariant() == null
                 || !orderItem.getVariant().getProduct().getProductId().equals(request.getProductId())
                 || !isReviewable(orderItem)) {
             throw new BadRequestException("You can only review a delivered variant you purchased");
@@ -124,6 +127,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional(readOnly = true)
     public List<ReviewableVariantResponse> getReviewableVariants(Long userId, Long productId) {
         return orderItemRepository.findDeliveredByUserAndProduct(userId, productId).stream()
+                // A line whose product has been deleted cannot be reviewed — there is no product
+                // page for the review to appear on. Filtered here rather than null-guarded in the
+                // response so the customer is never offered a review that createReview would refuse.
+                .filter(item -> item.getVariant() != null)
                 .filter(this::isReviewable)
                 .filter(item -> !reviewRepository.existsByUserUserIdAndOrderItemOrderItemId(userId, item.getOrderItemId()))
                 .map(ReviewableVariantResponse::fromEntity).toList();

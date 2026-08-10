@@ -24,7 +24,16 @@ public class OrderItem {
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "VARIANT_ID", nullable = false)
+    /**
+     * Null once the product has been deleted from the catalogue.
+     *
+     * ORDER_ITEMS is the one place a deleted product's history is kept, so the column is
+     * ON DELETE SET NULL rather than cascading. Everything an order needs to be displayed, totalled,
+     * invoiced, returned or refunded is snapshotted on this row — productName, sku, quantity,
+     * unitPrice, tax, discount and lineTotal — so a null variant costs the order nothing. Anything
+     * that needs the LIVE catalogue row (restoring stock, writing a review) must null-check first.
+     */
+    @JoinColumn(name = "VARIANT_ID")
     private ProductVariant variant;
 
     @Column(name = "PRODUCT_NAME", nullable = false)
@@ -32,6 +41,15 @@ public class OrderItem {
 
     @Column(name = "SKU", nullable = false, length = 100)
     private String sku;
+
+    /**
+     * The variant's customer-facing label ("Ocean Blue") at purchase time, in the storefront's
+     * precedence: colour attribute, else variant name. Part of the snapshot for the same reason
+     * PRODUCT_NAME is — the live variant can be renamed, archived or deleted, and this line must
+     * keep reading the way it did on the invoice. Null on lines that predate the column.
+     */
+    @Column(name = "VARIANT_LABEL")
+    private String variantLabel;
 
     @Column(name = "QUANTITY", nullable = false)
     private Integer quantity;

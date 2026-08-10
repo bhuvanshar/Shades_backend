@@ -32,7 +32,7 @@ public record AdminOrderResponse(
                         order.getShippingCity(), order.getShippingState(), order.getShippingPincode(),
                         order.getShippingCountry()),
                 order.getItems().stream().map(i -> new Item(i.getOrderItemId(), i.getProductName(),
-                        i.getSku(), i.getQuantity(), i.getUnitPrice(), i.getTaxAmount(),
+                        i.getSku(), i.getVariantLabel(), i.getQuantity(), i.getUnitPrice(), i.getTaxAmount(),
                         i.getDiscountAmount(), i.getLineTotal())).toList(),
                 payments.stream().map(p -> new PaymentInfo(p.getPaymentId(), p.getAmount(),
                         p.getPaymentMethod(), p.getPaymentStatus().name(), p.getPaymentProvider(),
@@ -59,7 +59,10 @@ public record AdminOrderResponse(
     public record Customer(Long userId, String name, String email, String phoneNumber) {}
     public record ShippingAddress(String name, String phone, String line1, String line2,
                                   String city, String state, String pincode, String country) {}
-    public record Item(Long orderItemId, String productName, String sku, Integer quantity,
+    /** @param variantLabel the purchased colourway's label, snapshotted at purchase; null on
+     *                      lines that predate the column. */
+    public record Item(Long orderItemId, String productName, String sku, String variantLabel,
+                       Integer quantity,
                        BigDecimal unitPrice, BigDecimal taxAmount, BigDecimal discountAmount,
                        BigDecimal lineTotal) {}
     public record PaymentInfo(Long paymentId, BigDecimal amount, String method, String status,

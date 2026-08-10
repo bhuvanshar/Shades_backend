@@ -30,6 +30,8 @@ public class ProductResponse {
     private String brand;
     private BigDecimal basePrice;
     private Boolean isActive;
+    /** For the admin editor's read-edit-save conflict check. Meaningless to the storefront. */
+    private Long version;
     private java.time.Instant publishedAt;
     /**
      * Canonical answer to "does this product get a New badge", decided by NewProductPolicy on the
@@ -58,6 +60,7 @@ public class ProductResponse {
         response.setBrand(product.getBrand());
         response.setBasePrice(product.getBasePrice());
         response.setIsActive(product.getIsActive());
+        response.setVersion(product.getVersion());
         response.setPublishedAt(product.getPublishedAt());
         response.setIsNew(isNew);
         response.setCreatedAt(product.getCreatedAt());
@@ -73,11 +76,18 @@ public class ProductResponse {
 
     public record CategorySummary(Long categoryId, String categoryName) {}
 
-    public record VariantSummary(Long variantId, String sku, String variantName, String variantDescription,
+    /**
+     * @param position    the family order, 1..N; the list arrives sorted by it.
+     * @param mainVariant canonical "this is the Main Product / Variant 1" designation — always
+     *                    position 1. Sent explicitly so no client re-derives it and drifts.
+     */
+    public record VariantSummary(Long variantId, Integer position, Boolean mainVariant,
+                                 String sku, String variantName, String variantDescription,
                                  BigDecimal price, Integer quantityAvailable, Integer lowStockThreshold, Boolean isActive,
                                  Map<String, String> attributes) {
         public static VariantSummary fromEntity(com.sunglassstore.entity.ProductVariant variant) {
-            return new VariantSummary(variant.getVariantId(), variant.getSku(), variant.getVariantName(),
+            return new VariantSummary(variant.getVariantId(), variant.getPosition(), variant.isMainVariant(),
+                    variant.getSku(), variant.getVariantName(),
                     variant.getVariantDescription(),
                     variant.getPrice(), variant.getQuantityAvailable(), variant.getLowStockThreshold(), variant.getIsActive(),
                     variant.getAttributes().stream().collect(Collectors.toMap(ProductAttribute::getAttributeName,

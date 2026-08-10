@@ -60,8 +60,8 @@ class CartConcurrencyIntegrationTest {
         product.setBasePrice(new BigDecimal("1000.00"));
         product = products.save(product);
         createdProductId = product.getProductId();
-        ProductVariant blue = saveVariant(product, "BLUE");
-        ProductVariant pink = saveVariant(product, "PINK");
+        ProductVariant blue = saveVariant(product, "BLUE", 1);
+        ProductVariant pink = saveVariant(product, "PINK", 2);
 
         int additionsPerUser = 12;
         CountDownLatch ready = new CountDownLatch(additionsPerUser * 2);
@@ -119,9 +119,10 @@ class CartConcurrencyIntegrationTest {
         return user;
     }
 
-    private ProductVariant saveVariant(Product product, String color) {
+    private ProductVariant saveVariant(Product product, String color, int position) {
         ProductVariant variant = new ProductVariant();
         variant.setProduct(product);
+        variant.setPosition(position);
         variant.setSku("E2E-" + color + "-" + UUID.randomUUID());
         variant.setVariantName(color);
         variant.setPrice(new BigDecimal("1000.00"));

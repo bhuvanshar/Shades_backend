@@ -31,7 +31,11 @@ public class CreateProductRequest {
     @Size(max = 150)
     private String brand;
 
-    @NotNull(message = "Base price is required")
+    /**
+     * Legacy family-level fallback price. Optional now that every variant carries its own: when
+     * omitted, the server records the Main Variant's price so pre-redesign readers keep seeing a
+     * sensible number.
+     */
     @DecimalMin(value = "0.00", message = "Price must be non-negative")
     private BigDecimal basePrice;
 
@@ -44,7 +48,32 @@ public class CreateProductRequest {
     /** Key-value pairs for product-level attributes like frame_material, uv_protection etc. */
     private Map<String, String> attributes;
 
-    /** Initial sellable variant and opening stock, used when a product is first created. */
+    /**
+     * Draft support: false creates (or keeps) the product unpublished, true publishes it. Null
+     * means "active" on create — the pre-redesign behaviour — and "leave it alone" on update, so
+     * an editor saving field changes cannot accidentally publish a draft.
+     */
+    private Boolean isActive;
+
+    /**
+     * The version the editor loaded, for the read-edit-save conflict check on update. Null skips
+     * the check (legacy callers); a stale value is refused with 409 rather than silently
+     * overwriting another administrator's save.
+     */
+    private Long version;
+
+    /**
+     * The family's variants in display order: index 0 is the Main Product (position 1). The
+     * structured replacement for {@link #initialVariant} — a create needs at least one entry, an
+     * update must list every existing variant (removal is a separate, guarded operation).
+     */
+    @Valid
+    private List<CreateVariantRequest> variants;
+
+    /**
+     * Pre-redesign single-variant field, kept so existing callers don't break. Equivalent to a
+     * one-entry {@link #variants} list; sending both is refused rather than guessed at.
+     */
     @Valid
     private CreateVariantRequest initialVariant;
 }

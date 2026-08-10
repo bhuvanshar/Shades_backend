@@ -79,7 +79,7 @@ class InvoiceServiceImplTest {
         List<AdminOrderResponse.Item> items = new ArrayList<>();
         for (int index = 1; index <= itemCount; index++) {
             items.add(new AdminOrderResponse.Item((long) index, "Classic Frame " + index,
-                    "SW-CF-" + index, 1, new BigDecimal("75.00"), new BigDecimal("13.50"),
+                    "SW-CF-" + index, "Onyx", 1, new BigDecimal("75.00"), new BigDecimal("13.50"),
                     BigDecimal.ZERO, new BigDecimal("75.00")));
         }
         BigDecimal subtotal = new BigDecimal("75.00").multiply(BigDecimal.valueOf(itemCount));

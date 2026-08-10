@@ -142,6 +142,26 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    /** Archive or restore one variant — the safe alternative to deleting something customers bought. */
+    @PatchMapping("/{productId}/variants/{variantId}/active")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('INVENTORY_MANAGER')")
+    public ResponseEntity<ProductResponse.VariantSummary> setVariantActive(
+            @PathVariable Long productId, @PathVariable Long variantId, @RequestParam boolean active) {
+        return ResponseEntity.ok(productService.setVariantActive(productId, variantId, active));
+    }
+
+    /**
+     * The deliberate "Set as Main Variant" workflow. Its own endpoint, rather than an editable
+     * position field, so replacing the family's Main Product is always an explicit act — never a
+     * side effect of reordering a list.
+     */
+    @PutMapping("/{productId}/variants/{variantId}/main")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('INVENTORY_MANAGER')")
+    public ResponseEntity<ProductResponse> setMainVariant(
+            @PathVariable Long productId, @PathVariable Long variantId) {
+        return ResponseEntity.ok(productService.setMainVariant(productId, variantId));
+    }
+
     // Image endpoints
     @PostMapping(value = "/{productId}/images/upload", consumes = "multipart/form-data")
     @PreAuthorize("hasRole('ADMIN') or hasRole('INVENTORY_MANAGER')")

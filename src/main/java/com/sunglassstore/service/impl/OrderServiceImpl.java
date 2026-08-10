@@ -263,6 +263,13 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setVariant(variant);
             orderItem.setProductName(product.getProductName());
             orderItem.setSku(variant.getSku());
+            // Same label precedence the storefront renders (colour attribute, else variant name),
+            // frozen here so the line keeps reading the same after any later catalogue edit.
+            orderItem.setVariantLabel(variant.getAttributes().stream()
+                    .filter(attribute -> "color".equals(attribute.getAttributeName()))
+                    .map(com.sunglassstore.entity.ProductAttribute::getAttributeValue)
+                    .findFirst()
+                    .orElse(variant.getVariantName()));
             orderItem.setUnitPrice(variant.getPrice());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setLineTotal(variant.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
@@ -399,6 +406,11 @@ public class OrderServiceImpl implements OrderService {
 
     private void restoreInventory(Order order) {
         for (OrderItem item : order.getItems()) {
+            // A line whose product has since been deleted has no stock to restore — the variant row
+            // is gone. Skipping it is the only correct action: the alternative is failing the whole
+            // cancellation, which would trap the customer's money over a catalogue change that has
+            // nothing to do with them. The order line itself is untouched and still refundable.
+            if (item.getVariant() == null) continue;
             ProductVariant lockedVariant = productVariantRepository.findByIdForUpdate(
                     item.getVariant().getVariantId())
                     .orElseThrow(() -> new BadRequestException("Variant not found during cancellation"));

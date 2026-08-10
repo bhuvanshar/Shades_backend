@@ -169,6 +169,10 @@ public class ReturnServiceImpl implements ReturnService {
                 if (!SELLABLE_ITEM_CONDITIONS.contains(item.getItemCondition())) {
                     continue;
                 }
+                // The product may have been deleted since the order. There is no stock row to put
+                // the unit back into, so the return still completes and is still refundable — it
+                // simply restores nothing. Failing here would block a refund the customer is owed.
+                if (item.getOrderItem().getVariant() == null) continue;
                 ProductVariant lockedVariant = productVariantRepository.findByIdForUpdate(
                         item.getOrderItem().getVariant().getVariantId())
                         .orElseThrow(() -> new BadRequestException("Variant not found"));

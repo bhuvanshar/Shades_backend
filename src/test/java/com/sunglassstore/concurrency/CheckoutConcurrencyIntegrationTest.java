@@ -72,6 +72,7 @@ class CheckoutConcurrencyIntegrationTest {
 
         variant = new ProductVariant();
         variant.setProduct(product);
+        variant.setPosition(1);
         variant.setSku("CONC-" + System.nanoTime());
         variant.setVariantName("Onyx");
         variant.setPrice(new BigDecimal("1000.00"));

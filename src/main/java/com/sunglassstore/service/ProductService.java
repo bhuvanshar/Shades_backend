@@ -31,7 +31,19 @@ public interface ProductService {
     ProductResponse setProductActive(Long productId, boolean active);
     ProductResponse.VariantSummary addVariant(Long productId, CreateVariantRequest request);
     ProductResponse.VariantSummary updateVariant(Long productId, Long variantId, CreateVariantRequest request);
+
+    /**
+     * Deletes a never-ordered variant (its cart lines and stock ledger go with it; its photos move
+     * to the Main Product). Refused for the last variant and for one with order history — archive
+     * those instead.
+     */
     void deleteVariant(Long productId, Long variantId);
+
+    /** The deliberate "Set as Main Variant" workflow: moves the variant to position 1. */
+    ProductResponse setMainVariant(Long productId, Long variantId);
+
+    /** Archive (false) or restore (true) one variant without touching its data or history. */
+    ProductResponse.VariantSummary setVariantActive(Long productId, Long variantId, boolean active);
     ProductResponse.ImageSummary addImage(Long productId, CreateImageRequest request);
     void deleteImage(Long productId, Long imageId);
 

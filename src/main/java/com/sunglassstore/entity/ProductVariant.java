@@ -26,6 +26,17 @@ public class ProductVariant {
     @JoinColumn(name = "PRODUCT_ID", nullable = false)
     private Product product;
 
+    /**
+     * This variant's place in the family, 1..N, unique per product (UQ_PRODUCT_VARIANTS_POSITION).
+     *
+     * Position 1 IS the Main Product: the variant whose photo fronts every listing card and whose
+     * data leads the product page. There is deliberately no separate IS_MAIN flag — a flag and an
+     * order can disagree, a position cannot. The service keeps positions contiguous; the database
+     * only guarantees they are distinct.
+     */
+    @Column(name = "POSITION", nullable = false)
+    private Integer position;
+
     @Column(name = "SKU", nullable = false, unique = true, length = 100)
     private String sku;
 
@@ -63,6 +74,11 @@ public class ProductVariant {
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
     @org.hibernate.annotations.BatchSize(size = 64)
     private List<ProductAttribute> attributes = new ArrayList<>();
+
+    /** True for the family's Main Product — the variant at position 1. */
+    public boolean isMainVariant() {
+        return Integer.valueOf(1).equals(position);
+    }
 
     @PrePersist
     protected void onCreate() {

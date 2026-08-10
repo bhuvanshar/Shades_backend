@@ -155,6 +155,7 @@ C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\c
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\entity\WishlistItem.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\BadRequestException.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\ConflictException.java
+C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\FieldValidationException.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\ForbiddenException.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\GlobalExceptionHandler.java
 C:\Users\iambh\Desktop\Shades_world\CODEX\sunglass-store-backend\src\main\java\com\sunglassstore\exception\InsufficientInventoryException.java

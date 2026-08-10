@@ -81,12 +81,21 @@ public class Product {
     @Column(name = "UPDATED_AT", nullable = false)
     private LocalDateTime updatedAt;
 
+    /**
+     * Optimistic-locking version for the admin read-edit-save cycle. Two administrators editing
+     * the same product no longer silently overwrite each other: the second save's stale version is
+     * refused with a 409 (see ProductServiceImpl.updateProduct). Hibernate bumps it on every
+     * update, so it also fences edits racing a deactivation.
+     */
+    @Version
+    @Column(name = "VERSION", nullable = false)
+    private Long version;
+
     // @OrderBy is not cosmetic here. Every surface that has to pick ONE variant to display and sell
     // — the listing card, the product page's default selection — resolves "first in-stock variant"
     // against this list, and without an explicit order Hibernate returns whatever order the join
-    // happens to produce. That made the default selection non-deterministic in principle even
-    // though it usually came back in PK order. Ascending variantId is insertion order, which is
-    // also the order the admin UI adds colourways in.
+    // happens to produce. Position is the admin-chosen family order, position 1 being the Main
+    // Product; variantId breaks ties only for rows a raw-SQL writer left unpositioned.
     /**
      * @BatchSize on every association below is a measured fix, not a precaution.
      *
@@ -105,7 +114,7 @@ public class Product {
      * which Hibernate can only fix by pulling the whole result set into memory.
      */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("variantId ASC")
+    @OrderBy("position ASC, variantId ASC")
     @org.hibernate.annotations.BatchSize(size = 64)
     private List<ProductVariant> variants = new ArrayList<>();
 
@@ -151,6 +160,16 @@ public class Product {
         if (Boolean.TRUE.equals(isActive)) {
             publish();
         }
+    }
+
+    /**
+     * The family's Main Product: the variant at position 1. Falls back to list order (position
+     * ascending) only for a row a raw-SQL writer left unpositioned — the service never creates
+     * that state.
+     */
+    public java.util.Optional<ProductVariant> getMainVariant() {
+        return variants.stream().filter(ProductVariant::isMainVariant).findFirst()
+                .or(() -> variants.stream().findFirst());
     }
 
     /**

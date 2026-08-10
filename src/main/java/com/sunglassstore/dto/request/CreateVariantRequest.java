@@ -34,6 +34,12 @@ public class CreateVariantRequest {
     @Min(value = 0)
     private Integer lowStockThreshold = 5;
 
+    /**
+     * Archive state. Null means "active" on create and "leave unchanged" on update — an editor
+     * saving a price change must not silently re-activate a variant someone archived.
+     */
+    private Boolean isActive;
+
     /** Variant-level attributes like frame_color, lens_color */
     private Map<String, String> attributes;
 }

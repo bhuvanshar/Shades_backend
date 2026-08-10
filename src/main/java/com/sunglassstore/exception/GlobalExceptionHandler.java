@@ -150,6 +150,25 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    /**
+     * Service-detected field errors, answered in exactly the shape bean-validation failures use —
+     * status 400, message "Validation Failed", and a validationErrors map keyed by field path —
+     * so a client has one rendering path for "price is negative" and "this SKU is already used by
+     * variant 1".
+     */
+    @ExceptionHandler(FieldValidationException.class)
+    public ResponseEntity<ErrorResponse> handleFieldValidation(FieldValidationException ex,
+                                                                HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation Failed",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        errorResponse.setValidationErrors(ex.getFieldErrors());
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleUnreadableMessage(HttpMessageNotReadableException ex,
                                                                   HttpServletRequest request) {
